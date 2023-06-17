@@ -1,10 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RewardedAnnouncement : MonoBehaviour
 {
-    [SerializeField] private Game _game;
+    [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _gameObject;
     [SerializeField] private float _timeRepeat;
@@ -15,12 +14,12 @@ public class RewardedAnnouncement : MonoBehaviour
 
     private void OnEnable()
     {
-        _game.LevelUp += ResetRepeats;
+        _levelLoader.LevelUp += ResetRepeats;
     }
 
     private void OnDisable()
     {
-        _game.LevelUp -= ResetRepeats;
+        _levelLoader.LevelUp -= ResetRepeats;
     }
 
     private void Start()
@@ -30,7 +29,7 @@ public class RewardedAnnouncement : MonoBehaviour
 
     private IEnumerator Announcement()
     {
-        if(_countRepeat < _repeats)
+        if (_countRepeat < _repeats)
         {
             _countRepeat++;
             _gameObject.SetActive(true);

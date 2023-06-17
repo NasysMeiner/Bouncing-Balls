@@ -4,13 +4,13 @@ using UnityEngine;
 public class Buffer : MonoBehaviour
 {
     [SerializeField] private StockBalls _stockBalls;
-    [SerializeField] private Game _game;
+    [SerializeField] private LevelLoader _game;
 
-    private Queue<Ball> _ballsCurrentLevel = new();
-    private Queue<Ball> _ballsNextLevel = new();
-    private Queue<Ball> _ballsHighLevel1 = new();
-    private Queue<Ball> _ballsHighLevel2 = new();
-    private Queue<Ball> _ballsHighLevel3 = new();
+    private Queue<BallMover> _ballsCurrentLevel = new();
+    private Queue<BallMover> _ballsNextLevel = new();
+    private Queue<BallMover> _ballsHighLevel1 = new();
+    private Queue<BallMover> _ballsHighLevel2 = new();
+    private Queue<BallMover> _ballsHighLevel3 = new();
     private int _currentLevel;
 
     private void OnEnable()
@@ -23,10 +23,10 @@ public class Buffer : MonoBehaviour
         _game.DeleteAll -= OnDeleteAll;
     }
 
-    public Ball GetBall(Ball ball)
+    public BallMover GetBall(BallMover ball)
     {
         _currentLevel = _game.Level;
-        Ball newBall;
+        BallMover newBall;
         ChangePosition(ball);
 
         if (ball.Profitability == _currentLevel)
@@ -34,7 +34,7 @@ public class Buffer : MonoBehaviour
             _ballsCurrentLevel.Enqueue(ball);
             newBall = _ballsCurrentLevel.Dequeue();
         }
-        else if(ball.Profitability == _currentLevel + 1)
+        else if (ball.Profitability == _currentLevel + 1)
         {
             _ballsNextLevel.Enqueue(ball);
             newBall = _ballsNextLevel.Dequeue();
@@ -64,7 +64,7 @@ public class Buffer : MonoBehaviour
         return newBall;
     }
 
-    public void AddBufferBalls(Ball ball)
+    public void AddBufferBalls(BallMover ball)
     {
         _currentLevel = _game.Level;
         ChangePosition(ball);
@@ -75,13 +75,13 @@ public class Buffer : MonoBehaviour
             _ballsNextLevel.Enqueue(ball);
         else if (ball.Profitability == _currentLevel + 2)
             _ballsHighLevel1.Enqueue(ball);
-        else if(ball.Profitability == _currentLevel + 3)
+        else if (ball.Profitability == _currentLevel + 3)
             _ballsHighLevel2.Enqueue(ball);
-        else if(ball.Profitability == _currentLevel + 4)
+        else if (ball.Profitability == _currentLevel + 4)
             _ballsHighLevel3.Enqueue(ball);
     }
 
-    private void ChangePosition(Ball ball)
+    private void ChangePosition(BallMover ball)
     {
         ball.transform.position = transform.position;
     }

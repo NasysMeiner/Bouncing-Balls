@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,24 +10,25 @@ public class PlayField : MonoBehaviour
     [SerializeField] private float _fieldY;
     [SerializeField] private List<Vector2> _fieldXY = new List<Vector2>();
     [SerializeField] private float _stepCell;
-    [SerializeField] private Point _prefabPoint;
     [SerializeField] private Gun _gun;
     [SerializeField] private Vector3 _pointCenterField;
-    [SerializeField] private Game _game;
+    [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] private PlayerInfo _playerInfo;
+    [SerializeField] private ScreenPosition _screenPosition;
 
     private List<Cell> _cellsField = new List<Cell>();
     private List<Cell> _openCells = new List<Cell>();
 
     private void OnEnable()
     {
-        _game.GenerationStart += ResetField;
-        _game.StartGame += OnStartGame;
+        _levelLoader.GenerationStart += ResetField;
+        _levelLoader.StartGame += OnStartGame;
     }
 
     private void OnDisable()
     {
-        _game.GenerationStart -= ResetField;
-        _game.StartGame -= OnStartGame;
+        _levelLoader.GenerationStart -= ResetField;
+        _levelLoader.StartGame -= OnStartGame;
     }
 
     private void OnStartGame()
@@ -46,10 +48,10 @@ public class PlayField : MonoBehaviour
                 {
                     foreach(Cell cell in _openCells)
                     {
-                        if(cell.IsSet == false)
+                        if(cell.IsField == false)
                         {
                             cell.transform.position = new Vector3(transform.position.x + x * _stepCell, transform.position.y + y * _stepCell, transform.position.z);
-                            cell.ChangePutField(true);
+                            cell.TakeField();
                             _cellsField.Add(cell);
                             _openCells.Remove(cell);
 
@@ -60,7 +62,7 @@ public class PlayField : MonoBehaviour
                 else
                 {
                     Cell newCell = Instantiate(_prefabCell, transform);
-                    newCell.ChangePutField(true);
+                    newCell.TakeField();
                     Vector3 positionNewCell = new Vector3(transform.position.x + x * _stepCell, transform.position.y + y * _stepCell, 0);
                     newCell.SpawnCell(positionNewCell, false);
                     _cellsField.Add(newCell);
@@ -69,9 +71,9 @@ public class PlayField : MonoBehaviour
             }
         }
 
-        if(_game.IsGorizontal == false)
+        if(_screenPosition.IsGorizontal == false)
         {
-            transform.position = _game.PlayFieldPosition[_game.Level];
+            transform.position = _screenPosition.PlayFieldPosition[_playerInfo.Level];
         }
     }
 
@@ -79,7 +81,7 @@ public class PlayField : MonoBehaviour
     {
         foreach(Cell cell in _cellsField)
         {
-            cell.ChangePutField(false);
+            cell.CleareField();
             cell.ReleaseCell();
             _openCells.Add(cell);
         }
@@ -92,7 +94,7 @@ public class PlayField : MonoBehaviour
 
     private void SetDimensionsField()
     {
-        Vector2 newField = _fieldXY[_game.Level - 1];
+        Vector2 newField = _fieldXY[_playerInfo.Level - 1];
         _fieldX = newField.x;
         _fieldY = newField.y;
     }
@@ -100,14 +102,14 @@ public class PlayField : MonoBehaviour
     private void ChangeGunPosition()
     {
         float newPositionXGun;
-        int lefrOrRight = Random.Range(0, 2);
+        int lefrOrRight = UnityEngine.Random.Range(0, 2);
 
         if (lefrOrRight == 0)
             newPositionXGun = transform.position.x;
         else
             newPositionXGun = transform.position.x + _stepCell * (_fieldX - 1);
 
-        int hight = (int)Random.Range(1, _fieldY - 1);
+        int hight = (int)UnityEngine.Random.Range(1, _fieldY - 1);
         Cell currentCell = _totalNumberCells.SerachCell(new Vector3(newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z));
         currentCell.TakeCell(null, _gun);
         _gun.ChangePosition(currentCell, lefrOrRight);

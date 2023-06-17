@@ -5,7 +5,7 @@ using UnityEngine.Events;
 [RequireComponent(typeof(Animator))]
 public class Shop : MonoBehaviour
 {
-    [SerializeField] private Game _game;
+    [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private List<Product> _products = new List<Product>();
     [SerializeField] private ProductView _tamplate;
     [SerializeField] private ShopDistributor _shopDistributor;
@@ -13,12 +13,15 @@ public class Shop : MonoBehaviour
     private Animator _shopAnimation;
     private bool _isPlay = false;
     private ProductView _currentProduct;
+    private int _upgrateBasketId = 5;
+    private const string _textStartAnimation = "Play";
+    private const string _textExitAnimation = "Exit";
 
     public bool IsPlay => _isPlay;
     public ProductView Product => _currentProduct;
 
-    public event UnityAction<bool> Open;
-    public event UnityAction<bool> Close;
+    public event UnityAction Open;
+    public event UnityAction Close;
 
     private void Start()
     {
@@ -26,13 +29,13 @@ public class Shop : MonoBehaviour
 
         foreach (Product product in _products)
         {
-            product.InitProduct(_shopDistributor, _game);
+            product.InitProduct(_shopDistributor, _playerInfo);
             Transform currentTransform = product.Place;
 
             var view = Instantiate(_tamplate, currentTransform);
             product.AddProduct(view);
 
-            if(product.IdProduct == 5)
+            if (product.IdProduct == _upgrateBasketId)
                 _currentProduct = view;
         }
     }
@@ -41,15 +44,15 @@ public class Shop : MonoBehaviour
     {
         if (_isPlay == false)
         {
-            _shopAnimation.SetTrigger("Play");
+            _shopAnimation.SetTrigger(_textStartAnimation);
             _isPlay = true;
-            Open?.Invoke(false);
+            Open?.Invoke();
         }
         else
         {
-            _shopAnimation.SetTrigger("Exit");
+            _shopAnimation.SetTrigger(_textExitAnimation);
             _isPlay = false;
-            Close?.Invoke(true);
+            Close?.Invoke();
         }
     }
 }
@@ -69,22 +72,21 @@ public class Product
     [SerializeField] private float _value;
     [SerializeField] private int _maxLevel;
     [SerializeField] private bool _buffsAnim;
-    [SerializeField] private bool _upAnim;
 
     private ShopDistributor _shopDistributor;
-    private Game _game;
+    private PlayerInfo _playerInfo;
 
     public Transform Place => _place;
     public int IdProduct => _idProduct;
 
-    public void InitProduct(ShopDistributor shopDistributor, Game game)
+    public void InitProduct(ShopDistributor shopDistributor, PlayerInfo playerInfo)
     {
         _shopDistributor = shopDistributor;
-        _game = game;
+        _playerInfo = playerInfo;
     }
 
     public void AddProduct(ProductView view)
     {
-        view.Render(_icon1, _icon2, _icon3, _price, _shopDistributor, _idProduct, _timeBuffs, _game, _buffsAnim, _upAnim, _priceUp, _value, _maxLevel);
+        view.Render(_icon1, _icon2, _icon3, _price, _shopDistributor, _idProduct, _timeBuffs, _buffsAnim, _priceUp, _value, _maxLevel, _playerInfo);
     }
 }

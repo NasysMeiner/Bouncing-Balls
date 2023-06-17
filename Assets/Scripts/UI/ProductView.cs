@@ -13,7 +13,7 @@ public class ProductView : MonoBehaviour
     [SerializeField] private ProductButton _productButton;
 
     private ShopDistributor _shopDistributor;
-    private Game _game;
+    private PlayerInfo _playerInfo;
     private int _idProduct;
     private float _buffsTime;
     private float _price;
@@ -28,32 +28,34 @@ public class ProductView : MonoBehaviour
 
     private void OnDisable()
     {
-        _game.CristallChanged -= ChangeButton;
+        _playerInfo.CristallChanged -= ChangeButton;
     }
 
-    public void Render(Sprite image1, Sprite image2, Sprite image3, float price, ShopDistributor shopDistributor, int idProduct, float time, Game game, bool buffs, bool up, float upPrice, float value, int maxLevel)
+    public void Render(Sprite image1, Sprite image2, Sprite image3, float price, ShopDistributor shopDistributor, int idProduct, float time, bool buffs, float upPrice, float value, int maxLevel, PlayerInfo playerInfo)
     {
         _icon1.sprite = image1;
         _icon2.sprite = image2;
         _icon3.sprite = image3;
         _icon4.sprite = image3;
+        _playerInfo = playerInfo;
         _value = value;
         _text.text = price.ToString();
         _shopDistributor = shopDistributor;
-        _game = game;
-        _game.CristallChanged += ChangeButton;
+        _playerInfo.CristallChanged += ChangeButton;
         _price = price;
         _idProduct = idProduct;
         _buffsTime = time;
         _upPrice = upPrice;
         _maxLevel = maxLevel;
-        ChangeButton(_game.Cristall);
-        _productButton.InitButton(buffs, up, this, time);
+        ChangeButton(_playerInfo.Cristall);
+        _productButton.InitButton(buffs, this, time);
     }
 
     public void ClickMouse()
     {
-        if(_isPressed == false)
+        Debug.Log(_buffsTime + "buffs");
+
+        if (_isPressed == false)
             _shopDistributor.Buff(_idProduct, _price, this, _value, _buffsTime);
     }
 
@@ -70,10 +72,10 @@ public class ProductView : MonoBehaviour
 
     public void EndAnimation()
     {
-        ChangeButton(_game.Cristall);
+        ChangeButton(_playerInfo.Cristall);
     }
 
-    private void ChangeButton(float cristall)
+    private void ChangeButton(int cristall)
     {
         if (cristall >= _price && _productButton.IsBuff == false && _curentLevel < _maxLevel)
         {

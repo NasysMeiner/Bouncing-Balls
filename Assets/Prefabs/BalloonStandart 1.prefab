@@ -4975,6 +4975,7 @@ GameObject:
   - component: {fileID: 8998346942342617492}
   - component: {fileID: 8998346942342617493}
   - component: {fileID: -3209887041243839819}
+  - component: {fileID: -4067594035918388000}
   - component: {fileID: 555112757053783328}
   m_Layer: 6
   m_Name: BalloonStandart 1
@@ -5088,11 +5089,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 8998346942342617491}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6baa192408f94c648a4bdd8744f006cd, type: 3}
+  m_Script: {fileID: 11500000, guid: 5ff263b7a465bb44ea9cbc5cbc88d974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 2.5
+  _maxSpeed: 2.1
   _trail: {fileID: 5394585943558244106}
+--- !u!114 &-4067594035918388000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8998346942342617491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fa8956a5ad9d124dbbc8ee69752333e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &555112757053783328
 AudioSource:
   m_ObjectHideFlags: 0

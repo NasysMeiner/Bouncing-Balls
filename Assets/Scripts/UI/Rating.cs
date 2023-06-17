@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -18,9 +17,9 @@ public class Rating : MonoBehaviour
         _scoreText.text = score.ToString();
         int value = 1;
 
-        foreach(var ratings in _ratings)
+        foreach (var ratings in _ratings)
         {
-            if(rank == value)
+            if (rank == value)
             {
                 _ratings[value - 1].enabled = true;
                 _rankText.gameObject.SetActive(false);

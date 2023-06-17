@@ -15,11 +15,11 @@ public class BufferTexts : MonoBehaviour
         CreateBufferTexts(_numberTexts);
     }
 
-    public TextBall TryGetText(int value = 0)
+    public TextBall TryGetText(string name)
     {
         List<TextBall> textList;
 
-        if(value > 0)
+        if(name == "Cristall")
             textList = _textListCristall;
         else
             textList = _textListMoney;

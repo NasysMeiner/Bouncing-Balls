@@ -12,6 +12,7 @@ public class AudioBar : MonoBehaviour
     private float _audio = 2.55f;
     private float _pastVolumeAudio = 0;
     private float _pastVolumeMusic = 0;
+    private float _maxValue = 255f;
 
     public float Audio => _audio;
 
@@ -34,7 +35,7 @@ public class AudioBar : MonoBehaviour
 
     public void OffAudio()
     {
-        if(_slider.value == 0)
+        if (_slider.value == 0)
         {
             _slider.value = _pastVolumeAudio;
         }
@@ -49,7 +50,7 @@ public class AudioBar : MonoBehaviour
 
     public void ChangeAudio()
     {
-        _audio = (255 * _slider.value) / 255f;
+        _audio = (_maxValue * _slider.value) / _maxValue;
 
         if (_audio == 0)
         {
@@ -67,7 +68,7 @@ public class AudioBar : MonoBehaviour
 
     public void ChangeVolume()
     {
-        _music.volume = (255 * _slider.value)/255;
+        _music.volume = (_maxValue * _slider.value) / _maxValue;
 
         if (_music.volume == 0)
         {

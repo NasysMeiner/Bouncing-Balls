@@ -4,45 +4,54 @@ using UnityEngine.Events;
 
 public class ShopDistributor : MonoBehaviour
 {
-    //[SerializeField] private float _buffsForceFactore = 2;
-    //[SerializeField] private int _upNumberBalls = 5;
-    [SerializeField] private Game _game;
     [SerializeField] private StockBlocks _stockBlocks;
-    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private PlayerInfo _playerInfo;
+    [SerializeField] private DeleteField _deleteField;
     [SerializeField] private Shop _shop;
 
     public event UnityAction<int, float> ChangeBuffs;
 
     public void Buff(int id, float price, ProductView productView, float value, float timeBuffs = 0)
     {
-        if (_game.Cristall >= price)
+        int premiumBlockId = 4;
+
+        if (_playerInfo.Cristall >= price)
         {
-            if(id == 4 && _stockBlocks.TryEmptyCell() == null)
+            if (id == premiumBlockId && _stockBlocks.TryEmptyCell() == null)
             {
                 return;
             }
 
-            if(timeBuffs> 0)
+            if (timeBuffs > 0)
             {
                 StartCoroutine(WaitTime(id, timeBuffs, productView.ProductButton, value));
             }
             else
             {
-                _playerData.levelUp += 1;
+                _playerInfo.LevelUpBascet();
                 ChangeBuffs?.Invoke(id, value);
                 productView.LevelUp();
             }
 
             productView.PriceUp();
-            _game.ChangeCristall(-price);
+            _playerInfo.ChangeCristall(-(int)price);
         }
     }
 
-    public void LoadUp(int value)
+    public void LoadUp(int value, bool isOpenBasket)
     {
+        if(isOpenBasket)
+        {
+            _deleteField.UnlockLoad();
+        }
+
+        int upgrateBasketId = 5;
+        int price = 0;
+        float changeUpgrate = 0.2f;
+
         for (int i = 0; i < value; i++)
         {
-            Buff(5, 0, _shop.Product, 0.2f);
+            Buff(upgrateBasketId, price, _shop.Product, changeUpgrate);
         }
     }
 

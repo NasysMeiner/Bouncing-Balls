@@ -14,9 +14,9 @@ public class Cells : MonoBehaviour
 
     public Cell SerachCell(Vector3 currentCell)
     {
-        foreach(Cell cell in _cells)
+        foreach (Cell cell in _cells)
         {
-            if(currentCell == cell.transform.position)
+            if (currentCell == cell.transform.position)
                 return cell;
         }
 

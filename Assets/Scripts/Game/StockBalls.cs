@@ -10,34 +10,36 @@ public class StockBalls : MonoBehaviour
     [SerializeField] private List<int> _startPriceLevel;
     [SerializeField] private List<int> _priceUpLevel;
     [SerializeField] private int _numberStartBalls;
-    [SerializeField] private Ball _prefabBalloon;
+    [SerializeField] private BallMover _prefabBalloon;
     [SerializeField] private Gun _gun;
     [SerializeField] private Camera _camera;
-    [SerializeField] private Constructor _shop;
+    [SerializeField] private ShopCreate _shop;
     [SerializeField] private Buffer _buffer;
-    [SerializeField] private Game _game;
+    [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private int _startPriceBall = 40;
     [SerializeField] private TextPriceBlock _priceBallText;
     [SerializeField] private AudioCounter _audioCounter;
     [SerializeField] private AudioBar _audioBar;
 
     private int _currentLevel;
-    private int _currantStartBalls = 0;
+    private int _currentBalls = 0;
     private int _bufferBalls = 4;
     private int _priceUp = 10;
     private int _currentPriceBall;
-    private List<Ball> _balls = new List<Ball>();
-    private List<Ball> _allBalls = new List<Ball>();
+    private List<BallMover> _balls = new List<BallMover>();
+    private List<BallMover> _allBalls = new List<BallMover>();
     private int _idNumber = 0;
+    private int _currentNumberBalls;
 
     public int CurrentPriceBall => _currentPriceBall;
 
     private void OnEnable()
     {
-        _game.DeleteAll += OnDeleteAll;
-        _game.GenerationStart += OnGenerationStart;
-        _game.LevelUp += OnLevelUp;
-        _game.SubLevelUp += OnSubLevel;
+        _levelLoader.DeleteAll += OnDeleteAll;
+        _levelLoader.GenerationStart += OnGenerationStart;
+        _levelLoader.LevelUp += OnLevelUp;
+        _levelLoader.SubLevelUp += OnSubLevel;
         _gun.StartGame += CreateBufferBalls;
         _gun.StartGame += CreateStartBalls;
         _gun.StartGame += OnGenerationStart;
@@ -45,10 +47,10 @@ public class StockBalls : MonoBehaviour
 
     private void OnDisable()
     {
-        _game.DeleteAll -= OnDeleteAll;
-        _game.GenerationStart -= OnGenerationStart;
-        _game.LevelUp -= OnLevelUp;
-        _game.SubLevelUp -= OnSubLevel;
+        _levelLoader.DeleteAll -= OnDeleteAll;
+        _levelLoader.GenerationStart -= OnGenerationStart;
+        _levelLoader.LevelUp -= OnLevelUp;
+        _levelLoader.SubLevelUp -= OnSubLevel;
         _gun.StartGame -= CreateBufferBalls;
         _gun.StartGame -= CreateStartBalls;
         _gun.StartGame -= OnGenerationStart;
@@ -56,30 +58,30 @@ public class StockBalls : MonoBehaviour
 
     private void Start()
     {
-        _numberStartBalls = 4;
-        _currentLevel = _game.Level;
+        _currentNumberBalls = _currentBalls;
+        _currentLevel = _playerInfo.Level;
         _currentPriceBall = _startPriceBall;
         _priceBallText.ChangeText(_currentPriceBall);
     }
 
     public void BuyBalls()
     {
-        if(_game.Money >= _currentPriceBall)
+        if(_playerInfo.Money >= _currentPriceBall)
         {
-            Ball newBalloon = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
-            newBalloon.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
-            _audioCounter.Subscribe(newBalloon);
+            BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
+            newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+            _audioCounter.Subscribe(newBall.BallAudio);
             ChangeNextId();
-            _balls.Add(newBalloon);
-            _allBalls.Add(newBalloon);
-            _game.ChangeMoney(-_currentPriceBall);
+            _balls.Add(newBall);
+            _allBalls.Add(newBall);
+            _playerInfo.ChangeMoney(-_currentPriceBall);
             _currentPriceBall += _priceUp;
             _priceBallText.ChangeText(_currentPriceBall);
-            _gun.AddBalls(newBalloon);
+            _gun.AddBalls(newBall);
         }
     }
 
-    public void ReplaceBall(Ball ball, Ball newBall)
+    public void ReplaceBall(BallMover ball, BallMover newBall)
     {
         for (int i = 0; i < _balls.Count; i++)
         {
@@ -94,21 +96,21 @@ public class StockBalls : MonoBehaviour
 
     private void OnLevelUp(int level)
     {
-        _currentPriceBall = _startPriceLevel[_game.Level - 1];
-        _priceUp = _priceUpLevel[_game.Level - 1];
+        _currentPriceBall = _startPriceLevel[_playerInfo.Level - 1];
+        _priceUp = _priceUpLevel[_playerInfo.Level - 1];
         _currentLevel = _minBallLevel[level - 1];
         _priceBallText.ChangeText(_currentPriceBall);
-        _currantStartBalls = 0;
+        _currentBalls = 0;
     }
 
-    private void OnSubLevel(int subLevel)
+    private void OnSubLevel()
     {
-        _currentLevel += subLevel;
+        _currentLevel++;
     }
 
     private void OnGenerationStart()
     {
-        _numberStartBalls = 4;
+        _currentNumberBalls = _numberStartBalls;
         ChangePriceBall();
         CreateStartBalls();
         CreateBufferBalls();
@@ -116,19 +118,19 @@ public class StockBalls : MonoBehaviour
 
     private void CreateBufferBalls()
     {
-        _currentLevel = _game.Level;
+        _currentLevel = _playerInfo.Level;
         ChangePriceBall();
 
         for (int i = 0; i < 5; i++)
         {
             for(int x = 0; x < _bufferBalls; x++)
             {
-                Ball newBalloon = _shop.CreateBalloon(_prefabBalloon, _buffer.transform, _currentLevel + i, true, out int profitability);
-                newBalloon.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
-                _audioCounter.Subscribe(newBalloon);
+                BallMover newBall = _shop.CreateBalloon(_prefabBalloon, _buffer.transform, _currentLevel + i, true, out int profitability);
+                newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+                _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();
-                _allBalls.Add(newBalloon);
-                _buffer.AddBufferBalls(newBalloon);
+                _allBalls.Add(newBall);
+                _buffer.AddBufferBalls(newBall);
             }
         }
     }
@@ -137,39 +139,39 @@ public class StockBalls : MonoBehaviour
     {
         ChangePriceBall();
 
-        if(_currantStartBalls < _numberStartBalls)
+        if(_currentBalls < _currentNumberBalls)
         {
-            for (int i = 0; i < _numberStartBalls; i++)
+            for (int i = 0; i < _currentNumberBalls; i++)
             {
-                Ball newBalloon = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
-                newBalloon.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
-                _audioCounter.Subscribe(newBalloon);
+                BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
+                newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+                _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();
-                _currantStartBalls++;
-                _allBalls.Add(newBalloon);
-                _balls.Add(newBalloon);
-                _gun.AddBalls(newBalloon);
+                _currentBalls++;
+                _allBalls.Add(newBall);
+                _balls.Add(newBall);
+                _gun.AddBalls(newBall);
             }
         }
     }
 
     private void ChangePriceBall()
     {
-        _currentLevel = _game.Level;
-        _currentPriceBall = _startPriceLevel[_game.Level - 1];
-        _priceUp = _priceUpLevel[_game.Level - 1];
+        _currentLevel = _playerInfo.Level;
+        _currentPriceBall = _startPriceLevel[_playerInfo.Level - 1];
+        _priceUp = _priceUpLevel[_playerInfo.Level - 1];
         _priceBallText.ChangeText(_currentPriceBall);
     }
 
     private void OnDeleteAll()
     {
-        foreach(Ball ball in _allBalls)
+        foreach(BallMover ball in _allBalls)
         {
             if(ball != null)
             {
-                _audioCounter.Unsubscribe(ball);
-                ball.Unsubscribe();
-                ball.StopPlay();
+                _audioCounter.Unsubscribe(ball.BallAudio);
+                ball.BallAudio.Unsubscribe();
+                ball.BallAudio.StopAudioPlay();
                 Destroy(ball.gameObject);
             }
         }

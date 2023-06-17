@@ -12,8 +12,9 @@ public class ProductButton : MonoBehaviour
     private ProductView _productView;
     private bool _isPlay = false;
     private bool _buffsAnim = false;
-    private bool _upAnim = false;
     private float _timeBuffs;
+    private const string _textStartAnimation = "Play";
+    private const string _textExitAnimation = "End";
 
     public bool IsBuff => _isBuff;
 
@@ -23,7 +24,7 @@ public class ProductButton : MonoBehaviour
         {
             if (_isPlay == false)
             {
-                _animator.SetTrigger("Play");
+                _animator.SetTrigger(_textStartAnimation);
                 _button.interactable = false;
                 StartCoroutine(AnimationTimeBuff());
                 _isBuff = true;
@@ -31,7 +32,7 @@ public class ProductButton : MonoBehaviour
             }
             else
             {
-                _animator.SetTrigger("End");
+                _animator.SetTrigger(_textExitAnimation);
                 _isBuff = false;
                 _isPlay = false;
                 _productView.EndAnimation();
@@ -39,21 +40,23 @@ public class ProductButton : MonoBehaviour
         }
     }
 
-    public void InitButton(bool buff, bool up, ProductView productView, float timeBuffs)
+    public void InitButton(bool buff, ProductView productView, float timeBuffs)
     {
         _buffsAnim = buff;
-        _upAnim = up;
         _productView = productView;
         _timeBuffs = timeBuffs;
     }
 
     private IEnumerator AnimationTimeBuff()
     {
-        for(int i = (int)_timeBuffs * 2 - 1; i >= 0; i--)
-        {
-            _image.fillAmount = i / (_timeBuffs * 2);
+        float waitingTime = 1f;
 
-            yield return new WaitForSeconds(0.5f);
+        for (int i = (int)_timeBuffs; i > 0; i--)
+        {
+            yield return new WaitForSeconds(waitingTime);
+
+            _image.fillAmount = i / (_timeBuffs);
+
         }
 
         _image.fillAmount = 1;

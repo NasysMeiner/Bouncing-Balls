@@ -1374,7 +1374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!222 &115336170
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1777,13 +1777,16 @@ MonoBehaviour:
   _totalNumberCells: {fileID: 1145765349}
   _shop: {fileID: 1907012249}
   _camera: {fileID: 963194227}
-  _bufferTexts: {fileID: 417618447}
-  _game: {fileID: 215014797}
+  _textBlock: {fileID: 417618448}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _deleateField: {fileID: 2080098992}
   _items: {fileID: 2013250355}
   _shopDistributor: {fileID: 2013250356}
   _currentPriceStockUp: 15
   _spawn: {fileID: 161060661}
+  _scoreBar: {fileID: 1475651108}
+  _screenPosition: {fileID: 963194229}
 --- !u!4 &161060663
 Transform:
   m_ObjectHideFlags: 0
@@ -2041,6 +2044,7 @@ GameObject:
   - component: {fileID: 215014799}
   - component: {fileID: 215014800}
   - component: {fileID: 215014801}
+  - component: {fileID: 215014802}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -2057,70 +2061,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 215014796}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd2e9b218d2cd8347b3fb8b1e09cbf9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 739b350dd033e944892d321bf951eb99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isUnity: 0
-  _progressBar: {fileID: 1956958657}
-  _levelText: {fileID: 265803615}
-  _moneyBar: {fileID: 6606992629676105461}
-  _cristallBar: {fileID: 6606992631380301628}
+  isUnity: 0
   _level: 1
   _maxLevel: 5
-  _levelScore: 1000
-  _nextLevelScoreUp: 6000
-  _coefficientMaxScore: 1.5
-  _coefficientMaxScoreUp: 1.2
-  _coefficientCell: 0.3
-  _shopDistributor: {fileID: 2013250356}
   _endLevelPanel: {fileID: 621930163}
   _subLevelAnimator: {fileID: 1475651106}
   _startGamePanel: {fileID: 1292015549}
   _endGamePanel: {fileID: 705946025}
-  _cameraPositions:
-  - {x: -1.5, y: 2.25, z: -6.9}
-  - {x: -1.5, y: 2.25, z: -11.46}
-  _camera: {fileID: 963194227}
-  _playFieldPosition:
-  - {x: -2.72, y: 1, z: 0.12}
-  - {x: -2.41, y: 1.42, z: 0.12}
-  - {x: -2.72, y: 1.42, z: 0.12}
-  - {x: -2.72, y: 1.42, z: 0.12}
-  - {x: -2.72, y: 1.42, z: 0.12}
-  - {x: -3.01, y: 1.42, z: 0.12}
-  _playField: {fileID: 611521571}
-  _stockBlocksPosition:
-  - {x: -4.13, y: 1.21, z: -0.051}
-  - {x: -2.412, y: 0.213, z: -0.051}
-  _stockBlocks: {fileID: 161060662}
-  _deleteFieldPosition:
-  - {x: -3.839, y: 4.1, z: 0.48480886}
-  - {x: -2.564, y: 5.519, z: 0.48786202}
-  - {x: -3.839, y: 4.1, z: 1}
-  - {x: -2.564, y: 5.519, z: 1}
   _deleateField: {fileID: 2080098992}
   _nameText: {fileID: 1504993158}
   _imageIcon: {fileID: 1321769084}
   _icons: {fileID: 787013273}
-  _gemsRewarded: 0
-  _isAvtorizeOff: {fileID: 2064704736}
-  _isOn: {fileID: 1633460304}
   _startIcon: {fileID: 1677056223}
   _startName: {fileID: 1504977902}
-  _playerData: {fileID: 215014801}
   _guidePanel: {fileID: 1487412681}
   _BG: {fileID: 416289425}
   _advertisement: {fileID: 215014799}
-  playerInfo:
-    score: 0
-    level: 0
-    name: 
-    cristall: 0
-    isUnlockBascket: 0
-    levelUp: 0
-    icon: 0
-    money: 0
-    isShowGuide: 0
+  _scoreBar: {fileID: 1475651108}
+  _textScoreBar: {fileID: 1475651107}
+  _playerInfo: {fileID: 215014802}
 --- !u!4 &215014798
 Transform:
   m_ObjectHideFlags: 0
@@ -2150,10 +2112,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isAvtorizeOff: {fileID: 2064704736}
   _isOn: {fileID: 1633460304}
-  _startIcon: {fileID: 1677056223}
-  _startName: {fileID: 1504977902}
   _button: {fileID: 135109284034106280}
-  _game: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
+  _playerData: {fileID: 215014801}
 --- !u!114 &215014800
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2166,7 +2127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9afe736a46029e4092acbfe554628fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _PlayerInfo: {fileID: 215014802}
   _geamsCount: 20
 --- !u!114 &215014801
 MonoBehaviour:
@@ -2180,17 +2141,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60d2fd0039255014eb9d2abc7349d8eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _shopDistributor: {fileID: 2013250356}
   _deleateField: {fileID: 2080098992}
   score: 0
   level: 1
   cristall: 0
-  isUnlockBascket: 0
+  isUnlockBasket: 0
   levelUp: 0
   icon: 0
   money: 0
   isShowGuide: 0
+--- !u!114 &215014802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 215014796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c461a31499e5d04cb7a6098271056ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelLoader: {fileID: 215014797}
+  _scoreBar: {fileID: 1475651108}
+  _leaderboard: {fileID: 787013275}
+  _playerData: {fileID: 215014801}
+  _moneyBar: {fileID: 6606992629676105461}
+  _cristallBar: {fileID: 6606992631380301628}
+  _shopDistributor: {fileID: 2013250356}
+  _completeLevelReward: 20
 --- !u!1 &223604370
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,7 +2511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1354, y: -368}
+  m_AnchoredPosition: {x: -2489, y: -368}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &245570692
@@ -2600,7 +2582,8 @@ MonoBehaviour:
   _camera: {fileID: 963194227}
   _shop: {fileID: 1907012249}
   _buffer: {fileID: 1566641049}
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _startPriceBall: 40
   _priceBallText: {fileID: 1865132891}
   _audioCounter: {fileID: 771121498}
@@ -4333,7 +4316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!1 &417618445
 GameObject:
   m_ObjectHideFlags: 0
@@ -4344,6 +4327,7 @@ GameObject:
   m_Component:
   - component: {fileID: 417618446}
   - component: {fileID: 417618447}
+  - component: {fileID: 417618448}
   m_Layer: 5
   m_Name: PullTexts
   m_TagString: Untagged
@@ -4386,6 +4370,19 @@ MonoBehaviour:
   _numberTexts: 30
   _prefabTextMoney: {fileID: 4902143189759857809, guid: d0ac1a017f6262d44b985e46b476b946, type: 3}
   _prefabTextCristall: {fileID: 7442113604105127802, guid: 3d713be018d8d01448fbbc101a24e66f, type: 3}
+--- !u!114 &417618448
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417618445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507159f92639a3e478276c8cf507c359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bufferText: {fileID: 417618447}
 --- !u!1 &428630000
 GameObject:
   m_ObjectHideFlags: 0
@@ -6783,10 +6780,11 @@ MonoBehaviour:
   - {x: 6, y: 6}
   - {x: 7, y: 7}
   _stepCell: 0.6
-  _prefabPoint: {fileID: 9069846898641487194, guid: 2a6b15f1acb125540814464193866bf8, type: 3}
   _gun: {fileID: 8736996395737614354}
   _pointCenterField: {x: 0, y: 0, z: 0}
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
+  _screenPosition: {fileID: 963194229}
 --- !u!4 &611521572
 Transform:
   m_ObjectHideFlags: 0
@@ -6910,7 +6908,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033194c9be6b29344ad4d59c84bca7b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _totalScoreText: {fileID: 1784726317}
   _score: {fileID: 2071821717}
   _bounces: {fileID: 724069185}
@@ -8163,7 +8162,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 033194c9be6b29344ad4d59c84bca7b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _totalScoreText: {fileID: 88638569}
   _score: {fileID: 661973767}
   _bounces: {fileID: 1787815981}
@@ -8393,7 +8393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.069197774}
   m_AnchorMax: {x: 0.5, y: 0.069197774}
-  m_AnchoredPosition: {x: 0.00004673, y: -1.9681091}
+  m_AnchoredPosition: {x: 0.00004673, y: -1.9680786}
   m_SizeDelta: {x: 85.8716, y: 82.6615}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &710952870
@@ -8442,7 +8442,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 801487890}
         m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: PlayAnimationLiderboard
+        m_MethodName: PlayAnimationLeaderboard
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8550,7 +8550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!1 &718266891
 GameObject:
   m_ObjectHideFlags: 0
@@ -9426,7 +9426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playMusic: 4
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
 --- !u!1 &774194278
 GameObject:
   m_ObjectHideFlags: 0
@@ -9710,7 +9710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startIcon: {fileID: 1079279898}
   _game: {fileID: 215014797}
-  _playerData: {fileID: 215014801}
+  _playerInfo: {fileID: 215014802}
   _icons:
   - {fileID: 21300000, guid: aa2b4fdd630c64600957a89ad24467ad, type: 3}
   - {fileID: 21300000, guid: 8155a68725ff84b949853519dabf2513, type: 3}
@@ -9745,7 +9745,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _transform: {fileID: 1732696602}
-  _game: {fileID: 215014797}
   _ratingPlayer: {fileID: 648357946528082830}
   _prefabPlayers: {fileID: 6970428667421649787, guid: 473a3addbf6cec14db2593863df5445f, type: 3}
   _leaderboard: {fileID: 801487892}
@@ -10023,8 +10022,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -494}
-  m_SizeDelta: {x: 837.0305, y: 869.7753}
+  m_AnchoredPosition: {x: 0, y: -992}
+  m_SizeDelta: {x: 837.0305, y: 869.7754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &801487887
 MonoBehaviour:
@@ -10077,7 +10076,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 801487891}
-  _panel: {fileID: 416289425}
+  _leaderboardPanel: {fileID: 416289425}
 --- !u!95 &801487891
 Animator:
   serializedVersion: 4
@@ -10871,8 +10870,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 111111
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
+  m_sharedMaterial: {fileID: 942589445191879500, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -11382,7 +11381,8 @@ MonoBehaviour:
   _stockBalls: {fileID: 245570697}
   _button: {fileID: 884154140}
   _stockBlocks: {fileID: 161060662}
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _isBallButton: 0
 --- !u!1 &910248846
 GameObject:
@@ -11737,6 +11737,7 @@ GameObject:
   - component: {fileID: 963194228}
   - component: {fileID: 963194227}
   - component: {fileID: 963194226}
+  - component: {fileID: 963194229}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -11810,6 +11811,41 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &963194229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963194225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3d4938cf73701c4abfdab481ac72b4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerInfo: {fileID: 215014802}
+  _cameraPositions:
+  - {x: -1.5, y: 2.25, z: -6.9}
+  - {x: -1.5, y: 2.25, z: -11.46}
+  _camera: {fileID: 963194227}
+  _playFieldPosition:
+  - {x: -2.72, y: 1, z: 0.12}
+  - {x: -2.41, y: 1.42, z: 0.12}
+  - {x: -2.72, y: 1.42, z: 0.12}
+  - {x: -2.72, y: 1.42, z: 0.12}
+  - {x: -2.72, y: 1.42, z: 0.12}
+  - {x: -3.01, y: 1.42, z: 0.12}
+  _playField: {fileID: 611521571}
+  _stockBlocksPosition:
+  - {x: -4.13, y: 1.21, z: -0.051}
+  - {x: -2.412, y: 0.213, z: -0.051}
+  _stockBlocks: {fileID: 161060662}
+  _deleteFieldPosition:
+  - {x: -3.839, y: 4.1, z: 0.48480886}
+  - {x: -2.564, y: 5.519, z: 0.48786202}
+  - {x: -3.839, y: 4.1, z: 1}
+  - {x: -2.564, y: 5.519, z: 1}
+  _deleateField: {fileID: 2080098992}
 --- !u!1 &975356650
 GameObject:
   m_ObjectHideFlags: 0
@@ -11983,7 +12019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!1 &1048210529
 GameObject:
   m_ObjectHideFlags: 0
@@ -12442,7 +12478,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!114 &1077079551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12517,9 +12553,9 @@ RectTransform:
   m_Father: {fileID: 2117176301}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 67.511505, y: -59.05}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 97.023, y: 100.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1079279896
@@ -15437,7 +15473,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!1 &1259287328
 GameObject:
   m_ObjectHideFlags: 0
@@ -15565,8 +15601,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 165.40253, y: -1.3700562}
-  m_SizeDelta: {x: 147.9703, y: 52.7333}
+  m_AnchoredPosition: {x: 165.40253, y: -2.4593}
+  m_SizeDelta: {x: 147.9703, y: 50.5553}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1260500488
 MonoBehaviour:
@@ -15590,8 +15626,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 11111
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
+  m_sharedMaterial: {fileID: 942589445191879500, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -15615,7 +15651,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 47.2
+  m_fontSize: 50.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -15992,8 +16028,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0412\u0440\u0435\u043C\u044F:"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
+  m_sharedMaterial: {fileID: 942589445191879500, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -16380,9 +16416,9 @@ RectTransform:
   m_Father: {fileID: 2117176301}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 396.344, y: -60.255}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 95.488, y: 102.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1325648548
@@ -17175,7 +17211,8 @@ MonoBehaviour:
   _stockBalls: {fileID: 245570697}
   _button: {fileID: 1396016478}
   _stockBlocks: {fileID: 161060662}
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _isBallButton: 1
 --- !u!1 &1398162818
 GameObject:
@@ -17719,6 +17756,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1475651105}
   - component: {fileID: 1475651106}
+  - component: {fileID: 1475651108}
+  - component: {fileID: 1475651107}
   m_Layer: 5
   m_Name: ProgressBar0
   m_TagString: Untagged
@@ -17767,6 +17806,37 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1475651107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475651104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4561fd7bf0eda9943844ecfb9599602f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textSubLevel: {fileID: 265803615}
+--- !u!114 &1475651108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475651104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a78e7ab05fd793458fbe7a994465dfc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _levelScoreMax: 111
+  _nextLevelScoreUp: 111
+  _coefficientMaxScore: 1
+  _coefficientMaxScoreUp: 1
+  _levelLoader: {fileID: 215014797}
+  _image: {fileID: 1956958655}
 --- !u!1 &1486016721
 GameObject:
   m_ObjectHideFlags: 0
@@ -17948,7 +18018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!222 &1487412684
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -19864,7 +19934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animator: {fileID: 0}
-  _panel: {fileID: 0}
+  _leaderboardPanel: {fileID: 0}
 --- !u!1 &1624755709
 GameObject:
   m_ObjectHideFlags: 0
@@ -21991,9 +22061,9 @@ RectTransform:
   m_Father: {fileID: 2117176301}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 177.4675, y: -59.72}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 94.489, y: 101.44}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770155150
@@ -23052,8 +23122,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u0412\u0440\u0435\u043C\u044F:"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
+  m_sharedMaterial: {fileID: 942589445191879500, guid: 02fea1fb776e0ad43a5e684a1ab0ce9e, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -23444,9 +23514,9 @@ RectTransform:
   m_Father: {fileID: 2117176301}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 286.656, y: -60.255}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 95.488, y: 102.51}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1857690085
@@ -25778,7 +25848,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81236a7686765894d86da6b4dfdb031f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _playerInfo: {fileID: 215014802}
   _products:
   - _place: {fileID: 257559563}
     _icon1: {fileID: 21300000, guid: 640360590a21d3d45b96b86d73bf0736, type: 3}
@@ -25791,7 +25861,6 @@ MonoBehaviour:
     _value: 2
     _maxLevel: 2
     _buffsAnim: 1
-    _upAnim: 0
   - _place: {fileID: 257559563}
     _icon1: {fileID: 21300000, guid: 64c1e3786a74dfa4d976df563a0cb73d, type: 3}
     _icon2: {fileID: 21300000, guid: 3cee4d7f120907c4cabb4fc57fc58eb4, type: 3}
@@ -25803,7 +25872,6 @@ MonoBehaviour:
     _value: 2
     _maxLevel: 2
     _buffsAnim: 1
-    _upAnim: 0
   - _place: {fileID: 257559563}
     _icon1: {fileID: 21300000, guid: 6caa2f3dd4891474e966f1fe87452753, type: 3}
     _icon2: {fileID: 21300000, guid: 3cee4d7f120907c4cabb4fc57fc58eb4, type: 3}
@@ -25815,7 +25883,6 @@ MonoBehaviour:
     _value: 50
     _maxLevel: 2
     _buffsAnim: 1
-    _upAnim: 0
   - _place: {fileID: 257559563}
     _icon1: {fileID: 21300000, guid: e0038817be40b2241a9f7076403bb780, type: 3}
     _icon2: {fileID: 21300000, guid: 3cee4d7f120907c4cabb4fc57fc58eb4, type: 3}
@@ -25827,7 +25894,6 @@ MonoBehaviour:
     _value: 1
     _maxLevel: 2
     _buffsAnim: 1
-    _upAnim: 0
   - _place: {fileID: 2001845071}
     _icon1: {fileID: 21300000, guid: 81a7bf4db4f8474469d26e0805f0ec55, type: 3}
     _icon2: {fileID: 21300000, guid: 3cee4d7f120907c4cabb4fc57fc58eb4, type: 3}
@@ -25839,7 +25905,6 @@ MonoBehaviour:
     _value: 0.2
     _maxLevel: 4
     _buffsAnim: 0
-    _upAnim: 1
   _tamplate: {fileID: -9121138919511727975, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
   _shopDistributor: {fileID: 2013250356}
 --- !u!114 &2013250356
@@ -25854,9 +25919,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af657acaaaa65b84eaffaab5cbd7a1cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
   _stockBlocks: {fileID: 161060662}
-  _playerData: {fileID: 215014801}
+  _playerInfo: {fileID: 215014802}
+  _deleteField: {fileID: 2080098992}
   _shop: {fileID: 2013250355}
 --- !u!1 &2013609872
 GameObject:
@@ -27437,7 +27502,6 @@ GameObject:
   - component: {fileID: 2080098994}
   - component: {fileID: 2080098993}
   - component: {fileID: 2080098992}
-  - component: {fileID: 2080098997}
   m_Layer: 0
   m_Name: DeleteField
   m_TagString: Untagged
@@ -27457,10 +27521,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2516f33ab31bfd47ba208b9c7d8a7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _coefficientCell: 0.5
   _stockBlocks: {fileID: 161060662}
   _buttonAnimation: {fileID: 770555293}
-  _game: {fileID: 215014797}
-  _playerData: {fileID: 215014801}
+  _playerInfo: {fileID: 215014802}
+  _shopDistributor: {fileID: 2013250356}
 --- !u!65 &2080098993
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27540,26 +27605,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &2080098997
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2080098991}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5a192057f3367c24485f3b4a3603017b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2094067270
 GameObject:
   m_ObjectHideFlags: 0
@@ -42608,7 +42653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 396166af34238fe4cbbe4006f0d20e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
   _animator: {fileID: 1993294236}
   _gameObject: {fileID: 1993294234}
   _timeRepeat: 20
@@ -43209,7 +43254,8 @@ MonoBehaviour:
   _stockBalls: {fileID: 245570697}
   _buffer: {fileID: 1566641049}
   _forceFactor: 1
-  _game: {fileID: 215014797}
+  _levelLoader: {fileID: 215014797}
+  _screenPosition: {fileID: 963194229}
 --- !u!65 &8736996395737614355
 BoxCollider:
   m_ObjectHideFlags: 0

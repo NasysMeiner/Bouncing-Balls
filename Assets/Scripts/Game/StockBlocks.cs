@@ -16,15 +16,18 @@ public class StockBlocks : MonoBehaviour
     [SerializeField] private TextPriceBlock _priceBlockText;
     [SerializeField] private Cell _prefabCell;
     [SerializeField] private Cells _totalNumberCells;
-    [SerializeField] private Constructor _shop;
+    [SerializeField] private ShopCreate _shop;
     [SerializeField] private Camera _camera;
-    [SerializeField] private BufferTexts _bufferTexts;
-    [SerializeField] private Game _game;
-    [SerializeField] private DeleateField _deleateField;
+    [SerializeField] private TextBlock _textBlock;
+    [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] private PlayerInfo _playerInfo;
+    [SerializeField] private DeleteField _deleateField;
     [SerializeField] private Shop _items;
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private float _currentPriceStockUp = 15;
     [SerializeField] private GameObject _spawn;
+    [SerializeField] private ScoreBar _scoreBar;
+    [SerializeField] private ScreenPosition _screenPosition;
     
     private float _distanceBetweenBlocks = 0.6f;
     private List<Block> _blocks = new List<Block>();
@@ -35,8 +38,11 @@ public class StockBlocks : MonoBehaviour
     private bool _purchaseOpportunity;
     private int _currentLevel;
     private int _maxLevelPremium = 13;
+    private int _maxNumberBlocks = 8;
+    private const int _premiumBlockId = 4;
     private bool _isPremium = false;
     private Block _timeBlock;
+    private const int _premiumCristallChance = 30;
 
     public float CurrentPrice => _currentPriceStockUp;
     public List<Block> Blocks => _blocks;
@@ -45,24 +51,24 @@ public class StockBlocks : MonoBehaviour
     private void OnDisable()
     {
         _shopDistributor.ChangeBuffs -= CreateTimeBlock;
-        _game.GenerationStart -= OnGenerationStart;
-        _game.LevelUp -= OnLevelUp;
-        _game.StartGame -= OnStartGame;
-        _game.SubLevelUp -= OnSubLevelUp;
+        _levelLoader.GenerationStart -= OnGenerationStart;
+        _levelLoader.LevelUp -= OnLevelUp;
+        _levelLoader.StartGame -= OnStartGame;
+        _levelLoader.SubLevelUp -= OnSubLevelUp;
     }
 
     private void Start()
     {
-        _currentLevel = _game.Level;
+        _currentLevel = _playerInfo.Level;
         _transform = GetComponent<Transform>();
         _currentPriceBlock = _startPriceBlock;
         _priceBlockText.ChangeText(_currentPriceBlock);
 
         _shopDistributor.ChangeBuffs += CreateTimeBlock;
-        _game.GenerationStart += OnGenerationStart;
-        _game.LevelUp += OnLevelUp;
-        _game.StartGame += OnStartGame;
-        _game.SubLevelUp += OnSubLevelUp;
+        _levelLoader.GenerationStart += OnGenerationStart;
+        _levelLoader.LevelUp += OnLevelUp;
+        _levelLoader.StartGame += OnStartGame;
+        _levelLoader.SubLevelUp += OnSubLevelUp;
     }
 
     public void DeleteBlock(Block block)
@@ -100,7 +106,7 @@ public class StockBlocks : MonoBehaviour
     {
         Cell emptyCell = TryEmptyCell();
         int level = _currentLevel;
-        float value = _game.Money;
+        float value = _playerInfo.Money;
         float price = _currentPriceBlock;
         int cristallChance = 0;
         bool isPremium = false;
@@ -111,15 +117,15 @@ public class StockBlocks : MonoBehaviour
         if (_isPremium)
         {
             level = _maxLevelPremium;
-            value = _game.Cristall;
+            value = _playerInfo.Cristall;
             price = 0;
-            cristallChance = 30;
+            cristallChance = _premiumCristallChance;
             isPremium = true;
             _isPremium = false;
         }
-        else if(_game.Money >= price)
+        else if(_playerInfo.Money >= price)
         {
-            _game.ChangeMoney(-_currentPriceBlock);
+            _playerInfo.ChangeMoney(-_currentPriceBlock);
             _currentPriceBlock += _priceUp;
             _priceBlockText.ChangeText(_currentPriceBlock);
         }
@@ -138,15 +144,15 @@ public class StockBlocks : MonoBehaviour
 
     private void OnStartGame()
     {
-        _currentLevel = _game.Level;
+        _currentLevel = _playerInfo.Level;
         ChangePriceBlock();
         InitCells();
     }
 
     private void ChangePriceBlock()
     {
-        _currentPriceBlock = _startPriceLevel[_game.Level - 1];
-        _priceUp = _priceUpLevel[_game.Level - 1];
+        _currentPriceBlock = _startPriceLevel[_playerInfo.Level - 1];
+        _priceUp = _priceUpLevel[_playerInfo.Level - 1];
         _priceBlockText.ChangeText(_currentPriceBlock);
     }
 
@@ -156,15 +162,15 @@ public class StockBlocks : MonoBehaviour
         _currentLevel = _minBlocksLevel[level - 1];
     }
 
-    private void OnSubLevelUp(int subLevel)
+    private void OnSubLevelUp()
     {
-        _currentLevel += subLevel;
+        _currentLevel++;
     }
 
     private Block CreateBlock(Cell emptyCell, Vector3 positionCell, int level, int cristallChance = 0, bool isPremium = false)
     {
         Block newBlock = _shop.CreateBlocks(_prefabsBlock[UnityEngine.Random.Range(0, _prefabsBlock.Count)], level, out int factor);
-        newBlock.Init(factor, positionCell, emptyCell, _totalNumberCells, _colorsLevel[factor - 1], _camera, _bufferTexts, _game, _deleateField, this, _items, _currentPriceBlock, _shopDistributor, isPremium, cristallChance);
+        newBlock.Init(factor, positionCell, emptyCell, _totalNumberCells, _colorsLevel[factor - 1], _camera, _levelLoader, _deleateField, this, _items, _currentPriceBlock, _shopDistributor, _textBlock, _scoreBar, _playerInfo, _screenPosition, isPremium, cristallChance);
 
         return newBlock;
     }
@@ -207,11 +213,11 @@ public class StockBlocks : MonoBehaviour
     private void OnGenerationStart()
     {
         int startBlock = _startBlock + 1;
-        _currentLevel = _game.Level;
+        _currentLevel = _playerInfo.Level;
 
-        if(startBlock > 8)
+        if(startBlock > _maxNumberBlocks)
         {
-            startBlock = 8;
+            startBlock = _maxNumberBlocks;
         }
 
         for (int i = 0; i < startBlock; i++)
@@ -232,12 +238,12 @@ public class StockBlocks : MonoBehaviour
 
     private void CreateTimeBlock(int id, float value)
     {
-        if(id == 4 && value > 0)
+        if(id == _premiumBlockId && value > 0)
         {
             _isPremium= true;
             BuyBlock(value);
         }
-        else if(id == 4)
+        else if(id == _premiumBlockId)
         {
             _timeBlock.DeleteBlock();
         }

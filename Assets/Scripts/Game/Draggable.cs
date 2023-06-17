@@ -10,7 +10,7 @@ public class Draggable : MonoBehaviour
     [SerializeField] private float _radiusCell;
     [SerializeField] private float _radiuseDelete;
 
-    private DeleateField _deleateField;
+    private DeleteField _deleateField;
     private float _startPositionZ;
     private float _screenCameraDistance;
     private Block _block;
@@ -18,6 +18,8 @@ public class Draggable : MonoBehaviour
     private Color _startColor;
     private Vector3 _position;
     private Renderer _renderer;
+    private float _horizontalPositionCamera = 6.2f;
+    private float _verticalPositionCamera = 10.6f;
 
     private void Start()
     {
@@ -26,20 +28,20 @@ public class Draggable : MonoBehaviour
         _deleateField = _block.Delete;
         _newColor = _renderer.material.color;
         _newColor.a = 0.5f;
-        _screenCameraDistance = Camera.main.nearClipPlane + 10.6f;
+        _screenCameraDistance = Camera.main.nearClipPlane + _verticalPositionCamera;
         _startColor = _renderer.material.color;
         _startPositionZ = transform.position.z;
     }
 
     private void OnMouseDown()
     {
-        if(_block.Game.Camera.transform.position.z < -10)
+        if(_block.ScreenPosition.Camera.transform.position.z < -_verticalPositionCamera)
         {
-            _screenCameraDistance = Camera.main.nearClipPlane + 10.6f;
+            _screenCameraDistance = Camera.main.nearClipPlane + _verticalPositionCamera;
         }
         else
         {
-            _screenCameraDistance = Camera.main.nearClipPlane + 6.2f;
+            _screenCameraDistance = Camera.main.nearClipPlane + _horizontalPositionCamera;
         }
 
         _cells = _block.Cells;

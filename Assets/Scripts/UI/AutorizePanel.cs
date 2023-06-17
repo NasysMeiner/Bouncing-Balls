@@ -1,16 +1,15 @@
 using Agava.YandexGames;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AutorizePanel : MonoBehaviour
 {
     [SerializeField] private GameObject _autorizePanel;
     [SerializeField] private LeaderboardView _leaderboardView;
-    [SerializeField] private Liderboard _liderboard;
+    [SerializeField] private Leaderboard _liderboard;
     [SerializeField] private Panel _panel;
     [SerializeField] private Panel _BG;
+
+    private const string _textOpenLeaderbord = "Open";
 
     public void Authorized()
     {
@@ -28,7 +27,7 @@ public class AutorizePanel : MonoBehaviour
 
     public void Unauthorized()
     {
-        if(PlayerAccount.IsAuthorized == false)
+        if (PlayerAccount.IsAuthorized == false)
         {
             Time.timeScale = 0;
             _autorizePanel.gameObject.SetActive(true);
@@ -37,7 +36,7 @@ public class AutorizePanel : MonoBehaviour
         else
         {
             PlayerAccount.RequestPersonalProfileDataPermission();
-            _panel.PlayAnimationLiderboard("Open");
+            _panel.PlayAnimationLeaderboard(_textOpenLeaderbord);
             _liderboard.CheckReating();
         }
     }

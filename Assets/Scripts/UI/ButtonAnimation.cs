@@ -11,6 +11,7 @@ public class ButtonAnimation : MonoBehaviour
 
     private Animator _animator;
     private Button _button;
+    private const string _textStartAnimation = "Play";
 
     public float Price => _price;
 
@@ -28,7 +29,7 @@ public class ButtonAnimation : MonoBehaviour
 
     public void PlayAnimation()
     {
-        _animator.SetTrigger("Play");
+        _animator.SetTrigger(_textStartAnimation);
     }
 
     public void ChangeActive(bool isState)

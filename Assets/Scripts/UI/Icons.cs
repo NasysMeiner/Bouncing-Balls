@@ -4,8 +4,8 @@ using UnityEngine;
 public class Icons : MonoBehaviour
 {
     [SerializeField] private Icon _startIcon;
-    [SerializeField] private Game _game;
-    [SerializeField] private PlayerData _playerData;
+    [SerializeField] private LevelLoader _game;
+    [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private List<Sprite> _icons;
 
     private Icon _currentIcon;
@@ -27,7 +27,7 @@ public class Icons : MonoBehaviour
         for(int i = 0; i < _icons.Count; i++)
         {
             if (_icons[i] == icon.Image.sprite)
-                _playerData.icon = i;
+                _playerInfo.SetIcon(i);
         }
 
         _currentIcon = icon;

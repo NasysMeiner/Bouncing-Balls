@@ -3,16 +3,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Liderboard : MonoBehaviour
+public class Leaderboard : MonoBehaviour
 {
     [SerializeField] private Transform _transform;
-    [SerializeField] private Game _game;
     [SerializeField] private Rating _ratingPlayer;
     [SerializeField] private PrefabPlayers _prefabPlayers;
     [SerializeField] private LeaderboardView _leaderboard;
 
     private List<PrefabPlayers> _ratingListPlayers = new List<PrefabPlayers>();
     private List<PlayerInfoLeaderboard> _playerInfo = new List<PlayerInfoLeaderboard>();
+    private string _nameLeaderboard = "NewLeaders";
 
     public void CheckReating()
     {
@@ -25,13 +25,9 @@ public class Liderboard : MonoBehaviour
 
             _playerInfo.Clear();
 
-            Leaderboard.GetPlayerEntry("NewLeaders", (result) =>
+            Agava.YandexGames.Leaderboard.GetPlayerEntry(_nameLeaderboard, (result) =>
             {
-                if (result == null)
-                {
-                    Console.WriteLine("Player is not present in the leaderboard.");
-                }
-                else
+                if (result != null)
                 {
                     string name = result.player.publicName;
 
@@ -42,7 +38,7 @@ public class Liderboard : MonoBehaviour
                 }
             });
 
-            Leaderboard.GetEntries("NewLeaders", (result) =>
+            Agava.YandexGames.Leaderboard.GetEntries(_nameLeaderboard, (result) =>
             {
                 int leanguageLeadeboard = result.entries.Length;
                 leanguageLeadeboard = Math.Clamp(leanguageLeadeboard, 1, 10);
@@ -62,7 +58,21 @@ public class Liderboard : MonoBehaviour
                 _leaderboard.ViewLeaderbordContent(_playerInfo);
             });
         }
-        
+
+    }
+
+    public void OnGetLeaderboardEntries(int value)
+    {
+        if (PlayerAccount.IsAuthorized)
+        {
+            Agava.YandexGames.Leaderboard.GetPlayerEntry(_nameLeaderboard, (result) =>
+            {
+                if (result.score < value)
+                {
+                    Agava.YandexGames.Leaderboard.SetScore(_nameLeaderboard, value);
+                }
+            });
+        }
     }
 }
 

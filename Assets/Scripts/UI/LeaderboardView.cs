@@ -1,8 +1,4 @@
-using Agava.YandexGames;
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LeaderboardView : MonoBehaviour
@@ -19,7 +15,7 @@ public class LeaderboardView : MonoBehaviour
         {
             PrefabPlayers newPlayer = Instantiate(_prefabPlayers, _spawnpoint);
             _stockPrefab.Add(newPlayer);
-            newPlayer.Init(i + 1,"-",0);
+            newPlayer.Init(i + 1, "-", 0);
         }
     }
 

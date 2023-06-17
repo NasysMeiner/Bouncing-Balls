@@ -1,37 +1,32 @@
+using Agava.WebUtility;
+using Agava.YandexGames;
+using Lean.Localization;
 using System;
 using System.Collections;
 using UnityEngine;
-using Agava.YandexGames;
 using UnityEngine.UI;
-using Agava.WebUtility;
-using Newtonsoft.Json;
-using Lean.Localization;
-using TMPro;
 
 public class Advertisement : MonoBehaviour
 {
     [SerializeField] private GameObject _isAvtorizeOff;
     [SerializeField] private GameObject _isOn;
-    [SerializeField] private Image _startIcon;
-    [SerializeField] private TMP_Text _startName;
     [SerializeField] private Button _button;
-    [SerializeField] private Game _game;
+    [SerializeField] private PlayerInfo _playerInfo;
+    [SerializeField] private PlayerData _playerData;
 
-    private int _score;
+    private const string _languageRussian = "Russian";
+    private const string _languageEnglish = "English";
+    private const string _languageTurkish = "Turkish";
+    private const string _leaderboardName = "NewLeaders";
 
-    private event Action onOpenAd;
-    public event Action<bool> onCloseAd;
-
-    private void Awake()
-    {
-        YandexGamesSdk.CallbackLogging = true;
-    }
+    private event Action OnOpenAd;
+    public event Action<bool> OnCloseAd;
 
     private void OnEnable()
     {
         WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
 
-        onCloseAd += (bool isClosed) =>
+        OnCloseAd += (bool isClosed) =>
         {
             SetActiveAudioListener(isClosed);
         };
@@ -41,7 +36,7 @@ public class Advertisement : MonoBehaviour
     {
         WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
 
-        onCloseAd -= (bool isClosed) =>
+        OnCloseAd -= (bool isClosed) =>
         {
             SetActiveAudioListener(isClosed);
         };
@@ -53,30 +48,24 @@ public class Advertisement : MonoBehaviour
         yield break;
 #endif
         _button.interactable = false;
-        Console.WriteLine("off");
 
         yield return YandexGamesSdk.Initialize();
 
-        Console.WriteLine("initYndx");
-
-        string name = "Nan";
+        string name = "NoName";
         string language = YandexGamesSdk.Environment.i18n.lang;
 
         if (language == "ru")
-            language = "Russian";
+            language = _languageRussian;
         else if (language == "en")
-            language = "English";
+            language = _languageEnglish;
         else if (language == "tr")
-            language = "Turkish";
+            language = _languageTurkish;
 
         LeanLocalization.SetCurrentLanguageAll(language);
-        Console.WriteLine("language");
-        OnRequestPersonalProfileDataPermissionButtonClick();
-        OnGetProfileDataButtonClick();
 
         if (PlayerAccount.IsAuthorized)
         {
-            Leaderboard.GetPlayerEntry("NewLeaders", (result) =>
+            Agava.YandexGames.Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
             {
                 if (result.score > 0)
                 {
@@ -84,8 +73,6 @@ public class Advertisement : MonoBehaviour
 
                     if (string.IsNullOrEmpty(name))
                         name = "Anonymous";
-
-                    _score = result.score;
                 }
                 else
                 {
@@ -93,19 +80,16 @@ public class Advertisement : MonoBehaviour
 
                     if (string.IsNullOrEmpty(name))
                         name = "Anonymous";
-
-                    _score = 0;
                 }
             });
 
-            while (name == "Nan")
+            while (name == "NoName")
             {
                 yield return null;
             }
         }
 
-        Console.WriteLine("Start");
-
+        _playerInfo.ChangeName(name);
         StartCoroutine(OnGetCloudSaveDataButtonClick(name));
     }
 
@@ -113,7 +97,7 @@ public class Advertisement : MonoBehaviour
     {
         AudioListener.volume = 0;
         Time.timeScale = 0;
-        InterstitialAd.Show(onOpenAd, onCloseAd);
+        InterstitialAd.Show(OnOpenAd, OnCloseAd);
     }
 
     private void OnInBackgroundChange(bool inBackground)
@@ -128,33 +112,10 @@ public class Advertisement : MonoBehaviour
         AudioListener.volume = 1;
     }
 
-    private void OnRequestPersonalProfileDataPermissionButtonClick()
-    {
-        if (PlayerAccount.IsAuthorized)
-            PlayerAccount.RequestPersonalProfileDataPermission();
-    }
-
-    private void OnGetProfileDataButtonClick()
-    {
-        if (PlayerAccount.IsAuthorized)
-        {
-            string name;
-
-            PlayerAccount.GetProfileData((result) =>
-            {
-                name = result.publicName;
-
-                if (string.IsNullOrEmpty(name))
-                    name = "Anonymous";
-
-                _game.ChangeName(name);
-            });
-        }
-    }
-
     private IEnumerator OnGetCloudSaveDataButtonClick(string name)
     {
         string loadedString = "None";
+        string noData = "{}";
         PlayerAccount.GetCloudSaveData((data) => loadedString = data);
 
         while (loadedString == "None")
@@ -162,15 +123,15 @@ public class Advertisement : MonoBehaviour
             yield return null;
         }
 
-        if (loadedString == "{}")
+        if (loadedString == noData)
         {
             _button.interactable = true;
             yield break;
         }
 
-        _game.OnGetCloudSaveDataButtonClick(loadedString, _score, name);
         _isAvtorizeOff.SetActive(false);
         _isOn.SetActive(true);
+        _playerData.LoadPlayerData(loadedString);
         _button.interactable = true;
     }
 }

@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class AudioCounter : MonoBehaviour
 {
     [SerializeField] private int _playMusic = 5;
-    [SerializeField] private Game _game;
+    [SerializeField] private LevelLoader _levelLoader;
 
     private int _currentMusic = 0;
     private bool _isStop = false;
@@ -15,12 +12,12 @@ public class AudioCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        _game.LevelUp += OnLevelUp;
+        _levelLoader.LevelUp += OnLevelUp;
     }
 
     private void OnDisable()
     {
-        _game.LevelUp -= OnLevelUp;
+        _levelLoader.LevelUp -= OnLevelUp;
     }
 
     private void Update()
@@ -29,23 +26,23 @@ public class AudioCounter : MonoBehaviour
             _isStop = false;
     }
 
-    public void Subscribe(Ball ball)
+    public void Subscribe(BallAudio ball)
     {
-        ball.startMusic += PlusMusic;
-        ball.endMusic += MinusMusic;
+        ball.OnStartMusic += PlusMusic;
+        ball.OnEndMusic += MinusMusic;
     }
 
-    public void Unsubscribe(Ball ball)
+    public void Unsubscribe(BallAudio ball)
     {
-        ball.startMusic -= PlusMusic;
-        ball.endMusic -= MinusMusic;
+        ball.OnStartMusic -= PlusMusic;
+        ball.OnEndMusic -= MinusMusic;
     }
 
     private void PlusMusic()
     {
         _currentMusic++;
 
-        if(_currentMusic >= _playMusic)
+        if (_currentMusic >= _playMusic)
             _isStop = true;
     }
 

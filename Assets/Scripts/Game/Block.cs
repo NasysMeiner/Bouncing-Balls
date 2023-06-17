@@ -8,12 +8,13 @@ public class Block : MonoBehaviour
 {
     [SerializeField] private float _forceFactor = 1;
     [SerializeField] private TMP_Text _text = null;
+    [SerializeField] private TextBlock _textBlock;
 
     private Cell _currentCell;
-    private BufferTexts _bufferText;
     private Cells _cells;
-    private Game _game;
-    private DeleateField _deleateField;
+    private LevelLoader _levelLoader;
+    private ScoreBar _scoreBar;
+    private DeleteField _deleateField;
     private StockBlocks _stockBlocks;
     private Shop _items;
     private ShopDistributor _shopDistributor;
@@ -24,52 +25,45 @@ public class Block : MonoBehaviour
     private int _crisstalChance = 0;
     private bool _isPremium;
     private bool _isStock;
+    private ScreenPosition _screenPosition;
+    private int _profitabilityCristall = 1;
+
+    private PlayerInfo _playerInfo;
 
     public Cell CurrentCell => _currentCell;
     public Cells Cells => _cells;
-    public DeleateField Delete => _deleateField;
-    public Game Game => _game;
+    public DeleteField Delete => _deleateField;
+    public LevelLoader Game => _levelLoader;
     public StockBlocks StockBlocks => _stockBlocks;
     public bool IsStock => _isStock;
+    public ScreenPosition ScreenPosition => _screenPosition;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out Ball balloon))
+        int maxChance = 100;
+
+        if (collision.gameObject.TryGetComponent(out BallMover ball))
         {
-            if(_isStock == false)
+            if (_isStock == false)
             {
-                int randomNuber = UnityEngine.Random.Range(0, 100);
-                Vector3 Change = new Vector3(UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f), 0);
-                TextBall textCristall = null;
-                TextBall textMoney = _bufferText.TryGetText();
+                Vector3 positionText = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
+                int randomNuber = UnityEngine.Random.Range(0, maxChance);
+
+                _textBlock.ShowMoneyTextBlock(ball.Profitability, _currentFactor, positionText);
 
                 if (randomNuber <= _crisstalChance)
-                    textCristall = _bufferText.TryGetText(1);
-
-                if (textMoney != null)
                 {
-                    textMoney.transform.position = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
-                    textMoney.transform.position += Change;
-                    textMoney.ChangeText(balloon.Profitability, _currentFactor);
-                    textMoney.ChangeActiveText(true);
+                    _textBlock.ShowCristallTextBlock(positionText);
+                    _playerInfo.ChangeCristall(_profitabilityCristall);
                 }
 
-                if (textCristall != null)
-                {
-                    Change = new Vector3(UnityEngine.Random.Range(-50f, 50f), UnityEngine.Random.Range(-50f, 50f), 0);
-                    textCristall.transform.position = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
-                    textCristall.transform.position += Change;
-                    textCristall.ChangeActiveText(true);
-                    _game.ChangeCristall(1);
-                }
-
-                _game.AddBounce();
-                _game.ChangeScore(_currentFactor * balloon.Profitability);
-                _game.ChangeMoney(_currentFactor * balloon.Profitability);
+                _playerInfo.ChangeBounces();
+                _scoreBar.ChangeScore(_currentFactor * ball.Profitability);
+                _playerInfo.ChangeMoney(_currentFactor * ball.Profitability);
             }
 
-            if(!balloon.IsDestroyed())
-                balloon.StartCoroutine("PlayAudio");
+            if (!ball.IsDestroyed())
+                ball.BallAudio.StartPlayAudio();
 
             Rigidbody rbBall = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 normal = -collision.contacts[0].normal;
@@ -78,9 +72,12 @@ public class Block : MonoBehaviour
         }
     }
 
-    public void Init(int factor, Vector3 newPosition, Cell newCell, Cells cells, Color color, Camera camera, BufferTexts bufferTexts, Game game, DeleateField deleateField, StockBlocks stockBlocks, Shop items, float price, ShopDistributor shopDistributor, bool isPremium = false, int crisstalChance = 0)
+    public void Init(int factor, Vector3 newPosition, Cell newCell, Cells cells, Color color, Camera camera, LevelLoader game, DeleteField deleateField, StockBlocks stockBlocks, Shop items, float price, ShopDistributor shopDistributor, TextBlock textBlock, ScoreBar scoreBar, PlayerInfo playerInfo, ScreenPosition screenPosition, bool isPremium = false, int crisstalChance = 0)
     {
         _currentFactor = factor;
+        _playerInfo = playerInfo;
+        _scoreBar = scoreBar;
+        _textBlock = textBlock;
         _crisstalChance = crisstalChance;
         _factor = factor;
         _shopDistributor = shopDistributor;
@@ -92,18 +89,18 @@ public class Block : MonoBehaviour
         _deleateField = deleateField;
         _currentCell = newCell;
         _items = items;
-        _items.Open += CheckClickability;
-        _items.Close += CheckClickability;
+        _items.Open += ClicabilityOff;
+        _items.Close += ClicabilityOn;
         _currentCell.TakeCell(this);
-        _bufferText = bufferTexts;
         _isPremium = isPremium;
         _isStock = true;
-        _game = game;
-        _game.ChangeScreenOrientation += OnChangeScreenOrientation;
+        _levelLoader = game;
+        _screenPosition = screenPosition;
+        _screenPosition.ChangeScreenOrientation += OnChangeScreenOrientation;
         _currentForceFactore = _forceFactor;
 
-        if(isPremium == false)
-            _game.DeleteAll += DeleteBlock;
+        if (isPremium == false)
+            _levelLoader.DeleteAll += DeleteBlock;
 
         ChangePosition(newPosition);
         Renderer renderer = GetComponent<Renderer>();
@@ -128,14 +125,14 @@ public class Block : MonoBehaviour
         _stockBlocks.DeleteBlock(this);
         _currentCell.ReleaseCell();
         _shopDistributor.ChangeBuffs -= StartBuffsRebound;
-        _items.Open -= CheckClickability;
-        _items.Close -= CheckClickability;
-        _game.ChangeScreenOrientation -= OnChangeScreenOrientation;
+        _items.Open -= ClicabilityOn;
+        _items.Close -= ClicabilityOff;
+        _screenPosition.ChangeScreenOrientation -= OnChangeScreenOrientation;
 
         if (_isPremium == false)
         {
-            _game.DeleteAll -= DeleteBlock;
-            _game.CellBlock(_price);
+            _levelLoader.DeleteAll -= DeleteBlock;
+            _deleateField.CellBlock(_price);
         }
 
         Destroy(gameObject);
@@ -146,44 +143,64 @@ public class Block : MonoBehaviour
         transform.position = newPosition;
 
         if (_items.IsPlay)
-            CheckClickability(false);
+            ClicabilityOff();
     }
 
-    private void CheckClickability(bool IsActive)
+    private void ClicabilityOn()
     {
         if (_currentCell.IsStock)
         {
             if (gameObject.TryGetComponent<BoxCollider>(out BoxCollider Collider))
             {
-                Collider.enabled = IsActive;
+                Collider.enabled = true;
             }
             else
             {
                 MeshCollider MeshCollider = GetComponent<MeshCollider>();
-                MeshCollider.enabled = IsActive;
+                MeshCollider.enabled = true;
+            }
+        }
+    }
+
+    private void ClicabilityOff()
+    {
+        if (_currentCell.IsStock)
+        {
+            if (gameObject.TryGetComponent<BoxCollider>(out BoxCollider Collider))
+            {
+                Collider.enabled = false;
+            }
+            else
+            {
+                MeshCollider MeshCollider = GetComponent<MeshCollider>();
+                MeshCollider.enabled = false;
             }
         }
     }
 
     private void StartBuffsRebound(int id, float value)
     {
-        switch(id)
+        const int forceBuffId = 0;
+        const int profitabilityBuffId = 1;
+        const int cristallChanceBuffId = 3;
+
+        switch (id)
         {
-            case 0:
+            case forceBuffId:
                 if (value > 0)
                     _forceFactor = _forceFactor * value;
                 else
                     _forceFactor = _currentForceFactore;
                 break;
 
-            case 1:
+            case profitabilityBuffId:
                 if (value > 0)
                     _currentFactor = _currentFactor * Convert.ToInt32(value);
                 else
                     _currentFactor = _factor;
                 break;
 
-            case 3:
+            case cristallChanceBuffId:
                 if (value > 0)
                     _crisstalChance += (int)value;
                 else
@@ -197,6 +214,6 @@ public class Block : MonoBehaviour
 
     private void OnChangeScreenOrientation()
     {
-        transform.position = new Vector3(_currentCell.transform.position.x, _currentCell.transform.position.y,transform.position.z);
+        transform.position = new Vector3(_currentCell.transform.position.x, _currentCell.transform.position.y, transform.position.z);
     }
 }
