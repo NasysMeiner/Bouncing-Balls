@@ -126,7 +126,7 @@ public class PlayerInfo : MonoBehaviour
         _level = playerData.level;
         _levelUp = playerData.levelUp;
         _cristall = playerData.cristall;
-        _isUnlockBascket = playerData.isUnlockBasket;
+        _isUnlockBascket = playerData.isUnlockBascet;
         _isShowGuide = playerData.isShowGuide;
         SetIcon(playerData.icon);
         _money = playerData.money;

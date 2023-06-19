@@ -19,6 +19,7 @@ public class ScreenPosition : MonoBehaviour
     private ScreenOrientation _deviceOrientation2;
     private int _numberPosition;
     private bool _isGorizontal;
+    private Vector3 _rightAngle = new Vector3(0, 0, 90);
 
     public event UnityAction ChangeScreenOrientation;
 
@@ -35,7 +36,7 @@ public class ScreenPosition : MonoBehaviour
         {
             _deviceOrientation1 = ScreenOrientation.LandscapeLeft;
             _deviceOrientation2 = ScreenOrientation.LandscapeRight;
-            _stockBlocks.transform.eulerAngles += new Vector3(0, 0, -90);
+            _stockBlocks.transform.eulerAngles += -_rightAngle;
             _numberPosition = 0;
         }
         else
@@ -80,15 +81,13 @@ public class ScreenPosition : MonoBehaviour
                 _numberPosition += 2;
             }
 
-            Debug.Log(_numberPosition);
-
             _deleateField.transform.position = _deleteFieldPosition[_numberPosition];
 
             if (_deviceOrientation1 == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
             {
                 _deviceOrientation1 = ScreenOrientation.LandscapeLeft;
                 _deviceOrientation2 = ScreenOrientation.LandscapeRight;
-                _stockBlocks.transform.eulerAngles = new Vector3(0, 0, 270);
+                _stockBlocks.transform.eulerAngles = -_rightAngle;
                 _isGorizontal = false;
                 _numberPosition = 0;
             }
@@ -96,7 +95,7 @@ public class ScreenPosition : MonoBehaviour
             {
                 _deviceOrientation1 = ScreenOrientation.Portrait;
                 _deviceOrientation2 = ScreenOrientation.PortraitUpsideDown;
-                _stockBlocks.transform.eulerAngles += new Vector3(0, 0, 90);
+                _stockBlocks.transform.eulerAngles += _rightAngle;
                 _numberPosition = 1;
             }
 

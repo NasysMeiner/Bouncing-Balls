@@ -1,7 +1,6 @@
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(BallAudio))]
 public class BallMover : MonoBehaviour
 {
@@ -10,8 +9,6 @@ public class BallMover : MonoBehaviour
 
     private Rigidbody _rigidbody;
     private Gun _gun;
-    private Camera _camera;
-    private Vector3 _pointsTransform;
     private bool _isQueue = false;
     private int _profitability = 1;
     private float _speed;
@@ -20,9 +17,8 @@ public class BallMover : MonoBehaviour
     private BallAudio _ballAudio;
  
     public int Id => _id;
+    public bool IsQueue => _isQueue;
     public Rigidbody Rigidbody => _rigidbody;
-    public float MaxSpeed => _maxSpeed;
-    public float Speed => _speed;
     public TrailRenderer Train => _trail;
     public int Profitability => _profitability;
     public BallAudio BallAudio => _ballAudio;
@@ -39,22 +35,12 @@ public class BallMover : MonoBehaviour
 
         if (_speed > _maxSpeed)
             _rigidbody.velocity = _rigidbody.velocity.normalized * _maxSpeed;
-
-        _pointsTransform = _camera.WorldToViewportPoint(transform.position);
-
-        if ((_pointsTransform.y < -0.1f || _pointsTransform.y > 1.1f || _pointsTransform.x < -0.1f || _pointsTransform.x > 1.1) && _isQueue != true)
-        {
-            ChangeStateOn();
-            ChangeAnimationOff();
-            _gun.AddBalls(_buffer.GetBall(this));
-        }
     }
 
-    public void Init(Gun gun, Camera camera, int profitability, Color newColor, Buffer buffer, int id, AudioCounter audioCounter, AudioBar audioBar)
+    public void Init(Gun gun, int profitability, Color newColor, Buffer buffer, int id, AudioCounter audioCounter, AudioBar audioBar)
     {
         _gun = gun;
         _buffer = buffer;
-        _camera = camera;
         _profitability = profitability;
         _id = id;
         _ballAudio.Init(audioCounter, audioBar);
@@ -63,9 +49,11 @@ public class BallMover : MonoBehaviour
         renderer.material.color = newColor;
     }
 
-    private void ChangeAnimationOff()
+    public void ReturnBall()
     {
-        _trail.enabled = false;
+        ChangeStateOn();
+        ChangeAnimationOff();
+        _gun.AddBalls(_buffer.GetBall(this));
     }
 
     public void ChangeStateOn()
@@ -83,5 +71,10 @@ public class BallMover : MonoBehaviour
     public void AddForceBalls(Vector3 force)
     {
         _rigidbody.AddForce(force, ForceMode.Impulse);
+    }
+
+    private void ChangeAnimationOff()
+    {
+        _trail.enabled = false;
     }
 }

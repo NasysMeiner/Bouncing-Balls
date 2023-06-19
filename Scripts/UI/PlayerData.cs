@@ -12,13 +12,13 @@ public class PlayerData : MonoBehaviour
     public int score = 0;
     public int level = 1;
     public int cristall = 0;
-    public bool isUnlockBasket = false;
+    public bool isUnlockBascet = false;
     public int levelUp = 0;
     public int icon = 0;
     public int money = 0;
     public bool isShowGuide = false;
 
-    public void WriteDataPlayer(int score, int level, int cristall, bool isUnclockBascet, int levelUp, int icon, int money, bool isShowGuide, bool isEnd = false)
+    public void WriteDataPlayer(int score, int level, int cristall, bool isUnlockBascet, int levelUp, int icon, int money, bool isShowGuide, bool isEnd = false)
     {
         if (isEnd)
         {
@@ -34,7 +34,7 @@ public class PlayerData : MonoBehaviour
             this.icon = icon;
             this.money = money;
             this.isShowGuide = isShowGuide;
-            this.isUnlockBasket = isUnclockBascet;
+            this.isUnlockBascet = isUnlockBascet;
         }
 
         OnSetCloudSaveData();
@@ -50,7 +50,7 @@ public class PlayerData : MonoBehaviour
         else
             name = "Anonymous";
 
-        isUnlockBasket = false;
+        isUnlockBascet = false;
         levelUp = 0;
         money = 0;
     }
@@ -59,7 +59,7 @@ public class PlayerData : MonoBehaviour
     {
         if (!_levelLoader.isUnity)
         {
-            PlayerDataPack playerDataPack = new PlayerDataPack(score, level, cristall, isUnlockBasket, levelUp, icon, money, isShowGuide);
+            PlayerDataPack playerDataPack = new PlayerDataPack(score, level, cristall, isUnlockBascet, levelUp, icon, money, isShowGuide);
             string jsonString = JsonUtility.ToJson(playerDataPack);
             PlayerAccount.SetCloudSaveData(jsonString);
         }
@@ -82,7 +82,7 @@ public class PlayerData : MonoBehaviour
 
                     levelUp = playerData.levelUp;
                     cristall = playerData.cristall;
-                    isUnlockBasket = playerData.isUnlockBasket;
+                    isUnlockBascet = playerData.isUnlockBasket;
                     icon = playerData.icon;
                     isShowGuide = playerData.isShowGuide;
                     money = playerData.money;

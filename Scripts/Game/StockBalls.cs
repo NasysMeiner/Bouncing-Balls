@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,6 @@ public class StockBalls : MonoBehaviour
     [SerializeField] private int _numberStartBalls;
     [SerializeField] private BallMover _prefabBalloon;
     [SerializeField] private Gun _gun;
-    [SerializeField] private Camera _camera;
     [SerializeField] private ShopCreate _shop;
     [SerializeField] private Buffer _buffer;
     [SerializeField] private LevelLoader _levelLoader;
@@ -66,10 +64,10 @@ public class StockBalls : MonoBehaviour
 
     public void BuyBalls()
     {
-        if(_playerInfo.Money >= _currentPriceBall)
+        if (_playerInfo.Money >= _currentPriceBall)
         {
             BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
-            newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+            newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
             _audioCounter.Subscribe(newBall.BallAudio);
             ChangeNextId();
             _balls.Add(newBall);
@@ -123,10 +121,10 @@ public class StockBalls : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            for(int x = 0; x < _bufferBalls; x++)
+            for (int x = 0; x < _bufferBalls; x++)
             {
                 BallMover newBall = _shop.CreateBalloon(_prefabBalloon, _buffer.transform, _currentLevel + i, true, out int profitability);
-                newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+                newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
                 _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();
                 _allBalls.Add(newBall);
@@ -139,12 +137,12 @@ public class StockBalls : MonoBehaviour
     {
         ChangePriceBall();
 
-        if(_currentBalls < _currentNumberBalls)
+        if (_currentBalls < _currentNumberBalls)
         {
             for (int i = 0; i < _currentNumberBalls; i++)
             {
                 BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
-                newBall.Init(_gun, _camera, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
+                newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
                 _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();
                 _currentBalls++;
@@ -165,9 +163,9 @@ public class StockBalls : MonoBehaviour
 
     private void OnDeleteAll()
     {
-        foreach(BallMover ball in _allBalls)
+        foreach (BallMover ball in _allBalls)
         {
-            if(ball != null)
+            if (ball != null)
             {
                 _audioCounter.Unsubscribe(ball.BallAudio);
                 ball.BallAudio.Unsubscribe();
