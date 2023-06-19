@@ -72,6 +72,11 @@ public class Advertisement : MonoBehaviour
                 if (string.IsNullOrEmpty(name))
                     name = "Anonymous";
             });
+
+            while(name == "NoName")
+            {
+                yield return null;
+            }
         }
 
         _playerInfo.ChangeName(name);
