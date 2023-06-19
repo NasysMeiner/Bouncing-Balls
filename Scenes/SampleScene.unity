@@ -2064,7 +2064,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739b350dd033e944892d321bf951eb99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUnity: 0
+  isUnity: 1
   _level: 1
   _maxLevel: 5
   _endLevelPanel: {fileID: 621930163}

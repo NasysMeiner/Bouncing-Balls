@@ -54,7 +54,7 @@ public class ScreenPosition : MonoBehaviour
         _camera.transform.position = _cameraPositions[_numberPosition - 1];
         _playField.transform.position = _playFieldPosition[_playerInfo.Level - value];
         _stockBlocks.transform.position = _stockBlocksPosition[_numberPosition - 1];
-        _deleateField.transform.position = _deleteFieldPosition[_numberPosition + 2 - 1];
+        _deleateField.transform.position = _deleteFieldPosition[_numberPosition + 1];
     }
 
     private void Update()
@@ -79,6 +79,8 @@ public class ScreenPosition : MonoBehaviour
             {
                 _numberPosition += 2;
             }
+
+            Debug.Log(_numberPosition);
 
             _deleateField.transform.position = _deleteFieldPosition[_numberPosition];
 

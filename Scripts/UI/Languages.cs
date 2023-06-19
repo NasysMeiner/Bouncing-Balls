@@ -10,7 +10,7 @@ public class Languages : MonoBehaviour
     private void Start()
     {
         _currentLanguage = _languages[0];
-        _currentLanguage.ChangeActive(true);
+        _currentLanguage.ChangeActiveOn();
     }
 
     public void ChangeLanguage(Language language)
@@ -19,10 +19,10 @@ public class Languages : MonoBehaviour
         {
             if(lang == language)
             {
-                _currentLanguage.ChangeActive(false);
+                _currentLanguage.ChangeActiveOff();
                 _currentLanguage = lang;
                 Lean.Localization.LeanLocalization.SetCurrentLanguageAll($"{_currentLanguage.Name}");
-                _currentLanguage.ChangeActive(true);
+                _currentLanguage.ChangeActiveOn();
                 break;
             }
         }

@@ -8,8 +8,13 @@ public class Language : MonoBehaviour
 
     public string Name => _name;
 
-    public void ChangeActive(bool value)
+    public void ChangeActiveOn()
     {
-        _image.enabled = value;
+        _image.enabled = true;
+    }
+
+    public void ChangeActiveOff()
+    {
+        _image.enabled = false;
     }
 }

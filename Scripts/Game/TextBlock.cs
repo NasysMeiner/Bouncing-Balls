@@ -8,6 +8,8 @@ public class TextBlock : MonoBehaviour
 
     private string _nameTextMoney = "Money";
     private string _nameTextCristall = "Cristall";
+    private float _maxErorr1 = 20f;
+    private float _maxErorr2 = 50f;
 
     public void ShowMoneyTextBlock(int ballProfitability, int blockProfitabiliy, Vector3 textPosition)
     {
@@ -15,7 +17,7 @@ public class TextBlock : MonoBehaviour
 
         if (textMoney != null)
         {
-            Vector3 Change = new Vector3(Random.Range(-20f, 20f), Random.Range(-20f, 20f), 0);
+            Vector3 Change = new Vector3(Random.Range(-_maxErorr1, _maxErorr1), Random.Range(-_maxErorr1, _maxErorr1), 0);
             textMoney.transform.position = textPosition;
             textMoney.transform.position += Change;
             textMoney.ChangeText(ballProfitability, blockProfitabiliy);
@@ -29,7 +31,7 @@ public class TextBlock : MonoBehaviour
 
         if (textCristall != null)
         {
-            Vector3 Change = new Vector3(Random.Range(-50f, 50f), Random.Range(-50f, 50f), 0);
+            Vector3 Change = new Vector3(Random.Range(-_maxErorr2, _maxErorr2), Random.Range(-_maxErorr2, _maxErorr2), 0);
             textCristall.transform.position = textPosition;
             textCristall.transform.position += Change;
             textCristall.ChangeActiveText(true);

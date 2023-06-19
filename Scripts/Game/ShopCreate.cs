@@ -26,7 +26,7 @@ public class ShopCreate : MonoBehaviour
             profability = currentLevel;
 
         BallMover newBalloon = Instantiate(balloon, transform);
-        newBalloon.ChangeState(true);
+        newBalloon.ChangeStateOn();
 
         return newBalloon;
     }

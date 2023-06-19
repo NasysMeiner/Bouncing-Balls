@@ -32,9 +32,14 @@ public class ButtonAnimation : MonoBehaviour
         _animator.SetTrigger(_textStartAnimation);
     }
 
-    public void ChangeActive(bool isState)
+    public void ChangeActiveOn()
     {
-        _button.interactable = isState;
+        _button.interactable = true;
+    }
+
+    public void ChangeActiveOff()
+    {
+        _button.interactable = false;
     }
 
     public void Init(float value)

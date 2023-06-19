@@ -8,6 +8,9 @@ public class TextScoreBar : MonoBehaviour
 
     private Animator _animatorSubLevel;
     private int _fifthLevel = 2;
+    private string _textAnimationEndLevel = "EndLevel";
+    private string _textAnimationSubLevel1 = "SubLevel1";
+    private string _textAnimationSubLevel2 = "SubLevel2";
 
     private void Start()
     {
@@ -37,16 +40,16 @@ public class TextScoreBar : MonoBehaviour
    
     public void PlayAnimationEndLevel()
     {
-        _animatorSubLevel.SetTrigger("EndLevel");
+        _animatorSubLevel.SetTrigger(_textAnimationEndLevel);
     }
 
     private void PlayAnimationSubLevel1()
     {
-        _animatorSubLevel.SetTrigger("SubLevel1");
+        _animatorSubLevel.SetTrigger(_textAnimationSubLevel1);
     }
 
     private void PlayAnimationSubLevel2()
     {
-        _animatorSubLevel.SetTrigger("SubLevel2");
+        _animatorSubLevel.SetTrigger(_textAnimationSubLevel2);
     }
 }

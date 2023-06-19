@@ -44,8 +44,8 @@ public class BallMover : MonoBehaviour
 
         if ((_pointsTransform.y < -0.1f || _pointsTransform.y > 1.1f || _pointsTransform.x < -0.1f || _pointsTransform.x > 1.1) && _isQueue != true)
         {
-            ChangeState(true);
-            ChangeRenderer(false);
+            ChangeStateOn();
+            ChangeAnimationOff();
             _gun.AddBalls(_buffer.GetBall(this));
         }
     }
@@ -63,15 +63,21 @@ public class BallMover : MonoBehaviour
         renderer.material.color = newColor;
     }
 
-    public void ChangeRenderer(bool isActive)
+    private void ChangeAnimationOff()
     {
-        _trail.enabled = isActive;
+        _trail.enabled = false;
     }
 
-    public void ChangeState(bool state)
+    public void ChangeStateOn()
     {
-        _rigidbody.isKinematic = state;
-        _isQueue = state;
+        _rigidbody.isKinematic = true;
+        _isQueue = true;
+    }
+
+    public void ChangeStateOff()
+    {
+        _rigidbody.isKinematic = false;
+        _isQueue = false;
     }
 
     public void AddForceBalls(Vector3 force)

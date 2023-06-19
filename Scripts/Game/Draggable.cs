@@ -20,6 +20,7 @@ public class Draggable : MonoBehaviour
     private Renderer _renderer;
     private float _horizontalPositionCamera = 6.2f;
     private float _verticalPositionCamera = 10.6f;
+    private float _translucent = 0.5f;
 
     private void Start()
     {
@@ -27,7 +28,7 @@ public class Draggable : MonoBehaviour
         _block = GetComponent<Block>();
         _deleateField = _block.Delete;
         _newColor = _renderer.material.color;
-        _newColor.a = 0.5f;
+        _newColor.a = _translucent;
         _screenCameraDistance = Camera.main.nearClipPlane + _verticalPositionCamera;
         _startColor = _renderer.material.color;
         _startPositionZ = transform.position.z;

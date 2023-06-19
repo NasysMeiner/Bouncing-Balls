@@ -18,6 +18,8 @@ public class ScoreBar : MonoBehaviour
     private bool _isFifthSubLevel = false;
     private bool _isMaxSubLevel = false;
     private bool _isEndLevel = false;
+    private int _subLevel = 1;
+    private float _oneTenth = 0.1f;
 
     public event UnityAction<int> ScoreChange;
     public event UnityAction EndLevel;
@@ -57,13 +59,15 @@ public class ScoreBar : MonoBehaviour
         }
 
         if (_score >= _levelScoreMax)
+        {
             _score = _levelScoreMax;
+            _subLevel = 1;
+        }
 
         ScoreChange?.Invoke(_score);
 
         if (_score >= _levelScoreMax)
         {
-            //_isGame = false;
             _isEndLevel = true;
             EndLevel?.Invoke();
             ChangeMaxScoreValue();
@@ -73,12 +77,14 @@ public class ScoreBar : MonoBehaviour
         if (_score >= _partScore * _fifthLevel && !_isFifthSubLevel)
         {
             _isFifthSubLevel = true;
-            SubLevelUp?.Invoke(2);
+            _subLevel++;
+            SubLevelUp?.Invoke(_subLevel);
         }
         else if (_score >= _partScore * _halfLevel && !_isMaxSubLevel)
         {
             _isMaxSubLevel = true;
-            SubLevelUp?.Invoke(3);
+            _subLevel++;
+            SubLevelUp?.Invoke(_subLevel);
         }
     }
 
@@ -91,12 +97,13 @@ public class ScoreBar : MonoBehaviour
 
     private float CountParts()
     {
-        return _levelScoreMax * 0.1f;
+        return _levelScoreMax * _oneTenth;
     }
 
     private void OnGenerationStart()
     {
         _score = 0;
+        _subLevel = 1;
         _isEndLevel = false;
         _isFifthSubLevel = false;
         _isMaxSubLevel = false;

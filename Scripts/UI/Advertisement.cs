@@ -67,26 +67,11 @@ public class Advertisement : MonoBehaviour
         {
             Agava.YandexGames.Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
             {
-                if (result.score > 0)
-                {
-                    name = result.player.publicName;
+                name = result.player.publicName;
 
-                    if (string.IsNullOrEmpty(name))
-                        name = "Anonymous";
-                }
-                else
-                {
-                    name = result.player.publicName;
-
-                    if (string.IsNullOrEmpty(name))
-                        name = "Anonymous";
-                }
+                if (string.IsNullOrEmpty(name))
+                    name = "Anonymous";
             });
-
-            while (name == "NoName")
-            {
-                yield return null;
-            }
         }
 
         _playerInfo.ChangeName(name);

@@ -8,6 +8,9 @@ public class Panel : MonoBehaviour
 
     private bool _isClose = true;
     private bool _isOpen = false;
+    private string _textStartAnimation = "Open";
+    private string _textEndAnimation = "Exit";
+    private float _timeWait = 0.4f;
 
     public void ChangeActivePanel(bool value)
     {
@@ -29,7 +32,7 @@ public class Panel : MonoBehaviour
 
     public void PlayAnimationLeaderboard(string anim)
     {
-        if (anim == "Open")
+        if (anim == _textStartAnimation)
         {
             if (_isClose && _isOpen == false)
             {
@@ -42,7 +45,7 @@ public class Panel : MonoBehaviour
         {
             _animator.SetTrigger(anim);
 
-            if (anim == "Exit")
+            if (anim == _textEndAnimation)
             {
                 _leaderboardPanel.gameObject.SetActive(false);
                 _isOpen = false;
@@ -55,7 +58,7 @@ public class Panel : MonoBehaviour
 
     private IEnumerator IsClose()
     {
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(_timeWait);
 
         _isClose = true;
     }

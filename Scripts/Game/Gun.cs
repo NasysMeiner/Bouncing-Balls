@@ -140,7 +140,7 @@ public class Gun : MonoBehaviour
         {
             CurrentBalloon.transform.position = transform.GetChild(1).position;
             CurrentBalloon.Rigidbody.isKinematic = false;
-            CurrentBalloon.ChangeState(false);
+            CurrentBalloon.ChangeStateOff();
             CurrentBalloon.Train.enabled = true;
             _direction = CalculeitDirection();
             CurrentBalloon.AddForceBalls(_direction * _force);

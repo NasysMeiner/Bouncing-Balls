@@ -57,9 +57,9 @@ public class DeleteField : MonoBehaviour
     private void OnChangeCristall(int value)
     {
         if (value >= _buttonAnimation.Price)
-            _buttonAnimation.ChangeActive(true);
+            _buttonAnimation.ChangeActiveOn();
         else
-            _buttonAnimation.ChangeActive(false);
+            _buttonAnimation.ChangeActiveOff();
     }
 
     private void UpgrateSell(int id, float value)
