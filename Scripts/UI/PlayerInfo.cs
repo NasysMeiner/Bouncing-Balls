@@ -88,7 +88,7 @@ public class PlayerInfo : MonoBehaviour
         CristallChanged?.Invoke(_cristall);
     }
 
-    public void ChangeName(string name)
+    public void SetName(string name)
     {
         _name = name;
         _levelLoader.SetName(name);

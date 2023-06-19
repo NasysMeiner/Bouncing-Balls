@@ -9,9 +9,10 @@ public class Leaderboard : MonoBehaviour
     [SerializeField] private Rating _ratingPlayer;
     [SerializeField] private PrefabPlayers _prefabPlayers;
     [SerializeField] private LeaderboardView _leaderboard;
+    [SerializeField] private PlayerInfo _playerInfo;
 
     private List<PrefabPlayers> _ratingListPlayers = new List<PrefabPlayers>();
-    private List<PlayerInfoLeaderboard> _playerInfo = new List<PlayerInfoLeaderboard>();
+    private List<PlayerInfoLeaderboard> _userInfo = new List<PlayerInfoLeaderboard>();
     private string _nameLeaderboard = "NewLeaders";
 
     public void CheckReating()
@@ -23,13 +24,14 @@ public class Leaderboard : MonoBehaviour
                 Destroy(raitingt.gameObject);
             }
 
-            _playerInfo.Clear();
+            _userInfo.Clear();
 
             Agava.YandexGames.Leaderboard.GetPlayerEntry(_nameLeaderboard, (result) =>
             {
                 if (result != null)
                 {
                     string name = result.player.publicName;
+                    _playerInfo.SetName(name);
 
                     if (string.IsNullOrEmpty(name))
                         name = "Anonymos";
@@ -52,10 +54,10 @@ public class Leaderboard : MonoBehaviour
                     if (string.IsNullOrEmpty(name))
                         name = "Anonymos";
 
-                    _playerInfo.Add(new PlayerInfoLeaderboard(name, score, rank));
+                    _userInfo.Add(new PlayerInfoLeaderboard(name, score, rank));
                 }
 
-                _leaderboard.ViewLeaderbordContent(_playerInfo);
+                _leaderboard.ViewLeaderbordContent(_userInfo);
             });
         }
 

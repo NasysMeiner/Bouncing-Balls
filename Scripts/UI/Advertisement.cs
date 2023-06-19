@@ -11,13 +11,11 @@ public class Advertisement : MonoBehaviour
     [SerializeField] private GameObject _isAvtorizeOff;
     [SerializeField] private GameObject _isOn;
     [SerializeField] private Button _button;
-    [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private PlayerData _playerData;
 
     private const string _languageRussian = "Russian";
     private const string _languageEnglish = "English";
     private const string _languageTurkish = "Turkish";
-    private const string _leaderboardName = "NewLeaders";
 
     private event Action OnOpenAd;
     public event Action<bool> OnCloseAd;
@@ -45,13 +43,13 @@ public class Advertisement : MonoBehaviour
     private IEnumerator Start()
     {
 #if !UNITY_WEBGL || UNITY_EDITOR
+
         yield break;
 #endif
         _button.interactable = false;
 
         yield return YandexGamesSdk.Initialize();
 
-        string name = "NoName";
         string language = YandexGamesSdk.Environment.i18n.lang;
 
         if (language == "ru")
@@ -62,25 +60,7 @@ public class Advertisement : MonoBehaviour
             language = _languageTurkish;
 
         LeanLocalization.SetCurrentLanguageAll(language);
-
-        if (PlayerAccount.IsAuthorized)
-        {
-            Agava.YandexGames.Leaderboard.GetPlayerEntry(_leaderboardName, (result) =>
-            {
-                name = result.player.publicName;
-
-                if (string.IsNullOrEmpty(name))
-                    name = "Anonymous";
-            });
-
-            while(name == "NoName")
-            {
-                yield return null;
-            }
-        }
-
-        _playerInfo.ChangeName(name);
-        StartCoroutine(OnGetCloudSaveDataButtonClick(name));
+        StartCoroutine(OnGetCloudSaveDataButtonClick());
     }
 
     public void ShowAd()
@@ -102,7 +82,7 @@ public class Advertisement : MonoBehaviour
         AudioListener.volume = 1;
     }
 
-    private IEnumerator OnGetCloudSaveDataButtonClick(string name)
+    private IEnumerator OnGetCloudSaveDataButtonClick()
     {
         string loadedString = "None";
         string noData = "{}";
