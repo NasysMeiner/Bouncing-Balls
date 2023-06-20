@@ -76,6 +76,20 @@ public class Leaderboard : MonoBehaviour
             });
         }
     }
+
+    public void CheckPlayerName()
+    {
+        if (PlayerAccount.IsAuthorized)
+        {
+            Agava.YandexGames.Leaderboard.GetPlayerEntry(_nameLeaderboard, (result) =>
+            {
+                string name = result.player.publicName;
+
+                if (string.IsNullOrEmpty(name))
+                    name = "Anonymos";
+            });
+        }
+    }
 }
 
 public class PlayerInfoLeaderboard

@@ -9,6 +9,8 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private DeleteField _deleateField;
 
+    private string _nameLeaderboard = "NewLeaders";
+
     public int score = 0;
     public int level = 1;
     public int cristall = 0;
@@ -17,8 +19,9 @@ public class PlayerData : MonoBehaviour
     public int icon = 0;
     public int money = 0;
     public bool isShowGuide = false;
+    public string name = "Anonymos";
 
-    public void WriteDataPlayer(int score, int level, int cristall, bool isUnlockBascet, int levelUp, int icon, int money, bool isShowGuide, bool isEnd = false)
+    public void WriteDataPlayer(int score, int level, int cristall, bool isUnlockBascet, int levelUp, int icon, int money, bool isShowGuide, string name, bool isEnd = false)
     {
         if (isEnd)
         {
@@ -35,6 +38,7 @@ public class PlayerData : MonoBehaviour
             this.money = money;
             this.isShowGuide = isShowGuide;
             this.isUnlockBascet = isUnlockBascet;
+            this.name = name;
         }
 
         OnSetCloudSaveData();
@@ -55,13 +59,19 @@ public class PlayerData : MonoBehaviour
         money = 0;
     }
 
-    private void OnSetCloudSaveData()
+    public void CheckPlayerName()
     {
-        if (!_levelLoader.isUnity)
+        if (PlayerAccount.IsAuthorized)
         {
-            PlayerDataPack playerDataPack = new PlayerDataPack(score, level, cristall, isUnlockBascet, levelUp, icon, money, isShowGuide);
-            string jsonString = JsonUtility.ToJson(playerDataPack);
-            PlayerAccount.SetCloudSaveData(jsonString);
+            Agava.YandexGames.Leaderboard.GetPlayerEntry(_nameLeaderboard, (result) =>
+            {
+                string name = result.player.publicName;
+
+                if (string.IsNullOrEmpty(name))
+                    name = "Anonymos";
+
+                _playerInfo.SetName(name);
+            });
         }
     }
 
@@ -76,10 +86,12 @@ public class PlayerData : MonoBehaviour
                     PlayerDataPack playerData = JsonUtility.FromJson<PlayerDataPack>(loadedString);
                     score = playerData.score;
                     level = playerData.level;
+                    name = playerData.name;
+                    CheckPlayerName();
 
                     if (level == 0)
                         level = 1;
-
+                    
                     levelUp = playerData.levelUp;
                     cristall = playerData.cristall;
                     isUnlockBascet = playerData.isUnlockBasket;
@@ -95,6 +107,16 @@ public class PlayerData : MonoBehaviour
             }
         }
     }
+
+    private void OnSetCloudSaveData()
+    {
+        if (!_levelLoader.isUnity)
+        {
+            PlayerDataPack playerDataPack = new PlayerDataPack(score, level, cristall, isUnlockBascet, levelUp, icon, money, isShowGuide, name);
+            string jsonString = JsonUtility.ToJson(playerDataPack);
+            PlayerAccount.SetCloudSaveData(jsonString);
+        }
+    }
 }
 
 [System.Serializable]
@@ -108,8 +130,9 @@ public class PlayerDataPack
     public int icon = 0;
     public int money = 0;
     public bool isShowGuide = false;
+    public string name = "Anonymos";
 
-    public PlayerDataPack(int score, int level, int cristall, bool isUnlockBasket, int levelUp, int icon, int money, bool isShowGuide)
+    public PlayerDataPack(int score, int level, int cristall, bool isUnlockBasket, int levelUp, int icon, int money, bool isShowGuide, string name)
     {
         this.score = score;
         this.level = level;
@@ -119,5 +142,6 @@ public class PlayerDataPack
         this.icon = icon;
         this.money = money;
         this.isShowGuide = isShowGuide;
+        this.name = name;
     }
 }

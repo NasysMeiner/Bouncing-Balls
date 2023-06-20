@@ -2171,7 +2171,6 @@ MonoBehaviour:
   _isAvtorizeOff: {fileID: 2064704736}
   _isOn: {fileID: 1633460304}
   _button: {fileID: 135109284034106280}
-  _playerInfo: {fileID: 215014802}
   _playerData: {fileID: 215014801}
 --- !u!114 &215014800
 MonoBehaviour:
@@ -2206,11 +2205,12 @@ MonoBehaviour:
   score: 0
   level: 1
   cristall: 0
-  isUnlockBasket: 0
+  isUnlockBascet: 0
   levelUp: 0
   icon: 0
   money: 0
   isShowGuide: 0
+  name: Anonymos
 --- !u!114 &215014802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9805,6 +9805,7 @@ MonoBehaviour:
   _ratingPlayer: {fileID: 648357946528082830}
   _prefabPlayers: {fileID: 6970428667421649787, guid: 473a3addbf6cec14db2593863df5445f, type: 3}
   _leaderboard: {fileID: 801487892}
+  _playerInfo: {fileID: 215014802}
 --- !u!1 &791655241
 GameObject:
   m_ObjectHideFlags: 0

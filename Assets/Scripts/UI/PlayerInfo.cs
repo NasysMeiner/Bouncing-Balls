@@ -107,7 +107,6 @@ public class PlayerInfo : MonoBehaviour
     public void SetIcon(int value)
     {
         _icon = value;
-        _levelLoader.SetIcon(_icon);
     }
 
     public void LevelUpBascet()
@@ -129,6 +128,7 @@ public class PlayerInfo : MonoBehaviour
         _isUnlockBascket = playerData.isUnlockBascet;
         _isShowGuide = playerData.isShowGuide;
         SetIcon(playerData.icon);
+        SetName(playerData.name);
         _money = playerData.money;
         _shopDistributor.LoadUp(_levelUp, _isUnlockBascket);
         _levelLoader.LoadLevel(_level, _icon);
@@ -169,7 +169,7 @@ public class PlayerInfo : MonoBehaviour
             _levelLoader.EndGamePanelOn();
         }
 
-        _playerData.WriteDataPlayer(TotalScore, Level, Cristall, IsUnlockBascket, LevelUp, Icon, Money, IsShowGuide, isEndGame);
+        _playerData.WriteDataPlayer(TotalScore, Level, Cristall, IsUnlockBascket, LevelUp, Icon, Money, IsShowGuide, Name, isEndGame);
     }
 
     private void OnGenerationStart()
