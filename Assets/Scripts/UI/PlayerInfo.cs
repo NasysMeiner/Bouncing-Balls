@@ -153,7 +153,9 @@ public class PlayerInfo : MonoBehaviour
     private void OnEndLevel()
     {
         bool isEndGame;
-        _leaderboard.OnGetLeaderboardEntries(CalculeitTotalScore());
+
+        if(!_levelLoader.isUnity)
+            _leaderboard.OnGetLeaderboardEntries(CalculeitTotalScore());
 
         if (_level + 1 <= _levelLoader.MaxLevel)
         {

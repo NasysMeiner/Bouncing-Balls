@@ -1,4 +1,3 @@
-using Agava.WebUtility;
 using Agava.YandexGames;
 using Lean.Localization;
 using System;
@@ -22,7 +21,7 @@ public class Advertisement : MonoBehaviour
 
     private void OnEnable()
     {
-        WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
+        //WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
 
         OnCloseAd += (bool isClosed) =>
         {
@@ -32,7 +31,7 @@ public class Advertisement : MonoBehaviour
 
     private void OnDisable()
     {
-        WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
+        //WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
 
         OnCloseAd -= (bool isClosed) =>
         {

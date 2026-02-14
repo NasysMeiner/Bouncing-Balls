@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.agava.webutility": {
-      "version": "file:C:/Users/Ilya/Desktop/com.agava.webutility-master",
-      "depth": 0,
-      "source": "local",
-      "dependencies": {}
-    },
     "com.agava.yandexgames": {
       "version": "https://github.com/forcepusher/com.agava.yandexgames.git#13.0.0",
       "depth": 0,
