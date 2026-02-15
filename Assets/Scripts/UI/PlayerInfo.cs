@@ -49,16 +49,16 @@ public class PlayerInfo : MonoBehaviour
     {
         _scoreBar.ScoreChange += OnScoreChange;
         _scoreBar.EndLevel += OnEndLevel;
-        _levelLoader.StartGame += OnStartGame;
-        _levelLoader.GenerationStart += OnGenerationStart;
+        _levelLoader.GameStarting += OnStartGame;
+        _levelLoader.GenerationStarting += OnGenerationStart;
     }
 
     private void OnDisable()
     {
         _scoreBar.ScoreChange -= OnScoreChange;
         _scoreBar.EndLevel -= OnEndLevel;
-        _levelLoader.StartGame -= OnStartGame;
-        _levelLoader.GenerationStart -= OnGenerationStart;
+        _levelLoader.GameStarting -= OnStartGame;
+        _levelLoader.GenerationStarting -= OnGenerationStart;
     }
 
     public void OnScoreChange(int value)

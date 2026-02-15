@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class Cells : MonoBehaviour
 {
-    [SerializeField] private HashSet<Cell> _cells = new HashSet<Cell>();
+    [SerializeField] private HashSet<Cell> _cells = new();
 
-    public HashSet<Cell> TotalNumberCells => _cells;
+    public HashSet<Cell> CellArray => _cells;
 
     public void AddCell(Cell newCell)
     {
@@ -15,10 +15,8 @@ public class Cells : MonoBehaviour
     public Cell SerachCell(Vector3 currentCell)
     {
         foreach (Cell cell in _cells)
-        {
             if (currentCell == cell.transform.position)
                 return cell;
-        }
 
         return null;
     }

@@ -15,7 +15,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private Animator _subLevelAnimator;
     [SerializeField] private GameObject _startGamePanel;
     [SerializeField] private GameObject _endGamePanel;
-    [SerializeField] private DeleteField _deleateField;
+    [SerializeField] private BlockDeleter _deleateField;
     [SerializeField] private TMP_Text _nameText;
     [SerializeField] private Image _imageIcon;
     [SerializeField] private Icons _icons;
@@ -40,24 +40,24 @@ public class LevelLoader : MonoBehaviour
     public int MaxLevel => _maxLevel;
     public float TimeLevel => _time;
 
-    public event UnityAction<int> LevelUp;
-    public event UnityAction SubLevelUp;
-    public event UnityAction DeleteAll;
-    public event UnityAction GenerationStart;
-    public event UnityAction StartGame;
+    public event UnityAction<int> LevelUpgraded;
+    public event UnityAction SubLevelUpgraded;
+    public event UnityAction AllFieldDeleting;
+    public event UnityAction GenerationStarting;
+    public event UnityAction GameStarting;
 
     private void OnEnable()
     {
         _scoreBar.SubLevelUp += OnSubLevelUp;
         _scoreBar.EndLevel += OnEndLevel;
-        _advertisement.OnCloseAd += ClearField;
+        _advertisement.OnCloseAd += OnClearField;
     }
 
     private void OnDisable()
     {
         _scoreBar.SubLevelUp -= OnSubLevelUp;
         _scoreBar.EndLevel -= OnEndLevel;
-        _advertisement.OnCloseAd -= ClearField;
+        _advertisement.OnCloseAd -= OnClearField;
     }
 
     private void Update()
@@ -75,7 +75,7 @@ public class LevelLoader : MonoBehaviour
             Time.timeScale = 1;
             isStart = true;
             _isGame = true;
-            StartGame?.Invoke();
+            GameStarting?.Invoke();
             _startGamePanel.SetActive(false);
             _subLevel = 1;
             _playerInfo.UpdateData();
@@ -100,7 +100,7 @@ public class LevelLoader : MonoBehaviour
         _subLevel = newSubLevel;
         _textScoreBar.ChangeTextLevel(Level, SubLevel);
         _textScoreBar.SubLevelAnimation(SubLevel);
-        SubLevelUp?.Invoke();
+        SubLevelUpgraded?.Invoke();
     }
 
     private void OnEndLevel()
@@ -111,8 +111,8 @@ public class LevelLoader : MonoBehaviour
             _subLevel = 1;
             _BG.gameObject.SetActive(true);
             _isFreezChangeMoney = true;
-            DeleteAll?.Invoke();
-            LevelUp?.Invoke(_level);
+            AllFieldDeleting?.Invoke();
+            LevelUpgraded?.Invoke(_level);
         }
         else
         {
@@ -135,7 +135,7 @@ public class LevelLoader : MonoBehaviour
         if (!isUnity)
             _advertisement.ShowAd();
         else
-            ClearField(true);
+            OnClearField(true);
     }
 
     public void LoadLevel(int level, int icon)
@@ -164,12 +164,12 @@ public class LevelLoader : MonoBehaviour
         _startGamePanel.SetActive(true);
     }
 
-    public void ClearField(bool value)
+    public void OnClearField(bool value)
     {
         _isGame = true;
         _endLevelPanel.gameObject.SetActive(false);
         _BG.gameObject.SetActive(false);
-        GenerationStart?.Invoke();
+        GenerationStarting?.Invoke();
         _isFreezChangeMoney = false;
         _textScoreBar.ChangeTextLevel(_level, _subLevel);
         _textScoreBar.SubLevelAnimation(_subLevel);

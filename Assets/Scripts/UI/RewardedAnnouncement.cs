@@ -14,12 +14,12 @@ public class RewardedAnnouncement : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoader.LevelUp += ResetRepeats;
+        _levelLoader.LevelUpgraded += ResetRepeats;
     }
 
     private void OnDisable()
     {
-        _levelLoader.LevelUp -= ResetRepeats;
+        _levelLoader.LevelUpgraded -= ResetRepeats;
     }
 
     private void Start()

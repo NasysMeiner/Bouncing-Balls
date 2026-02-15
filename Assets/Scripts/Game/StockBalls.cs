@@ -3,13 +3,12 @@ using UnityEngine;
 
 public class StockBalls : MonoBehaviour
 {
-    [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private List<Color> _colorsLevel;
     [SerializeField] private List<int> _minBallLevel;
     [SerializeField] private List<int> _startPriceLevel;
     [SerializeField] private List<int> _priceUpLevel;
     [SerializeField] private int _numberStartBalls;
-    [SerializeField] private BallMover _prefabBalloon;
+    [SerializeField] private BallMover _prefabBall;
     [SerializeField] private Gun _gun;
     [SerializeField] private ShopCreate _shop;
     [SerializeField] private Buffer _buffer;
@@ -34,24 +33,20 @@ public class StockBalls : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoader.DeleteAll += OnDeleteAll;
-        _levelLoader.GenerationStart += OnGenerationStart;
-        _levelLoader.LevelUp += OnLevelUp;
-        _levelLoader.SubLevelUp += OnSubLevel;
-        _gun.StartGame += CreateBufferBalls;
-        _gun.StartGame += CreateStartBalls;
-        _gun.StartGame += OnGenerationStart;
+        _levelLoader.AllFieldDeleting += OnDeleteAll;
+        _levelLoader.GenerationStarting += GenerationStart;
+        _levelLoader.LevelUpgraded += OnLevelUp;
+        _levelLoader.SubLevelUpgraded += OnSubLevel;
+        _gun.StartGame += OnStartGame;
     }
 
     private void OnDisable()
     {
-        _levelLoader.DeleteAll -= OnDeleteAll;
-        _levelLoader.GenerationStart -= OnGenerationStart;
-        _levelLoader.LevelUp -= OnLevelUp;
-        _levelLoader.SubLevelUp -= OnSubLevel;
-        _gun.StartGame -= CreateBufferBalls;
-        _gun.StartGame -= CreateStartBalls;
-        _gun.StartGame -= OnGenerationStart;
+        _levelLoader.AllFieldDeleting -= OnDeleteAll;
+        _levelLoader.GenerationStarting -= GenerationStart;
+        _levelLoader.LevelUpgraded -= OnLevelUp;
+        _levelLoader.SubLevelUpgraded -= OnSubLevel;
+        _gun.StartGame -= OnStartGame;
     }
 
     private void Start()
@@ -66,7 +61,7 @@ public class StockBalls : MonoBehaviour
     {
         if (_playerInfo.Money >= _currentPriceBall)
         {
-            BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
+            BallMover newBall = _shop.CreateBall(_prefabBall, transform, _currentLevel, false, out int profitability);
             newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
             _audioCounter.Subscribe(newBall.BallAudio);
             ChangeNextId();
@@ -106,7 +101,14 @@ public class StockBalls : MonoBehaviour
         _currentLevel++;
     }
 
-    private void OnGenerationStart()
+    private void OnStartGame()
+    {
+        CreateBufferBalls();
+        CreateStartBalls();
+        GenerationStart();
+    }
+
+    private void GenerationStart()
     {
         _currentNumberBalls = _numberStartBalls;
         ChangePriceBall();
@@ -123,7 +125,7 @@ public class StockBalls : MonoBehaviour
         {
             for (int x = 0; x < _bufferBalls; x++)
             {
-                BallMover newBall = _shop.CreateBalloon(_prefabBalloon, _buffer.transform, _currentLevel + i, true, out int profitability);
+                BallMover newBall = _shop.CreateBall(_prefabBall, _buffer.transform, _currentLevel + i, true, out int profitability);
                 newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
                 _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();
@@ -141,7 +143,7 @@ public class StockBalls : MonoBehaviour
         {
             for (int i = 0; i < _currentNumberBalls; i++)
             {
-                BallMover newBall = _shop.CreateBalloon(_prefabBalloon, transform, _currentLevel, false, out int profitability);
+                BallMover newBall = _shop.CreateBall(_prefabBall, transform, _currentLevel, false, out int profitability);
                 newBall.Init(_gun, profitability, _colorsLevel[profitability - 1], _buffer, _idNumber, _audioCounter, _audioBar);
                 _audioCounter.Subscribe(newBall.BallAudio);
                 ChangeNextId();

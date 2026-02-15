@@ -12,12 +12,12 @@ public class AudioCounter : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoader.LevelUp += OnLevelUp;
+        _levelLoader.LevelUpgraded += OnLevelUp;
     }
 
     private void OnDisable()
     {
-        _levelLoader.LevelUp -= OnLevelUp;
+        _levelLoader.LevelUpgraded -= OnLevelUp;
     }
 
     private void Update()
@@ -28,17 +28,17 @@ public class AudioCounter : MonoBehaviour
 
     public void Subscribe(BallAudio ball)
     {
-        ball.OnStartMusic += PlusMusic;
-        ball.OnEndMusic += MinusMusic;
+        ball.MusicStarting += TurnUpVolume;
+        ball.MusicEnded += TurnDownVolume;
     }
 
     public void Unsubscribe(BallAudio ball)
     {
-        ball.OnStartMusic -= PlusMusic;
-        ball.OnEndMusic -= MinusMusic;
+        ball.MusicStarting -= TurnUpVolume;
+        ball.MusicEnded -= TurnDownVolume;
     }
 
-    private void PlusMusic()
+    private void TurnUpVolume()
     {
         _currentMusic++;
 
@@ -46,7 +46,7 @@ public class AudioCounter : MonoBehaviour
             _isStop = true;
     }
 
-    private void MinusMusic()
+    private void TurnDownVolume()
     {
         _currentMusic--;
     }

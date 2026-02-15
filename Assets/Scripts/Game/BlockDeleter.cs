@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class DeleteField : MonoBehaviour
+public class BlockDeleter : MonoBehaviour
 {
     [SerializeField] private float _coefficientCell = 0.5f;
     [SerializeField] private StockBlocks _stockBlocks;
@@ -10,10 +10,8 @@ public class DeleteField : MonoBehaviour
     [SerializeField] private ShopDistributor _shopDistributor;
 
     private bool _isUnlock = false;
-    private bool _isPlayAnimation = false;
 
     public bool IsUnlock => _isUnlock;
-    public bool IsPlayAnimation => _isPlayAnimation;
 
     private void OnEnable()
     {
@@ -34,7 +32,6 @@ public class DeleteField : MonoBehaviour
         {
             _playerInfo.ChangeCristall(-(int)_buttonAnimation.Price);
             _isUnlock = true;
-            _isPlayAnimation = true;
             _playerInfo.UnlockBascet(); ;
             _buttonAnimation.PlayAnimation();
             StartCoroutine(UnlockAnimation());
@@ -44,7 +41,6 @@ public class DeleteField : MonoBehaviour
     public void UnlockLoad()
     {
         _isUnlock = true;
-        _isPlayAnimation = true;
         _buttonAnimation.PlayAnimation();
         StartCoroutine(UnlockAnimation());
     }
@@ -75,7 +71,7 @@ public class DeleteField : MonoBehaviour
 
     private IEnumerator UnlockAnimation()
     {
-        Vector3 target = new Vector3(transform.position.x, transform.position.y, transform.position.z - 0.5f);
+        Vector3 target = new(transform.position.x, transform.position.y, transform.position.z - 0.5f);
         bool isWork = true;
         int speedAnimation = 10;
 

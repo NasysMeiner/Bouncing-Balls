@@ -13,7 +13,7 @@ public class ScreenPosition : MonoBehaviour
     [SerializeField] private List<Vector3> _stockBlocksPosition;
     [SerializeField] private StockBlocks _stockBlocks;
     [SerializeField] private List<Vector3> _deleteFieldPosition;
-    [SerializeField] private DeleteField _deleateField;
+    [SerializeField] private BlockDeleter _deleateField;
 
     private ScreenOrientation _deviceOrientation1;
     private ScreenOrientation _deviceOrientation2;

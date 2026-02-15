@@ -10,16 +10,16 @@ public class BallAudio : MonoBehaviour
     private AudioCounter _audioCounter;
     private AudioBar _audioBar;
 
-    public event UnityAction OnStartMusic;
-    public event UnityAction OnEndMusic;
+    public event UnityAction MusicStarting;
+    public event UnityAction MusicEnded;
 
     public void Init(AudioCounter audioCounter, AudioBar audioBar)
     {
         _audioCounter = audioCounter;
         _audioBar = audioBar;
 
-        ChangeVolume(_audioBar.Audio);
-        _audioBar.ChangeVolumeBalls += ChangeVolume;
+        OnChangeVolume(_audioBar.Audio);
+        _audioBar.ChangeVolumeBalls += OnChangeVolume;
         audioCounter.Subscribe(this);
     }
 
@@ -43,11 +43,11 @@ public class BallAudio : MonoBehaviour
         if (_audioCounter.IsStop == false && _audio.isActiveAndEnabled)
         {
             _audio.Play();
-            OnStartMusic.Invoke();
+            MusicStarting.Invoke();
 
             yield return new WaitForSeconds(_audioTime);
 
-            OnEndMusic.Invoke();
+            MusicEnded.Invoke();
         }
     }
 
@@ -58,10 +58,10 @@ public class BallAudio : MonoBehaviour
 
     public void Unsubscribe()
     {
-        _audioBar.ChangeVolumeBalls -= ChangeVolume;
+        _audioBar.ChangeVolumeBalls -= OnChangeVolume;
     }
 
-    private void ChangeVolume(float volume)
+    private void OnChangeVolume(float volume)
     {
         _audio.volume = volume;
 

@@ -5093,7 +5093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 2.1
-  _trail: {fileID: 5394585943558244106}
+  _trailRenderer: {fileID: 5394585943558244106}
 --- !u!114 &-4067594035918388000
 MonoBehaviour:
   m_ObjectHideFlags: 0

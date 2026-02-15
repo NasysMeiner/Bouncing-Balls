@@ -21,7 +21,7 @@ public class StockBlocks : MonoBehaviour
     [SerializeField] private TextBlock _textBlock;
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private DeleteField _deleateField;
+    [SerializeField] private BlockDeleter _deleateField;
     [SerializeField] private Shop _items;
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private float _currentPriceStockUp = 15;
@@ -51,10 +51,10 @@ public class StockBlocks : MonoBehaviour
     private void OnDisable()
     {
         _shopDistributor.ChangeBuffs -= CreateTimeBlock;
-        _levelLoader.GenerationStart -= OnGenerationStart;
-        _levelLoader.LevelUp -= OnLevelUp;
-        _levelLoader.StartGame -= OnStartGame;
-        _levelLoader.SubLevelUp -= OnSubLevelUp;
+        _levelLoader.GenerationStarting -= OnGenerationStart;
+        _levelLoader.LevelUpgraded -= OnLevelUp;
+        _levelLoader.GameStarting -= OnStartGame;
+        _levelLoader.SubLevelUpgraded -= OnSubLevelUp;
     }
 
     private void Start()
@@ -65,10 +65,10 @@ public class StockBlocks : MonoBehaviour
         _priceBlockText.ChangeText(_currentPriceBlock);
 
         _shopDistributor.ChangeBuffs += CreateTimeBlock;
-        _levelLoader.GenerationStart += OnGenerationStart;
-        _levelLoader.LevelUp += OnLevelUp;
-        _levelLoader.StartGame += OnStartGame;
-        _levelLoader.SubLevelUp += OnSubLevelUp;
+        _levelLoader.GenerationStarting += OnGenerationStart;
+        _levelLoader.LevelUpgraded += OnLevelUp;
+        _levelLoader.GameStarting += OnStartGame;
+        _levelLoader.SubLevelUpgraded += OnSubLevelUp;
     }
 
     public void DeleteBlock(Block block)

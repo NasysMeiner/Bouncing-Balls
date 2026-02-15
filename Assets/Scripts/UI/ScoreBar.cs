@@ -32,12 +32,12 @@ public class ScoreBar : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoader.GenerationStart += OnGenerationStart;
+        _levelLoader.GenerationStarting += OnGenerationStart;
     }
 
     private void OnDisable()
     {
-        _levelLoader.GenerationStart -= OnGenerationStart;
+        _levelLoader.GenerationStarting -= OnGenerationStart;
     }
 
     public void ChangeBarLevel(int currentScore, int maxScore)

@@ -6,7 +6,7 @@ public class ShopDistributor : MonoBehaviour
 {
     [SerializeField] private StockBlocks _stockBlocks;
     [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private DeleteField _deleteField;
+    [SerializeField] private BlockDeleter _deleteField;
     [SerializeField] private Shop _shop;
 
     public event UnityAction<int, float> ChangeBuffs;

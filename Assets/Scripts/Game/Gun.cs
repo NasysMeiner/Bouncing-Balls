@@ -27,19 +27,19 @@ public class Gun : MonoBehaviour
 
     private void OnEnable()
     {
-        _levelLoader.LevelUp += OnLevelUp;
-        _levelLoader.GenerationStart += OnGenerationStart;
-        _levelLoader.DeleteAll += OnDeleteAll;
-        _levelLoader.StartGame += OnStartGame;
+        _levelLoader.LevelUpgraded += OnLevelUp;
+        _levelLoader.GenerationStarting += OnGenerationStart;
+        _levelLoader.AllFieldDeleting += OnDeleteAll;
+        _levelLoader.GameStarting += OnStartGame;
         _screenPosition.ChangeScreenOrientation += OnChangeScrenOrientation;
     }
 
     private void OnDisable()
     {
-        _levelLoader.LevelUp -= OnLevelUp;
-        _levelLoader.GenerationStart -= OnGenerationStart;
-        _levelLoader.DeleteAll -= OnDeleteAll;
-        _levelLoader.StartGame -= OnStartGame;
+        _levelLoader.LevelUpgraded -= OnLevelUp;
+        _levelLoader.GenerationStarting -= OnGenerationStart;
+        _levelLoader.AllFieldDeleting -= OnDeleteAll;
+        _levelLoader.GameStarting -= OnStartGame;
         _screenPosition.ChangeScreenOrientation -= OnChangeScrenOrientation;
     }
 
@@ -72,6 +72,7 @@ public class Gun : MonoBehaviour
 
     public void AddBalls(BallMover balloon)
     {
+        Debug.Log("Add");
         _balloons.Enqueue(balloon);
         Vector3 newPosition = new Vector3(transform.GetChild(0).position.x, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
 

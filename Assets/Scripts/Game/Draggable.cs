@@ -10,7 +10,7 @@ public class Draggable : MonoBehaviour
     [SerializeField] private float _radiusCell;
     [SerializeField] private float _radiuseDelete;
 
-    private DeleteField _deleateField;
+    private BlockDeleter _deleateField;
     private float _startPositionZ;
     private float _screenCameraDistance;
     private Block _block;
@@ -70,7 +70,7 @@ public class Draggable : MonoBehaviour
             return;
         }
 
-        foreach (Cell point in _cells.TotalNumberCells)
+        foreach (Cell point in _cells.CellArray)
         {
             if (Vector2.Distance(new Vector2(transform.position.x, transform.position.y), new Vector2(point.transform.position.x, point.transform.position.y)) <= _radiusCell && point.IsBusy == false)
             {

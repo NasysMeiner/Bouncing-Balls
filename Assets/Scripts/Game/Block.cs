@@ -14,7 +14,7 @@ public class Block : MonoBehaviour
     private Cells _cells;
     private LevelLoader _levelLoader;
     private ScoreBar _scoreBar;
-    private DeleteField _deleateField;
+    private BlockDeleter _deleateField;
     private StockBlocks _stockBlocks;
     private Shop _items;
     private ShopDistributor _shopDistributor;
@@ -32,7 +32,7 @@ public class Block : MonoBehaviour
 
     public Cell CurrentCell => _currentCell;
     public Cells Cells => _cells;
-    public DeleteField Delete => _deleateField;
+    public BlockDeleter Delete => _deleateField;
     public LevelLoader Game => _levelLoader;
     public StockBlocks StockBlocks => _stockBlocks;
     public bool IsStock => _isStock;
@@ -47,11 +47,11 @@ public class Block : MonoBehaviour
             if (_isStock == false)
             {
                 Vector3 positionText = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
-                int randomNuber = UnityEngine.Random.Range(0, maxChance);
+                int randomNumber = UnityEngine.Random.Range(0, maxChance);
 
                 _textBlock.ShowMoneyTextBlock(ball.Profitability, _currentFactor, positionText);
 
-                if (randomNuber <= _crisstalChance)
+                if (randomNumber <= _crisstalChance)
                 {
                     _textBlock.ShowCristallTextBlock(positionText);
                     _playerInfo.ChangeCristall(_profitabilityCristall);
@@ -65,14 +65,14 @@ public class Block : MonoBehaviour
             if (!ball.IsDestroyed())
                 ball.BallAudio.StartPlayAudio();
 
-            Rigidbody rbBall = collision.gameObject.GetComponent<Rigidbody>();
-            Vector3 normal = -collision.contacts[0].normal;
-            Vector3 reflection = Vector3.Reflect(collision.relativeVelocity.normalized, normal);
-            rbBall.velocity = reflection.normalized * _forceFactor;
+            Rigidbody rigidbodyBall = collision.gameObject.GetComponent<Rigidbody>();
+            Vector3 normalInSurface = -collision.contacts[0].normal;
+            Vector3 reflection = Vector3.Reflect(collision.relativeVelocity.normalized, normalInSurface);
+            rigidbodyBall.velocity = reflection.normalized * _forceFactor;
         }
     }
 
-    public void Init(int factor, Vector3 newPosition, Cell newCell, Cells cells, Color color, Camera camera, LevelLoader game, DeleteField deleateField, StockBlocks stockBlocks, Shop items, float price, ShopDistributor shopDistributor, TextBlock textBlock, ScoreBar scoreBar, PlayerInfo playerInfo, ScreenPosition screenPosition, bool isPremium = false, int crisstalChance = 0)
+    public void Init(int factor, Vector3 newPosition, Cell newCell, Cells cells, Color color, Camera camera, LevelLoader game, BlockDeleter deleateField, StockBlocks stockBlocks, Shop items, float price, ShopDistributor shopDistributor, TextBlock textBlock, ScoreBar scoreBar, PlayerInfo playerInfo, ScreenPosition screenPosition, bool isPremium = false, int crisstalChance = 0)
     {
         _currentFactor = factor;
         _playerInfo = playerInfo;
@@ -100,7 +100,7 @@ public class Block : MonoBehaviour
         _currentForceFactore = _forceFactor;
 
         if (isPremium == false)
-            _levelLoader.DeleteAll += DeleteBlock;
+            _levelLoader.AllFieldDeleting += DeleteBlock;
 
         ChangePosition(newPosition);
         Renderer renderer = GetComponent<Renderer>();
@@ -131,7 +131,7 @@ public class Block : MonoBehaviour
 
         if (_isPremium == false)
         {
-            _levelLoader.DeleteAll -= DeleteBlock;
+            _levelLoader.AllFieldDeleting -= DeleteBlock;
             _deleateField.CellBlock(_price);
         }
 
@@ -150,14 +150,14 @@ public class Block : MonoBehaviour
     {
         if (_currentCell.IsStock)
         {
-            if (gameObject.TryGetComponent<BoxCollider>(out BoxCollider Collider))
+            if (gameObject.TryGetComponent(out BoxCollider collider))
             {
-                Collider.enabled = true;
+                collider.enabled = true;
             }
             else
             {
-                MeshCollider MeshCollider = GetComponent<MeshCollider>();
-                MeshCollider.enabled = true;
+                MeshCollider meshCollider = GetComponent<MeshCollider>();
+                meshCollider.enabled = true;
             }
         }
     }
@@ -166,14 +166,14 @@ public class Block : MonoBehaviour
     {
         if (_currentCell.IsStock)
         {
-            if (gameObject.TryGetComponent<BoxCollider>(out BoxCollider Collider))
+            if (gameObject.TryGetComponent(out BoxCollider collider))
             {
-                Collider.enabled = false;
+                collider.enabled = false;
             }
             else
             {
-                MeshCollider MeshCollider = GetComponent<MeshCollider>();
-                MeshCollider.enabled = false;
+                MeshCollider meshCollider = GetComponent<MeshCollider>();
+                meshCollider.enabled = false;
             }
         }
     }

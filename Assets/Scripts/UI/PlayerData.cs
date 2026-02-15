@@ -7,7 +7,7 @@ public class PlayerData : MonoBehaviour
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private ShopDistributor _shopDistributor;
-    [SerializeField] private DeleteField _deleateField;
+    [SerializeField] private BlockDeleter _deleateField;
 
     private string _nameLeaderboard = "NewLeaders";
 

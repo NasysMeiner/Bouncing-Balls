@@ -14,21 +14,20 @@ public class ShopCreate : MonoBehaviour
         factor = CreateRandomProfitability(currentLevel);
         Block newBlock = Instantiate(prefabBlock, _spawn.transform);
 
-
         return newBlock;
     }
 
-    public BallMover CreateBalloon(BallMover balloon, Transform transform, int currentLevel, bool isBuffer, out int profability)
+    public BallMover CreateBall(BallMover ball, Transform transform, int currentLevel, bool isBuffer, out int profability)
     {
         if(isBuffer == false)
             profability = CreateRandomProfitability(currentLevel);
         else
             profability = currentLevel;
 
-        BallMover newBalloon = Instantiate(balloon, transform);
-        newBalloon.ChangeStateOn();
+        BallMover newBall = Instantiate(ball, transform);
+        newBall.ChangeStateOn();
 
-        return newBalloon;
+        return newBall;
     }
 
     private int CreateRandomProfitability(int currentLevel)

@@ -15,12 +15,12 @@ public class Buffer : MonoBehaviour
 
     private void OnEnable()
     {
-        _game.DeleteAll += OnDeleteAll;
+        _game.AllFieldDeleting += ClearAllBuffer;
     }
 
     private void OnDisable()
     {
-        _game.DeleteAll -= OnDeleteAll;
+        _game.AllFieldDeleting -= ClearAllBuffer;
     }
 
     public BallMover GetBall(BallMover ball)
@@ -86,7 +86,7 @@ public class Buffer : MonoBehaviour
         ball.transform.position = transform.position;
     }
 
-    private void OnDeleteAll()
+    private void ClearAllBuffer()
     {
         _ballsCurrentLevel.Clear();
         _ballsNextLevel.Clear();

@@ -5,7 +5,7 @@ using UnityEngine;
 public class BallMover : MonoBehaviour
 {
     [SerializeField] private float _maxSpeed = 5;
-    [SerializeField] private TrailRenderer _trail;
+    [SerializeField] private TrailRenderer _trailRenderer;
 
     private Rigidbody _rigidbody;
     private Gun _gun;
@@ -19,7 +19,7 @@ public class BallMover : MonoBehaviour
     public int Id => _id;
     public bool IsQueue => _isQueue;
     public Rigidbody Rigidbody => _rigidbody;
-    public TrailRenderer Train => _trail;
+    public TrailRenderer Train => _trailRenderer;
     public int Profitability => _profitability;
     public BallAudio BallAudio => _ballAudio;
 
@@ -45,6 +45,7 @@ public class BallMover : MonoBehaviour
         _id = id;
         _ballAudio.Init(audioCounter, audioBar);
         transform.position = _buffer.transform.position;
+
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.color = newColor;
     }
@@ -75,6 +76,6 @@ public class BallMover : MonoBehaviour
 
     private void ChangeAnimationOff()
     {
-        _trail.enabled = false;
+        _trailRenderer.enabled = false;
     }
 }

@@ -1853,7 +1853,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 161060661}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.87, y: 1.21, z: -0.051}
+  m_LocalPosition: {x: -4.87, y: 1.21, z: 0.12}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2122,7 +2122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 739b350dd033e944892d321bf951eb99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isUnity: 0
+  isUnity: 1
   _level: 1
   _maxLevel: 5
   _endLevelPanel: {fileID: 621930163}
@@ -2597,7 +2597,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 245570692}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.240347, y: 3.96, z: -0.047}
+  m_LocalPosition: {x: -2.240347, y: 3.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2616,7 +2616,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 504d758179529dd40af1f050edb5df66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shopDistributor: {fileID: 2013250356}
   _colorsLevel:
   - {r: 0.057256144, g: 0.8396226, b: 0.019802418, a: 1}
   - {r: 0.9339623, g: 0.903124, b: 0.066082224, a: 1}
@@ -2635,7 +2634,7 @@ MonoBehaviour:
   _startPriceLevel: 280000002c01000020030000d6060000800c0000
   _priceUpLevel: 0a00000032000000fa0000002602000084030000
   _numberStartBalls: 4
-  _prefabBalloon: {fileID: -3209887041243839819, guid: 0fdbdbd2be0f5db48bb1bc1d9a82e6f9, type: 3}
+  _prefabBall: {fileID: -3209887041243839819, guid: 0fdbdbd2be0f5db48bb1bc1d9a82e6f9, type: 3}
   _gun: {fileID: 8736996395737614354}
   _shop: {fileID: 1907012249}
   _buffer: {fileID: 1566641049}
@@ -2884,7 +2883,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 66.65
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6838,7 +6837,6 @@ MonoBehaviour:
   - {x: 7, y: 7}
   _stepCell: 0.6
   _gun: {fileID: 8736996395737614354}
-  _pointCenterField: {x: 0, y: 0, z: 0}
   _levelLoader: {fileID: 215014797}
   _playerInfo: {fileID: 215014802}
   _screenPosition: {fileID: 963194229}
@@ -11897,8 +11895,8 @@ MonoBehaviour:
   - {x: -3.01, y: 1.42, z: 0.12}
   _playField: {fileID: 611521571}
   _stockBlocksPosition:
-  - {x: -4.13, y: 1.21, z: -0.051}
-  - {x: -2.412, y: 0.213, z: -0.051}
+  - {x: -4.13, y: 1.21, z: 0.12}
+  - {x: -2.412, y: 0.213, z: 0.12}
   _stockBlocks: {fileID: 161060662}
   _deleteFieldPosition:
   - {x: -3.839, y: 4.1, z: 0.48480886}
