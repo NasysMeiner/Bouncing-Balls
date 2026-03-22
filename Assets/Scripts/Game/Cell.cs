@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Cell : MonoBehaviour
 {
+    [SerializeField] private float _addZPosition = -0.05f;
+
     private bool _isBusy = false;
     private bool _isStock = false;
 
@@ -14,7 +16,7 @@ public class Cell : MonoBehaviour
         transform.position = new Vector3(transformBlock.x, transformBlock.y, transformBlock.z);
     }
 
-    public void TakeCell(Block block = null, Gun gun = null)
+    public void TakeCell()
     {
         _isBusy = true;
     }
@@ -22,5 +24,17 @@ public class Cell : MonoBehaviour
     public void ReleaseCell()
     {
         _isBusy = false;
+    }
+
+    public bool CheckInRadiusCell(Vector3 targetPosition, float radius)
+    {
+        targetPosition.z = transform.position.z;
+
+        return (targetPosition - transform.position).magnitude <= radius;
+    }
+
+    public Vector3 GetPointPosition()
+    {
+        return new Vector3(transform.position.x, transform.position.y, transform.position.z + _addZPosition);
     }
 }

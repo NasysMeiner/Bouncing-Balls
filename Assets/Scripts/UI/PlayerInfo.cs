@@ -13,29 +13,31 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private int _completeLevelReward = 20;
 
+    private string _name;
+    private int _level = 1;
+    private int _icon = 0;
+    private bool _isShowGuide = false;
+    private bool _isUnlockBlockDeleter = false;
+    private int _BlockDeleterLevel = 0;
+
+    private int _cristall = 10000;
+    private int _money = 10000;
+    private int _totalMoneyLevel;
+
+    private int _bounces;
+    private int _score = 0;
+    private int _totalScore;
+
     private int _allTime = 1000;
     private float _partTime = 0.99f;
-
-    private int _score = 0;
-    private int _level = 1;
-    private int _cristall = 10000;
-    private bool _isUnlockBascket = false;
-    private int _levelUp = 0;
-    private int _icon = 0;
-    private int _money = 10000;
-    private bool _isShowGuide = false;
-    private int _totalMoneyLevel;
-    private string _name;
-    private int _bounces;
-    private int _totalScore;
 
     public int Score { get { return _score; } private set { } }
     public int TotalScore { get { return _totalScore; } private set { } }
     public int Level { get { return _level; } private set { } }
     public string Name { get { return _name; } private set { } }
     public int Cristall { get { return _cristall; } private set { } }
-    public bool IsUnlockBascket { get { return _isUnlockBascket; } private set { } }
-    public int LevelUp { get { return _levelUp; } private set { } }
+    public bool IsUnlockBascket { get { return _isUnlockBlockDeleter; } private set { } }
+    public int LevelUp { get { return _BlockDeleterLevel; } private set { } }
     public int Icon { get { return _icon; } private set { } }
     public int Money { get { return _money; } private set { } }
     public int TotalMoneyLevel { get { return _totalMoneyLevel; } private set { } }
@@ -101,7 +103,7 @@ public class PlayerInfo : MonoBehaviour
 
     public void UnlockBascet()
     {
-        _isUnlockBascket = true;
+        _isUnlockBlockDeleter = true;
     }
 
     public void SetIcon(int value)
@@ -111,7 +113,7 @@ public class PlayerInfo : MonoBehaviour
 
     public void LevelUpBascet()
     {
-        _levelUp++;
+        _BlockDeleterLevel++;
     }
 
     public void ChangeBounces()
@@ -123,14 +125,14 @@ public class PlayerInfo : MonoBehaviour
     {
         _totalScore = playerData.score;
         _level = playerData.level;
-        _levelUp = playerData.levelUp;
+        _BlockDeleterLevel = playerData.levelUp;
         _cristall = playerData.cristall;
-        _isUnlockBascket = playerData.isUnlockBascet;
+        _isUnlockBlockDeleter = playerData.isUnlockBascet;
         _isShowGuide = playerData.isShowGuide;
         SetIcon(playerData.icon);
         SetName(playerData.name);
         _money = playerData.money;
-        _shopDistributor.LoadUp(_levelUp, _isUnlockBascket);
+        _shopDistributor.LoadUp(_BlockDeleterLevel, _isUnlockBlockDeleter);
         _levelLoader.LoadLevel(_level, _icon);
 
         for (int i = 0; i < _level - 1; i++)

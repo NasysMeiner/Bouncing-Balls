@@ -45,9 +45,11 @@ public class BlockDeleter : MonoBehaviour
         StartCoroutine(UnlockAnimation());
     }
 
-    public void CellBlock(float price)
+    public void CellBlock(Block block)
     {
-        _playerInfo.ChangeMoney((int)(price * _coefficientCell));
+        _playerInfo.ChangeMoney((int)(block.Price * _coefficientCell));
+
+        PoolManager.Instance.SetObject(block, block.ObjectType);
     }
 
     private void OnChangeCristall(int value)

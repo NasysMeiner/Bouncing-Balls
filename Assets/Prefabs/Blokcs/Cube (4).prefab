@@ -112,8 +112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d106187f5cf35ca4bad9948c7976b173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectType: 2
   _forceFactor: 2
   _text: {fileID: 4375424473919498601}
+  _textBlock: {fileID: 0}
 --- !u!114 &-5469144429976324357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,10 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27342e9b8d661974d82f31458a1423fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _newColor: {r: 0.36078432, g: 0.5372549, b: 0.12941177, a: 0.4627451}
-  _cells: {fileID: 0}
+  _alphaColorValue: 0.495
   _radiusCell: 0.3
-  _radiuseDelete: 1
 --- !u!1 &6662344050564999085
 GameObject:
   m_ObjectHideFlags: 0

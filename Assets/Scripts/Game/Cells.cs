@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class Cells : MonoBehaviour
@@ -12,12 +13,19 @@ public class Cells : MonoBehaviour
         _cells.Add(newCell);
     }
 
-    public Cell SerachCell(Vector3 currentCell)
+    public Cell GetCellFromPosition(Vector3 cellPosition)
     {
         foreach (Cell cell in _cells)
-            if (currentCell == cell.transform.position)
+            if (cellPosition == cell.transform.position)
                 return cell;
 
         return null;
+    }
+
+    public bool TryGetCellFromRadius(Vector3 position, float radius, out Cell cell)
+    {
+        cell = _cells.FirstOrDefault(c => !c.IsBusy && c.CheckInRadiusCell(position, radius));
+
+        return cell != null;
     }
 }

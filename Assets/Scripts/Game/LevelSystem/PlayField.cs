@@ -1,14 +1,18 @@
+using BouncingBalls;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayField : MonoBehaviour
 {
+    [SerializeField] private List<Vector2> _fieldXY = new List<Vector2>();
+    [SerializeField] private Vector2 _stockFieldXY;
+    [SerializeField] private GameObject _stockFieldObject;
+    [SerializeField] private float _stepCell;
+    [Space]
     [SerializeField] private Cells _totalNumberCells;
     [SerializeField] private Cell _prefabCell;
     [SerializeField] private float _fieldX;
     [SerializeField] private float _fieldY;
-    [SerializeField] private List<Vector2> _fieldXY = new List<Vector2>();
-    [SerializeField] private float _stepCell;
     [SerializeField] private Gun _gun;
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private PlayerInfo _playerInfo;
@@ -36,6 +40,28 @@ public class PlayField : MonoBehaviour
         ChangeGunPosition();
     }
 
+    public void GenerateField(int level)
+    {
+        SpawnFieldFromParent(_fieldXY[level], transform);
+        SpawnFieldFromParent(_stockFieldXY, _stockFieldObject.transform);
+    }
+
+    private void SpawnFieldFromParent(Vector2 fieldXY, Transform parent)
+    {
+        for (int y = 0; y < fieldXY.y; y++)
+        {
+            for (int x = 0; x < fieldXY.x; x++)
+            {
+                Cell cell = PoolManager.Instance.GetObject<Cell>(ObjectType.Cell);
+                cell.transform.parent = parent;
+                cell.gameObject.SetActive(true);
+                cell.transform.position = new Vector3(parent.position.x + x * _stepCell, parent.position.y + y * _stepCell, parent.position.z);
+                _cellsField.Add(cell);
+                _totalNumberCells.AddCell(cell);
+            }
+        }
+    }
+
     private void SpawnCell()
     {
         for (int y = 0; y < _fieldY; y++)
@@ -47,7 +73,6 @@ public class PlayField : MonoBehaviour
                     Cell cell = _openCells.Dequeue();
                     cell.transform.position = new Vector3(transform.position.x + x * _stepCell, transform.position.y + y * _stepCell, transform.position.z);
                     _cellsField.Add(cell);
-                    Debug.Log(cell.transform.position);
                 }
                 else
                 {
@@ -95,8 +120,8 @@ public class PlayField : MonoBehaviour
             newPositionXGun = transform.position.x + _stepCell * (_fieldX - 1);
 
         int hight = (int)Random.Range(1, _fieldY - 1);
-        Cell currentCell = _totalNumberCells.SerachCell(new Vector3(newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z));
-        currentCell.TakeCell(null, _gun);
+        Cell currentCell = _totalNumberCells.GetCellFromPosition(new Vector3(newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z));
+        currentCell.TakeCell();
         _gun.ChangePosition(currentCell, lefrOrRight);
     }
 }

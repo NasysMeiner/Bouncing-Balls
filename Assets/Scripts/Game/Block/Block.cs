@@ -1,20 +1,23 @@
+using BouncingBalls;
 using System;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 [RequireComponent(typeof(Draggable))]
 public class Block : MonoBehaviour
 {
+    [SerializeField] private ObjectType _objectType;
     [SerializeField] private float _forceFactor = 1;
     [SerializeField] private TMP_Text _text = null;
     [SerializeField] private TextBlock _textBlock;
 
+    private Collider _collider;
+
     private Cell _currentCell;
     private Cells _cells;
-    private LevelLoader _levelLoader;
-    private ScoreBar _scoreBar;
-    private BlockDeleter _deleateField;
+    //private ScoreBar _scoreBar;
     private StockBlocks _stockBlocks;
     private Shop _items;
     private ShopDistributor _shopDistributor;
@@ -23,20 +26,22 @@ public class Block : MonoBehaviour
     private float _currentForceFactore;
     private int _factor;
     private int _crisstalChance = 0;
-    private bool _isPremium;
-    private bool _isStock;
+    private bool _isPremium = false;
     private ScreenPosition _screenPosition;
     private int _profitabilityCristall = 1;
 
-    private PlayerInfo _playerInfo;
+    //private PlayerInfo _playerInfo;
 
     public Cell CurrentCell => _currentCell;
     public Cells Cells => _cells;
-    public BlockDeleter Delete => _deleateField;
-    public LevelLoader Game => _levelLoader;
-    public StockBlocks StockBlocks => _stockBlocks;
-    public bool IsStock => _isStock;
-    public ScreenPosition ScreenPosition => _screenPosition;
+    public ObjectType ObjectType => _objectType;
+    public float Price => _price;
+
+    public event Action<int> ScoreChanged;
+    public event Action<int> CristallChanged;
+    public event Action<Vector3> BouncedPosition;
+    public event Action<Block> Deleted;
+    public event Action Bounced;
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -44,8 +49,10 @@ public class Block : MonoBehaviour
 
         if (collision.gameObject.TryGetComponent(out BallMover ball))
         {
-            if (_isStock == false)
+            if (!CurrentCell.IsStock)
             {
+                int score = _currentFactor * ball.Profitability;
+
                 Vector3 positionText = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
                 int randomNumber = UnityEngine.Random.Range(0, maxChance);
 
@@ -53,13 +60,18 @@ public class Block : MonoBehaviour
 
                 if (randomNumber <= _crisstalChance)
                 {
-                    _textBlock.ShowCristallTextBlock(positionText);
-                    _playerInfo.ChangeCristall(_profitabilityCristall);
+                    //_textBlock.ShowCristallTextBlock(positionText);
+                    //_playerInfo.ChangeCristall(_profitabilityCristall);
+
+                    CristallChanged?.Invoke(_profitabilityCristall);
                 }
 
-                _playerInfo.ChangeBounces();
-                _scoreBar.ChangeScore(_currentFactor * ball.Profitability);
-                _playerInfo.ChangeMoney(_currentFactor * ball.Profitability);
+                //_playerInfo.ChangeBounces();
+                //_scoreBar.ChangeScore(score);
+                //_playerInfo.ChangeMoney(score);
+
+                ScoreChanged?.Invoke(_currentFactor * ball.Profitability);
+                BouncedPosition?.Invoke(collision.contacts[0].point);
             }
 
             if (!ball.IsDestroyed())
@@ -69,61 +81,79 @@ public class Block : MonoBehaviour
             Vector3 normalInSurface = -collision.contacts[0].normal;
             Vector3 reflection = Vector3.Reflect(collision.relativeVelocity.normalized, normalInSurface);
             rigidbodyBall.velocity = reflection.normalized * _forceFactor;
+
+            Bounced?.Invoke();
         }
     }
 
-    public void Init(int factor, Vector3 newPosition, Cell newCell, Cells cells, Color color, Camera camera, LevelLoader game, BlockDeleter deleateField, StockBlocks stockBlocks, Shop items, float price, ShopDistributor shopDistributor, TextBlock textBlock, ScoreBar scoreBar, PlayerInfo playerInfo, ScreenPosition screenPosition, bool isPremium = false, int crisstalChance = 0)
+    private void Start()
     {
-        _currentFactor = factor;
-        _playerInfo = playerInfo;
-        _scoreBar = scoreBar;
-        _textBlock = textBlock;
-        _crisstalChance = crisstalChance;
+        if (gameObject.TryGetComponent(out BoxCollider boxCollider))
+            _collider = boxCollider;
+        else
+            _collider = GetComponent<MeshCollider>();
+    }
+
+    public void Initialize(int factor, float price)
+    {
         _factor = factor;
+        _currentFactor = factor;
+        _price = price;
+    }
+
+    public void SetPremium()
+    {
+        _isPremium = true;
+
+        //if (_isPremium == false)
+        //    _levelLoader.AllFieldDeleting += DeleteBlock;
+    }
+
+    public void PostInitialize(Cells cells, Shop items, ShopDistributor shopDistributor, TextBlock textBlock, PlayerInfo playerInfo, ScreenPosition screenPosition)
+    {
+        _cells = cells;
+
+        //_playerInfo = playerInfo;
+        //_scoreBar = scoreBar;
+        _textBlock = textBlock;
+
         _shopDistributor = shopDistributor;
         _shopDistributor.ChangeBuffs += StartBuffsRebound;
-        _price = price;
+
         _text.text = $"X{_currentFactor}";
-        _cells = cells;
-        _stockBlocks = stockBlocks;
-        _deleateField = deleateField;
-        _currentCell = newCell;
+
+        //_currentCell = newCell;
+
         _items = items;
         _items.Open += ClicabilityOff;
         _items.Close += ClicabilityOn;
-        _currentCell.TakeCell(this);
-        _isPremium = isPremium;
-        _isStock = true;
-        _levelLoader = game;
+
+
+        _isPremium = false;
+
         _screenPosition = screenPosition;
         _screenPosition.ChangeScreenOrientation += OnChangeScreenOrientation;
-        _currentForceFactore = _forceFactor;
 
-        if (isPremium == false)
-            _levelLoader.AllFieldDeleting += DeleteBlock;
+        //ChangePosition(newPosition);
 
-        ChangePosition(newPosition);
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.material.color = color;
-        transform.GetChild(0).GetComponent<Canvas>().worldCamera = camera;
+        //transform.GetChild(0).GetComponent<Canvas>().worldCamera = camera;
     }
 
-    public void ChangeCell(Cell newCell, Vector3 newPosition)
+    public void ChangeCell(Cell newCell)
     {
-        _currentCell = newCell;
-        _currentCell.TakeCell(this);
-        ChangePosition(newPosition);
+        if(_currentCell != null)
+            _currentCell.ReleaseCell();
 
-        if (_currentCell.IsStock)
-            _isStock = true;
-        else
-            _isStock = false;
+        _currentCell = newCell;
+        _currentCell.TakeCell();
+
+        ChangePosition(_currentCell.GetPointPosition());
     }
 
     public void DeleteBlock()
     {
-        _stockBlocks.DeleteBlock(this);
         _currentCell.ReleaseCell();
+
         _shopDistributor.ChangeBuffs -= StartBuffsRebound;
         _items.Open -= ClicabilityOn;
         _items.Close -= ClicabilityOff;
@@ -131,11 +161,11 @@ public class Block : MonoBehaviour
 
         if (_isPremium == false)
         {
-            _levelLoader.AllFieldDeleting -= DeleteBlock;
-            _deleateField.CellBlock(_price);
+            //_levelLoader.AllFieldDeleting -= DeleteBlock;
+            //_deleateField.CellBlock(_price);
         }
 
-        Destroy(gameObject);
+        Deleted?.Invoke(this);
     }
 
     private void ChangePosition(Vector3 newPosition)
@@ -149,33 +179,13 @@ public class Block : MonoBehaviour
     private void ClicabilityOn()
     {
         if (_currentCell.IsStock)
-        {
-            if (gameObject.TryGetComponent(out BoxCollider collider))
-            {
-                collider.enabled = true;
-            }
-            else
-            {
-                MeshCollider meshCollider = GetComponent<MeshCollider>();
-                meshCollider.enabled = true;
-            }
-        }
+            _collider.enabled = true;
     }
 
     private void ClicabilityOff()
     {
         if (_currentCell.IsStock)
-        {
-            if (gameObject.TryGetComponent(out BoxCollider collider))
-            {
-                collider.enabled = false;
-            }
-            else
-            {
-                MeshCollider meshCollider = GetComponent<MeshCollider>();
-                meshCollider.enabled = false;
-            }
-        }
+            _collider.enabled = false;
     }
 
     private void StartBuffsRebound(int id, float value)
@@ -195,7 +205,7 @@ public class Block : MonoBehaviour
 
             case profitabilityBuffId:
                 if (value > 0)
-                    _currentFactor = _currentFactor * Convert.ToInt32(value);
+                    _currentFactor = _currentFactor * (int)value;
                 else
                     _currentFactor = _factor;
                 break;

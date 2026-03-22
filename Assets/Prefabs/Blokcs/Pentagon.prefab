@@ -426,8 +426,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d106187f5cf35ca4bad9948c7976b173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _objectType: 4
   _forceFactor: 2
   _text: {fileID: 7672784837468272088}
+  _textBlock: {fileID: 0}
 --- !u!114 &1193207845930769705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +442,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27342e9b8d661974d82f31458a1423fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _newColor: {r: 0.36078432, g: 0.5372549, b: 0.12941177, a: 0.4745098}
-  _cells: {fileID: 0}
+  _alphaColorValue: 0.495
   _radiusCell: 0.3
-  _radiuseDelete: 1

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class StockBlocks : MonoBehaviour 
 {
+    [SerializeField] private Factory _factory;
+    [SerializeField] private BlockDeleter _blockDeleter;
+    [Space]
     [SerializeField] private List<Color> _colorsLevel;
     [SerializeField] private List<Block> _prefabsBlock;
     [SerializeField] private List<int> _minBlocksLevel;
@@ -21,7 +24,6 @@ public class StockBlocks : MonoBehaviour
     [SerializeField] private TextBlock _textBlock;
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private BlockDeleter _deleateField;
     [SerializeField] private Shop _items;
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private float _currentPriceStockUp = 15;
@@ -48,6 +50,9 @@ public class StockBlocks : MonoBehaviour
     public List<Block> Blocks => _blocks;
     public int CurrentPriceBlock => _currentPriceBlock;
 
+    public event Action<Block> OnBlockAdded;
+    public event Action<Block> OnBlockDeleted;
+
     private void OnDisable()
     {
         _shopDistributor.ChangeBuffs -= CreateTimeBlock;
@@ -73,17 +78,9 @@ public class StockBlocks : MonoBehaviour
 
     public void DeleteBlock(Block block)
     {
-        List<Block> newListBlocks = new List<Block>();
-
-        foreach (Block currentBlock in _blocks)
-        {
-            if (currentBlock == block)
-                continue;
-
-            newListBlocks.Add(currentBlock);
-        }
-        
-        _blocks = newListBlocks;
+        block.Deleted -= DeleteBlock;
+        _blocks.Remove(block);
+        _blockDeleter.CellBlock(block);
     }
 
     public void ChangeCurrentPrice(float value)
@@ -102,12 +99,28 @@ public class StockBlocks : MonoBehaviour
         return null;
     }
 
+    public void CreateBlock(int level)
+    {
+        Cell emptyCell = TryEmptyCell();
+
+        if (emptyCell == null)
+            return;
+
+        Block newBlock = _factory.GetRandomBlock(level, 0);
+        newBlock.PostInitialize(_totalNumberCells, _items, _shopDistributor, _textBlock, _playerInfo, _screenPosition);
+        newBlock.ChangeCell(emptyCell);
+
+        AddBlock(newBlock);
+
+        newBlock.gameObject.SetActive(true);
+    }
+
     public void BuyBlock(float time)
     {
         Cell emptyCell = TryEmptyCell();
         int level = _currentLevel;
         float value = _playerInfo.Money;
-        float price = _currentPriceBlock;
+        float price = _currentPriceBlock; 
         int cristallChance = 0;
         bool isPremium = false;
 
@@ -132,13 +145,13 @@ public class StockBlocks : MonoBehaviour
 
         if (_purchaseOpportunity && value > price)
         {
-            Block newBlock =  CreateBlock(emptyCell, new Vector3(emptyCell.transform.position.x, emptyCell.transform.position.y, 0), level, cristallChance, isPremium);
-            AddBlock(newBlock);
+            //Block newBlock =  CreateBlock(emptyCell, new Vector3(emptyCell.transform.position.x, emptyCell.transform.position.y, 0), level, cristallChance, isPremium);
+            //AddBlock(newBlock);
 
-            if(time > 0)
-                _timeBlock = newBlock;
+            //if(time > 0)
+            //    _timeBlock = newBlock;
 
-            _purchaseOpportunity = false;
+            //_purchaseOpportunity = false;
         }
     }
 
@@ -167,13 +180,13 @@ public class StockBlocks : MonoBehaviour
         _currentLevel++;
     }
 
-    private Block CreateBlock(Cell emptyCell, Vector3 positionCell, int level, int cristallChance = 0, bool isPremium = false)
-    {
-        Block newBlock = _shop.CreateBlocks(_prefabsBlock[UnityEngine.Random.Range(0, _prefabsBlock.Count)], level, out int factor);
-        newBlock.Init(factor, positionCell, emptyCell, _totalNumberCells, _colorsLevel[factor - 1], _camera, _levelLoader, _deleateField, this, _items, _currentPriceBlock, _shopDistributor, _textBlock, _scoreBar, _playerInfo, _screenPosition, isPremium, cristallChance);
+    //private Block CreateBlock(Cell emptyCell, Vector3 positionCell, int level, int cristallChance = 0, bool isPremium = false)
+    //{
+    //    Block newBlock = _shop.CreateBlocks(_prefabsBlock[UnityEngine.Random.Range(0, _prefabsBlock.Count)], level, out int factor);
+    //    //newBlock.Init(factor, positionCell, emptyCell, _totalNumberCells, _colorsLevel[factor - 1], _camera, _levelLoader, _deleateField, this, _items, _currentPriceBlock, _shopDistributor, _textBlock, _scoreBar, _playerInfo, _screenPosition, isPremium, cristallChance);
 
-        return newBlock;
-    }
+    //    return newBlock;
+    //}
 
     private void InitCells()
     {
@@ -199,7 +212,7 @@ public class StockBlocks : MonoBehaviour
                 if (currentNumberStartBlocks > 0)
                 {
                     newCell.SpawnCell(positionCell, true);
-                    AddBlock(CreateBlock(newCell, positionCell, _currentLevel, 0, false));
+                    CreateBlock(_currentLevel);
                     currentNumberStartBlocks--;
                 }
                 else
@@ -225,7 +238,7 @@ public class StockBlocks : MonoBehaviour
             Cell emptyCell = TryEmptyCell();
 
             if (emptyCell != null)
-                AddBlock(CreateBlock(emptyCell, new Vector3(emptyCell.transform.position.x, emptyCell.transform.position.y, 0), _currentLevel, 0, false));
+                CreateBlock(_currentLevel);
             else
                 return;
         }
@@ -233,6 +246,7 @@ public class StockBlocks : MonoBehaviour
 
     private void AddBlock(Block block)
     {
+        block.Deleted += DeleteBlock;
         _blocks.Add(block);
     }
 

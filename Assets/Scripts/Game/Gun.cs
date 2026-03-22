@@ -72,7 +72,6 @@ public class Gun : MonoBehaviour
 
     public void AddBalls(BallMover balloon)
     {
-        Debug.Log("Add");
         _balloons.Enqueue(balloon);
         Vector3 newPosition = new Vector3(transform.GetChild(0).position.x, transform.GetChild(0).position.y, transform.GetChild(0).position.z);
 
