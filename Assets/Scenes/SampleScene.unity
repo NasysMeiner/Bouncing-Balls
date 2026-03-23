@@ -2066,7 +2066,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2161,7 +2161,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioSource: {fileID: 176085137}
-  _musicVolume: 0
+  _music: {fileID: 8300000, guid: dad04041a4906f94981ac5e3f8e1a10d, type: 3}
+  _isAwakePlay: 1
+  _musicVolume: 0.238
   _effectVolume: 0.211
   _cooldownTime: 0.1
   _audioProfiles:
@@ -2309,7 +2311,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &215014799
 MonoBehaviour:
@@ -3490,10 +3492,22 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 215014797}
-        m_TargetAssemblyTypeName: Game, Assembly-CSharp
-        m_MethodName: ResetGame
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: RestartGame
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 705946025}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6653,10 +6667,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a560d694ebc54140ac45a6574386a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _volumeType: 1
   _slider: {fileID: 862628648}
-  _iconMax: {fileID: 603511559}
-  _iconMin: {fileID: 99387987}
-  _music: {fileID: 0}
+  _iconMuted: {fileID: 99387987}
+  _iconUnmuted: {fileID: 603511559}
+  _minValue: 0
+  _maxValue: 1
 --- !u!1 &577050771
 GameObject:
   m_ObjectHideFlags: 0
@@ -7071,7 +7087,7 @@ Transform:
   m_Children:
   - {fileID: 1599569891}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &621930159
 GameObject:
@@ -8392,14 +8408,14 @@ GameObject:
   - component: {fileID: 705946026}
   - component: {fileID: 705946030}
   - component: {fileID: 705946029}
-  - component: {fileID: 705946027}
+  - component: {fileID: 705946031}
   m_Layer: 5
   m_Name: EndGamePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &705946026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8428,25 +8444,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1932, y: 1074}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &705946027
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 705946025}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 033194c9be6b29344ad4d59c84bca7b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _levelLoader: {fileID: 215014797}
-  _playerInfo: {fileID: 215014802}
-  _totalScoreText: {fileID: 88638569}
-  _score: {fileID: 661973767}
-  _bounces: {fileID: 1787815981}
-  _money: {fileID: 835280155}
-  _ScoreTime: {fileID: 1260500490}
 --- !u!114 &705946029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8485,6 +8482,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705946025}
   m_CullTransparentMesh: 1
+--- !u!114 &705946031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705946025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75107f1154c36ae4bb8c731b79a121af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _totalScore: {fileID: 88638570}
+  _score: {fileID: 661973768}
+  _bounceCount: {fileID: 1787815982}
+  _totalMoney: {fileID: 835280156}
+  _timeInGame: {fileID: 1260500488}
 --- !u!1 &706777107
 GameObject:
   m_ObjectHideFlags: 0
@@ -8822,7 +8836,7 @@ GameObject:
   - component: {fileID: 715114156}
   - component: {fileID: 715114157}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8840,6 +8854,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1837178121}
   - {fileID: 1580359990}
   m_Father: {fileID: 787013272}
   m_RootOrder: 7
@@ -9604,149 +9619,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _text: {fileID: 279805259}
   _price: 10
---- !u!1 &771121495
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 771121497}
-  - component: {fileID: 771121496}
-  - component: {fileID: 771121498}
-  m_Layer: 0
-  m_Name: Audio
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!82 &771121496
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771121495}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: dad04041a4906f94981ac5e3f8e1a10d, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0.3
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 136
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!4 &771121497
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771121495}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 2.25, z: -11.459999}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &771121498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 771121495}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1aab2ebb6f8127a4d856c945f688f8fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _playMusic: 4
-  _levelLoader: {fileID: 215014797}
 --- !u!1 &774194278
 GameObject:
   m_ObjectHideFlags: 0
@@ -10012,7 +9884,7 @@ RectTransform:
   - {fileID: 1044646027}
   - {fileID: 801487886}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -10087,6 +9959,7 @@ MonoBehaviour:
   _startView: {fileID: 1292015549}
   _bankView: {fileID: 6606992630964616260}
   _endLevelView: {fileID: 621930163}
+  _endGameView: {fileID: 705946031}
   _levelText: {fileID: 265803615}
 --- !u!1 &791655241
 GameObject:
@@ -12076,7 +11949,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &963194229
 MonoBehaviour:
@@ -13042,13 +12915,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 787013273}
-        m_TargetAssemblyTypeName: Icons, Assembly-CSharp
-        m_MethodName: ChangeIcon
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ChangeIconPlayer
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1079279898}
-          m_ObjectArgumentAssemblyTypeName: Icon, Assembly-CSharp
+          m_ObjectArgument: {fileID: 1079279896}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -13981,7 +13854,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 12
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1145765349
 MonoBehaviour:
@@ -15261,10 +15134,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a560d694ebc54140ac45a6574386a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _volumeType: 0
   _slider: {fileID: 4324905007847535311}
-  _iconMax: {fileID: 568506813}
-  _iconMin: {fileID: 686543256}
-  _music: {fileID: 771121496}
+  _iconMuted: {fileID: 686543256}
+  _iconUnmuted: {fileID: 568506813}
+  _minValue: 0
+  _maxValue: 1
 --- !u!1 &1210409245
 GameObject:
   m_ObjectHideFlags: 0
@@ -16962,13 +16837,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 787013273}
-        m_TargetAssemblyTypeName: Icons, Assembly-CSharp
-        m_MethodName: ChangeIcon
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ChangeIconPlayer
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1325648550}
-          m_ObjectArgumentAssemblyTypeName: Icon, Assembly-CSharp
+          m_ObjectArgument: {fileID: 1325648548}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -17625,7 +17500,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1396016476
 GameObject:
@@ -19793,7 +19668,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1568512645
 GameObject:
@@ -19983,7 +19858,7 @@ RectTransform:
   - {fileID: 1190081739}
   - {fileID: 1170384490}
   m_Father: {fileID: 715114154}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -20880,7 +20755,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1643921611
 GameObject:
@@ -23002,13 +22877,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 787013273}
-        m_TargetAssemblyTypeName: Icons, Assembly-CSharp
-        m_MethodName: ChangeIcon
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ChangeIconPlayer
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1770155152}
-          m_ObjectArgumentAssemblyTypeName: Icon, Assembly-CSharp
+          m_ObjectArgument: {fileID: 1770155150}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -23962,6 +23837,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1832124487}
   m_CullTransparentMesh: 1
+--- !u!1 &1837178120
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1837178121}
+  - component: {fileID: 1837178123}
+  - component: {fileID: 1837178122}
+  m_Layer: 5
+  m_Name: Panel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1837178121
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837178120}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 715114154}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1837178122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837178120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.392}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1837178123
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837178120}
+  m_CullTransparentMesh: 1
 --- !u!1 &1841303206
 GameObject:
   m_ObjectHideFlags: 0
@@ -24531,13 +24482,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 787013273}
-        m_TargetAssemblyTypeName: Icons, Assembly-CSharp
-        m_MethodName: ChangeIcon
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ChangeIconPlayer
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 1857690087}
-          m_ObjectArgumentAssemblyTypeName: Icon, Assembly-CSharp
+          m_ObjectArgument: {fileID: 1857690085}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.UI.Image, UnityEngine.UI
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -24797,7 +24748,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1907012249
 MonoBehaviour:
@@ -25677,21 +25628,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 715114157}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeActivePanel
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 715114157}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeTime
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: PauseOn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25701,9 +25640,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 416289425}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeActivePanel
+      - m_Target: {fileID: 715114153}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26307,7 +26246,7 @@ Transform:
   - {fileID: 582883313}
   - {fileID: 26994548}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2001845070
 GameObject:
@@ -28991,7 +28930,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2140962155
 GameObject:
@@ -29470,7 +29409,7 @@ Transform:
   - {fileID: 454971840}
   - {fileID: 753112493}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &608677648336140994
 GameObject:
@@ -33153,9 +33092,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 715114157}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeActivePanel
+      - m_Target: {fileID: 715114153}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -33165,22 +33104,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 715114157}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeTime
+      - m_Target: {fileID: 787013276}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: PauseOff
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 416289425}
-        m_TargetAssemblyTypeName: Panel, Assembly-CSharp
-        m_MethodName: ChangeActivePanel
-        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

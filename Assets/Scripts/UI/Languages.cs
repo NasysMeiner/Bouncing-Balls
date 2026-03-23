@@ -21,7 +21,7 @@ public class Languages : MonoBehaviour
             {
                 _currentLanguage.ChangeActiveOff();
                 _currentLanguage = lang;
-                Lean.Localization.LeanLocalization.SetCurrentLanguageAll($"{_currentLanguage.Name}");
+                Lean.Localization.LeanLocalization.SetCurrentLanguageAll(_currentLanguage.Name);
                 _currentLanguage.ChangeActiveOn();
                 break;
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get; private set; }
 
     [SerializeField] private AudioSource _audioSource;
+    [Space]
+    [SerializeField] private AudioClip _music;
+    [SerializeField] private bool _isAwakePlay;
     [Range(0f, 1f)]
     [SerializeField] private float _musicVolume;
     [Range(0f, 1f)]
@@ -17,6 +21,9 @@ public class AudioManager : MonoBehaviour
     private Dictionary<string, AudioClip> _soundDictionary;
 
     private float _lastPlayTime = 0;
+
+    public float MusicVolume => _musicVolume;
+    public float EffectVolume => _effectVolume;
 
     private void Awake()
     {
@@ -32,6 +39,13 @@ public class AudioManager : MonoBehaviour
 
         foreach(var profile in _audioProfiles)
             _soundDictionary.Add(profile.Name, profile.AudioClip);
+
+        _audioSource.clip = _music;
+        _audioSource.volume = _musicVolume;
+
+        if (_isAwakePlay)
+            _audioSource.Play();
+
     }
 
     public void PlaySound(string nameAudio)
@@ -51,5 +65,15 @@ public class AudioManager : MonoBehaviour
             _audioSource.PlayOneShot(audioClip, _effectVolume);
             _lastPlayTime = Time.time;
         }
+    }
+
+    internal void SetMusicVolume(float value)
+    {
+        _audioSource.volume = value;
+    }
+
+    internal void SetEffectsVolume(float value)
+    {
+        _effectVolume = value;
     }
 }

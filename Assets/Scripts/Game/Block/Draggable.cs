@@ -64,7 +64,7 @@ public class Draggable : MonoBehaviour
 
         if (_isBlockDeleterArea)
             _block.DeleteBlock();
-        else if (_block.Cells.TryGetCellFromRadius(transform.position, _radiusCell, out Cell newCell))
+        else if (_block.PlayField.TryGetCellFromRadius(transform.position, _radiusCell, out Cell newCell))
             _block.ChangeCell(newCell);
         else
             transform.position = _block.CurrentCell.GetPointPosition();

@@ -16,8 +16,10 @@ public class GameManager : MonoBehaviour
     private float _timeInLevel = 0;
 
     private bool _isGameStarted = false;
+    private bool _isPause = false;
 
     public int CurrentLevel => _currentLevel;
+    public int MaxLevel => _scoreLevels.Count;
     public float TimeInLevel => _timeInLevel;
 
     public event Action<int> OnSetLevel;
@@ -32,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        if(_isGameStarted)
+        if(_isGameStarted && !_isPause)
             _timeInLevel += Time.deltaTime;
     }
 
@@ -69,11 +71,30 @@ public class GameManager : MonoBehaviour
         _uiManager.ViewEndLevelPanel(levelData);
     }
 
+    public void RestartGame()
+    {
+        _currentLevel = 0;
+        FullReset();
+        CreateLevel();
+    }
+
     public void StartNextLevel()
     {
         _currentLevel++;
         FullReset();
         CreateLevel();
+    }
+
+    public void PauseOn()
+    {
+        _isPause = true;
+        Time.timeScale = 0;
+    }
+
+    public void PauseOff()
+    {
+        _isPause = false;
+        Time.timeScale = 1;
     }
 
     private void FullReset()

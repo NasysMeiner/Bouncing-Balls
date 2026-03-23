@@ -39,7 +39,7 @@ public class BlockManager : MonoBehaviour
             return;
 
         Block newBlock = _factory.GetRandomBlock(level);
-        newBlock.PostInitialize(_playField.Cells, _textBlock);
+        newBlock.PostInitialize(_playField, _textBlock);
         newBlock.ChangeCell(emptyCell);
 
         RegisterBlock(newBlock);

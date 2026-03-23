@@ -12,7 +12,7 @@ public class Block : MonoBehaviour, IInitializable
     private Collider _collider;
 
     private Cell _currentCell;
-    private Cells _cells;
+    private PlayField _playField;
     private float _price;
     private int _currentFactor = 1;
     private float _currentForceFactore;
@@ -22,7 +22,7 @@ public class Block : MonoBehaviour, IInitializable
     private int _profitabilityCristall = 1;
 
     public Cell CurrentCell => _currentCell;
-    public Cells Cells => _cells;
+    public PlayField PlayField => _playField;
     public ObjectType ObjectType => _objectType;
     public float Price => _price;
 
@@ -45,17 +45,10 @@ public class Block : MonoBehaviour, IInitializable
         {
             if (!CurrentCell.IsStock)
             {
-                int score = _currentFactor * ball.Profitability;
-
-                Vector3 positionText = Camera.main.WorldToScreenPoint(collision.contacts[0].point);
-                int randomNumber = UnityEngine.Random.Range(0, maxChance);
-
-                //_textBlock.ShowMoneyTextBlock(ball.Profitability, _currentFactor, positionText);
-
                 BounceScoreData scoreData = new
                 (
-                    score,
-                    randomNumber <= _crisstalChance ? _profitabilityCristall : 0,
+                    _currentFactor * ball.Profitability,
+                    UnityEngine.Random.Range(0, maxChance) <= _crisstalChance ? _profitabilityCristall : 0,
                     collision.contacts[0].point
                 );
 
@@ -84,9 +77,9 @@ public class Block : MonoBehaviour, IInitializable
         OnInitialize?.Invoke(_factor);
     }
 
-    public void PostInitialize(Cells cells, ScorePopupManager textBlock)
+    public void PostInitialize(PlayField playField, ScorePopupManager textBlock)
     {
-        _cells = cells;
+        _playField = playField;
         _textBlock = textBlock;
 
         OnPostInitialize?.Invoke();

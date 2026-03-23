@@ -10,15 +10,28 @@ public class PlayField : MonoBehaviour
     [SerializeField] private GameObject _stockFieldObject;
     [SerializeField] private float _stepCell;
     [Space]
-    [SerializeField] private Cells _totalNumberCells;
+    [SerializeField] private CellsField _totalNumberCells;
 
     private List<Cell> _cellsPlayField;
     private List<Cell> _cellsStockField;
+    private List<Cell> _cellsInField;
 
     private Vector2 _currentFieldXY;
 
     public Transform StockFieldObject => _stockFieldObject.transform;
-    public Cells Cells => _totalNumberCells;
+    public CellsField Cells => _totalNumberCells;
+    public List<Cell> CellInField
+    {
+        get
+        {
+            if (_cellsPlayField != null)
+                return _cellsPlayField;
+
+            _cellsPlayField = new(_cellsPlayField);
+            _cellsPlayField = _cellsPlayField.Concat(_cellsStockField).ToList();
+            return _cellsPlayField;
+        }
+    }
 
     public bool TryEmptyCell(out Cell emptyCell)
     {
@@ -32,6 +45,22 @@ public class PlayField : MonoBehaviour
         _cellsPlayField = SpawnFieldFromParent(_currentFieldXY, transform);
         _cellsStockField = SpawnFieldFromParent(_stockFieldXY, _stockFieldObject.transform, true);
         ChangeGunPosition(gun);
+    }
+
+    public Cell GetCellFromPosition(Vector3 cellPosition)
+    {
+        foreach (Cell cell in CellInField)
+            if (cellPosition == cell.transform.position)
+                return cell;
+
+        return null;
+    }
+
+    public bool TryGetCellFromRadius(Vector3 position, float radius, out Cell cell)
+    {
+        cell = CellInField.FirstOrDefault(c => !c.IsBusy && c.CheckInRadiusCell(position, radius));
+
+        return cell != null;
     }
 
     private List<Cell> SpawnFieldFromParent(Vector2 fieldXY, Transform parent, bool isStock = false)
@@ -48,7 +77,6 @@ public class PlayField : MonoBehaviour
                 cell.gameObject.SetActive(true);
                 cell.transform.position = new Vector3(parent.position.x + x * _stepCell, parent.position.y + y * _stepCell, parent.position.z);
                 newCells.Add(cell);
-                _totalNumberCells.AddCell(cell);
             }
         }
 
@@ -67,7 +95,7 @@ public class PlayField : MonoBehaviour
 
         int hight = (int)Random.Range(1, _currentFieldXY.y - 1);
         Vector3 gunPosition = new (newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z);
-        Cell currentCell = _totalNumberCells.GetCellFromPosition(gunPosition);
+        Cell currentCell = GetCellFromPosition(gunPosition);
         currentCell.TakeCell();
         gun.ChangePosition(currentCell, lefrOrRight);
     }
