@@ -16,12 +16,12 @@ public class Stats : MonoBehaviour
 
     private void OnEnable()
     {
-        StartCoroutine(ShowStatsTime(_totalScore, _playerInfo.TotalScore, _totalScoreText));
-        StartCoroutine(ShowStatsTime(0, _playerInfo.Score, _score));
-        StartCoroutine(ShowStatsTime(0, _playerInfo.Bounces, _bounces));
-        StartCoroutine(ShowStatsTime(0, _playerInfo.TotalMoneyLevel, _money));
-        _ScoreTime.ChangeText((int)_levelLoader.ScoreTime);
-        _totalScore = _playerInfo.TotalScore;
+        //StartCoroutine(ShowStatsTime(_totalScore, _playerInfo.TotalScore, _totalScoreText));
+        //StartCoroutine(ShowStatsTime(0, _playerInfo.Score, _score));
+        //StartCoroutine(ShowStatsTime(0, _playerInfo.Bounces, _bounces));
+        //StartCoroutine(ShowStatsTime(0, _playerInfo.TotalMoneyLevel, _money));
+        //_ScoreTime.ChangeText((int)_levelLoader.ScoreTime);
+        //_totalScore = _playerInfo.TotalScore;
     }
 
     private IEnumerator ShowStatsTime(int startValue, int endValue, Stat text)

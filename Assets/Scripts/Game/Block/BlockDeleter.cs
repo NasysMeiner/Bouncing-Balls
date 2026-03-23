@@ -4,7 +4,7 @@ using UnityEngine;
 public class BlockDeleter : MonoBehaviour
 {
     [SerializeField] private float _coefficientCell = 0.5f;
-    [SerializeField] private StockBlocks _stockBlocks;
+    [SerializeField] private BlockManager _stockBlocks;
     [SerializeField] private ButtonAnimation _buttonAnimation;
     [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private ShopDistributor _shopDistributor;
@@ -47,8 +47,6 @@ public class BlockDeleter : MonoBehaviour
 
     public void CellBlock(Block block)
     {
-        _playerInfo.ChangeMoney((int)(block.Price * _coefficientCell));
-
         PoolManager.Instance.SetObject(block, block.ObjectType);
     }
 

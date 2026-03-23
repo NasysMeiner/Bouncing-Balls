@@ -11,5 +11,6 @@ namespace BouncingBalls
         Hexagon,
         Pentagon,
         Triangle,
+        ScorePopup,
     }
 }

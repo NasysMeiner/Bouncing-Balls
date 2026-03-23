@@ -1,5 +1,6 @@
 using BouncingBalls;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Factory : MonoBehaviour
@@ -20,16 +21,26 @@ public class Factory : MonoBehaviour
         _maxLevel = maxLevel;
     }
 
-    public Block GetRandomBlock(int level, int price)
+    public Block GetRandomBlock(int level)
     {
-        Block newBlock = PoolManager.Instance.GetObject<Block>(_blockVariants[Random.Range(0, _blockVariants.Count)]);
+        return GetRandomObject<Block>(level, _blockVariants[Random.Range(0, _blockVariants.Count)]);
+    }
 
-        int blockLevel = CreateRandomProfitability(level);
+    public Ball GetRandomBall(int level)
+    {
+        return GetRandomObject<Ball>(level, ObjectType.Ball);
+    }
 
-        newBlock.GetComponent<Renderer>().material.color = _colorsLevel[blockLevel];
-        newBlock.Initialize(blockLevel, price);
+    private T GetRandomObject<T>(int level, ObjectType objectType) where T : MonoBehaviour, IInitializable
+    {
+        T newObject = PoolManager.Instance.GetObject<T>(objectType);
 
-        return newBlock;
+        int levelObject = CreateRandomProfitability(level);
+
+        newObject.GetComponent<Renderer>().material.color = _colorsLevel[levelObject];
+        newObject.Initialize(levelObject);
+
+        return newObject;
     }
 
     private int CreateRandomProfitability(int currentLevel)

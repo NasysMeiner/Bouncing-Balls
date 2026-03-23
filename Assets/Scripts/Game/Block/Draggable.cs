@@ -18,6 +18,14 @@ public class Draggable : MonoBehaviour
     private bool _isBlockDeleterArea = false;
     private float _verticalPositionCamera = 0.6f;
 
+    private void OnDestroy()
+    {
+        if(_block != null)
+        {
+            _block.OnPostInitialize -= OnPostInitialize;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if(other.TryGetComponent(out BlockDeleter blockDeleter) && blockDeleter.IsUnlock)
@@ -30,14 +38,12 @@ public class Draggable : MonoBehaviour
             _isBlockDeleterArea = false;
     }
 
-    private void Start()
+    private void Awake()
     {
         _renderer = GetComponent<Renderer>();
         _block = GetComponent<Block>();
 
-        _startColor = _renderer.material.color;
-        _changeColor = _startColor;
-        _changeColor.a = _alphaColorValue;
+        _block.OnPostInitialize += OnPostInitialize;
 
         _mainCamera = Camera.main;
     }
@@ -62,6 +68,16 @@ public class Draggable : MonoBehaviour
             _block.ChangeCell(newCell);
         else
             transform.position = _block.CurrentCell.GetPointPosition();
+    }
+
+    private void OnPostInitialize()
+    {
+        if (_renderer == null)
+            return;
+
+        _startColor = _renderer.material.color;
+        _changeColor = _startColor;
+        _changeColor.a = _alphaColorValue;
     }
 
     private void Move()

@@ -5,8 +5,7 @@ public class ScreenBorder : MonoBehaviour
 {
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent(out BallMover ball))
-            if (ball.IsQueue != true)
-                ball.ReturnBall();
+        if (collision.gameObject.TryGetComponent(out Ball ball))
+            ball.ReturnBall();
     }
 }

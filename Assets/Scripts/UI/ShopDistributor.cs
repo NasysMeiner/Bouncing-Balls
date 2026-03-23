@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 public class ShopDistributor : MonoBehaviour
 {
-    [SerializeField] private StockBlocks _stockBlocks;
+    [SerializeField] private BlockManager _stockBlocks;
     [SerializeField] private PlayerInfo _playerInfo;
     [SerializeField] private BlockDeleter _deleteField;
     [SerializeField] private Shop _shop;
@@ -17,7 +17,7 @@ public class ShopDistributor : MonoBehaviour
 
         if (_playerInfo.Cristall >= price)
         {
-            if (id == premiumBlockId && _stockBlocks.TryEmptyCell() == null)
+            if (id == premiumBlockId /*&& _stockBlocks.TryEmptyCell() == null*/)
             {
                 return;
             }

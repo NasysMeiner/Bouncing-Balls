@@ -11,7 +11,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] public bool isUnity;
     [SerializeField] private int _level = 1;
     [SerializeField] private int _maxLevel = 6;
-    [SerializeField] private EndLevelPanel _endLevelPanel;
+    [SerializeField] private LevelStatView _endLevelPanel;
     [SerializeField] private Animator _subLevelAnimator;
     [SerializeField] private GameObject _startGamePanel;
     [SerializeField] private GameObject _endGamePanel;
@@ -24,7 +24,7 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private GameObject _guidePanel;
     [SerializeField] private Panel _BG;
     [SerializeField] private Advertisement _advertisement;
-    [SerializeField] private ScoreBar _scoreBar;
+    [SerializeField] private ScoreView _scoreBar;
     [SerializeField] private TextScoreBar _textScoreBar;
     [SerializeField] private PlayerInfo _playerInfo;
 
@@ -48,15 +48,13 @@ public class LevelLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        _scoreBar.SubLevelUp += OnSubLevelUp;
-        _scoreBar.EndLevel += OnEndLevel;
+        //_scoreBar.SubLevelUp += OnSubLevelUp;
+        //_scoreBar.EndLevel += OnEndLevel;
         _advertisement.OnCloseAd += OnClearField;
     }
 
     private void OnDisable()
     {
-        _scoreBar.SubLevelUp -= OnSubLevelUp;
-        _scoreBar.EndLevel -= OnEndLevel;
         _advertisement.OnCloseAd -= OnClearField;
     }
 

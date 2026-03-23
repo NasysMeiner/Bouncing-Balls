@@ -327,6 +327,8 @@ GameObject:
   - component: {fileID: 6064021228979555840}
   - component: {fileID: 2481616306631611131}
   - component: {fileID: 1193207845930769705}
+  - component: {fileID: -4065733692366405584}
+  - component: {fileID: 1826663925599352679}
   m_Layer: 0
   m_Name: Pentagon
   m_TagString: Untagged
@@ -428,7 +430,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectType: 4
   _forceFactor: 2
-  _text: {fileID: 7672784837468272088}
   _textBlock: {fileID: 0}
 --- !u!114 &1193207845930769705
 MonoBehaviour:
@@ -444,3 +445,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alphaColorValue: 0.495
   _radiusCell: 0.3
+--- !u!114 &-4065733692366405584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180630610675280020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d342e3c38b1854ba9e2d653902e1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameBounceSound: Bounce
+--- !u!114 &1826663925599352679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9180630610675280020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0887d9a1db3f542a3b36c3bcbf3fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 7672784837468272088}

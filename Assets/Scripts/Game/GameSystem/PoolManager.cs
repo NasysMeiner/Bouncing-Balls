@@ -1,6 +1,7 @@
 using BouncingBalls;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PoolManager : MonoBehaviour
@@ -35,12 +36,11 @@ public class PoolManager : MonoBehaviour
         if (stackObj.Count != 0)
             return (T)stackObj.Pop();
         else
-            return CreateObject<T>(objectType);
+            return CreateObject<T>(_prefabs.FirstOrDefault(poolInfo => poolInfo.ObjectType == objectType));
     }
 
     public void SetObject(MonoBehaviour obj, ObjectType objectType)
     {
-        Debug.Log(_objectPools.TryGetValue(objectType, out var _));
         if (_objectPools.TryGetValue(objectType, out var stack))
         {
             obj.gameObject.SetActive(false);
@@ -62,29 +62,29 @@ public class PoolManager : MonoBehaviour
             _objectPools[prefabInfo.ObjectType] = newQueue;
 
             for (int i = 0; i < prefabInfo.Count; i++)
-                newQueue.Push(CreateObject(prefabInfo.Prefab));
+                newQueue.Push(CreateObject(prefabInfo.Prefab, prefabInfo.Parent ? prefabInfo.Parent : transform));
         }
     }
 
-    private T CreateObject<T>(ObjectType objectType) where T : MonoBehaviour
+    private T CreateObject<T>(PoolInfo poolInfo) where T : MonoBehaviour
     {
-        MonoBehaviour prefab = null;
+        PoolInfo prefabInfoObject = null;
 
         foreach (var prefabInfo in _prefabs)
         {
-            if (prefabInfo.ObjectType == objectType)
+            if (prefabInfo.ObjectType == poolInfo.ObjectType)
             {
-                prefab = prefabInfo.Prefab;
+                prefabInfoObject = prefabInfo;
                 break;
             }
         }
 
-        return (T)CreateObject(prefab);
+        return (T)CreateObject(prefabInfoObject.Prefab, prefabInfoObject.Parent ? prefabInfoObject.Parent : transform);
     }
 
-    private MonoBehaviour CreateObject(MonoBehaviour prefab)
+    private MonoBehaviour CreateObject(MonoBehaviour prefab, Transform parent)
     {
-        MonoBehaviour obj = Instantiate(prefab, transform);
+        MonoBehaviour obj = Instantiate(prefab, parent);
         obj.gameObject.SetActive(false);
         obj.transform.position = transform.position;
 

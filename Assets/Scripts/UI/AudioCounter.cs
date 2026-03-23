@@ -26,16 +26,16 @@ public class AudioCounter : MonoBehaviour
             _isStop = false;
     }
 
-    public void Subscribe(BallAudio ball)
+    public void Subscribe(BlockAudioController ball)
     {
-        ball.MusicStarting += TurnUpVolume;
-        ball.MusicEnded += TurnDownVolume;
+        //ball.MusicStarting += TurnUpVolume;
+        //ball.MusicEnded += TurnDownVolume;
     }
 
-    public void Unsubscribe(BallAudio ball)
+    public void Unsubscribe(BlockAudioController ball)
     {
-        ball.MusicStarting -= TurnUpVolume;
-        ball.MusicEnded -= TurnDownVolume;
+        //ball.MusicStarting -= TurnUpVolume;
+        //ball.MusicEnded -= TurnDownVolume;
     }
 
     private void TurnUpVolume()

@@ -10,10 +10,9 @@ public class Cell : MonoBehaviour
     public bool IsBusy => _isBusy;
     public bool IsStock => _isStock;
 
-    public void SpawnCell(Vector3 transformBlock, bool IsStock)
+    public void SpawnCell(bool IsStock)
     {
         _isStock = IsStock;
-        transform.position = new Vector3(transformBlock.x, transformBlock.y, transformBlock.z);
     }
 
     public void TakeCell()

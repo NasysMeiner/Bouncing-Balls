@@ -226,6 +226,8 @@ GameObject:
   - component: {fileID: 6552400056527064391}
   - component: {fileID: 6552400056527064388}
   - component: {fileID: 2018527598564698073}
+  - component: {fileID: 5547041623217447053}
+  - component: {fileID: 8691933075647681895}
   m_Layer: 0
   m_Name: expgame
   m_TagString: Untagged
@@ -327,7 +329,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectType: 4
   _forceFactor: 2
-  _text: {fileID: 7291447888852126618}
   _textBlock: {fileID: 0}
 --- !u!114 &2018527598564698073
 MonoBehaviour:
@@ -343,6 +344,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alphaColorValue: 0.495
   _radiusCell: 0.3
+--- !u!114 &5547041623217447053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210363775626518221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d342e3c38b1854ba9e2d653902e1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameBounceSound: Bounce
+--- !u!114 &8691933075647681895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6210363775626518221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0887d9a1db3f542a3b36c3bcbf3fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 7291447888852126618}
 --- !u!1 &8377340891341198244
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using BouncingBalls;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayField : MonoBehaviour
@@ -10,106 +11,51 @@ public class PlayField : MonoBehaviour
     [SerializeField] private float _stepCell;
     [Space]
     [SerializeField] private Cells _totalNumberCells;
-    [SerializeField] private Cell _prefabCell;
-    [SerializeField] private float _fieldX;
-    [SerializeField] private float _fieldY;
-    [SerializeField] private Gun _gun;
-    [SerializeField] private LevelLoader _levelLoader;
-    [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private ScreenPosition _screenPosition;
 
-    private List<Cell> _cellsField = new List<Cell>();
-    private Queue<Cell> _openCells = new();
+    private List<Cell> _cellsPlayField;
+    private List<Cell> _cellsStockField;
 
-    private void OnEnable()
+    private Vector2 _currentFieldXY;
+
+    public Transform StockFieldObject => _stockFieldObject.transform;
+    public Cells Cells => _totalNumberCells;
+
+    public bool TryEmptyCell(out Cell emptyCell)
     {
-        _levelLoader.GenerationStarting += ResetField;
-        _levelLoader.GameStarting += OnStartGame;
+        emptyCell = _cellsStockField.FirstOrDefault(cell => !cell.IsBusy);
+        return emptyCell != null;
     }
 
-    private void OnDisable()
+    public void GenerateField(int level, Gun gun)
     {
-        _levelLoader.GenerationStarting -= ResetField;
-        _levelLoader.GameStarting -= OnStartGame;
+        _currentFieldXY = _fieldXY[level];
+        _cellsPlayField = SpawnFieldFromParent(_currentFieldXY, transform);
+        _cellsStockField = SpawnFieldFromParent(_stockFieldXY, _stockFieldObject.transform, true);
+        ChangeGunPosition(gun);
     }
 
-    private void OnStartGame()
+    private List<Cell> SpawnFieldFromParent(Vector2 fieldXY, Transform parent, bool isStock = false)
     {
-        SetDimensionsField();
-        SpawnCell();
-        ChangeGunPosition();
-    }
+        List<Cell> newCells = new List<Cell>();
 
-    public void GenerateField(int level)
-    {
-        SpawnFieldFromParent(_fieldXY[level], transform);
-        SpawnFieldFromParent(_stockFieldXY, _stockFieldObject.transform);
-    }
-
-    private void SpawnFieldFromParent(Vector2 fieldXY, Transform parent)
-    {
         for (int y = 0; y < fieldXY.y; y++)
         {
             for (int x = 0; x < fieldXY.x; x++)
             {
                 Cell cell = PoolManager.Instance.GetObject<Cell>(ObjectType.Cell);
+                cell.SpawnCell(isStock);
                 cell.transform.parent = parent;
                 cell.gameObject.SetActive(true);
                 cell.transform.position = new Vector3(parent.position.x + x * _stepCell, parent.position.y + y * _stepCell, parent.position.z);
-                _cellsField.Add(cell);
+                newCells.Add(cell);
                 _totalNumberCells.AddCell(cell);
             }
         }
+
+        return newCells;
     }
 
-    private void SpawnCell()
-    {
-        for (int y = 0; y < _fieldY; y++)
-        {
-            for (int x = 0; x < _fieldX; x++)
-            {
-                if (_openCells.Count > 0)
-                {
-                    Cell cell = _openCells.Dequeue();
-                    cell.transform.position = new Vector3(transform.position.x + x * _stepCell, transform.position.y + y * _stepCell, transform.position.z);
-                    _cellsField.Add(cell);
-                }
-                else
-                {
-                    Cell newCell = Instantiate(_prefabCell, transform);
-                    _openCells.Enqueue(newCell);
-                    _totalNumberCells.AddCell(newCell);
-                    x--;
-                }
-            }
-        }
-
-        if (_screenPosition.IsGorizontal == false)
-            transform.position = _screenPosition.PlayFieldPosition[_playerInfo.Level];
-    }
-
-    private void ResetField()
-    {
-        foreach (Cell cell in _cellsField)
-        {
-            cell.ReleaseCell();
-            _openCells.Enqueue(cell);
-        }
-
-        _cellsField.Clear();
-        SetDimensionsField();
-        SpawnCell();
-        ChangeGunPosition();
-    }
-
-    private void SetDimensionsField()
-    {
-        Vector2 newField = _fieldXY[_playerInfo.Level - 1];
-        _fieldX = newField.x;
-        _fieldY = newField.y;
-    }
-
-    private void ChangeGunPosition()
+    private void ChangeGunPosition(Gun gun)
     {
         float newPositionXGun;
         int lefrOrRight = Random.Range(0, 2);
@@ -117,11 +63,29 @@ public class PlayField : MonoBehaviour
         if (lefrOrRight == 0)
             newPositionXGun = transform.position.x;
         else
-            newPositionXGun = transform.position.x + _stepCell * (_fieldX - 1);
+            newPositionXGun = transform.position.x + _stepCell * (_currentFieldXY.x - 1);
 
-        int hight = (int)Random.Range(1, _fieldY - 1);
-        Cell currentCell = _totalNumberCells.GetCellFromPosition(new Vector3(newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z));
+        int hight = (int)Random.Range(1, _currentFieldXY.y - 1);
+        Vector3 gunPosition = new (newPositionXGun, transform.position.y + _stepCell * hight, transform.position.z);
+        Cell currentCell = _totalNumberCells.GetCellFromPosition(gunPosition);
         currentCell.TakeCell();
-        _gun.ChangePosition(currentCell, lefrOrRight);
+        gun.ChangePosition(currentCell, lefrOrRight);
+    }
+
+    internal void FullReset()
+    {
+        foreach (Cell cell in _cellsPlayField)
+        {
+            cell.ReleaseCell();
+            PoolManager.Instance.SetObject(cell, ObjectType.Cell);
+        }
+
+        foreach (Cell cell in _cellsStockField)
+        {
+            cell.ReleaseCell();
+            PoolManager.Instance.SetObject(cell, ObjectType.Cell);
+        }
+
+        _stockFieldObject.transform.rotation = Quaternion.identity;
     }
 }

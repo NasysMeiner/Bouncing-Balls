@@ -1,105 +1,73 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class ScreenPosition : MonoBehaviour
 {
-    [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private List<Vector3> _cameraPositions;
-    [SerializeField] private Camera _camera;
-    [SerializeField] private List<Vector3> _playFieldPosition;
+    [Header("Horizontal")]
+    [SerializeField] private Vector3 _cameraPositionHorizontal;
+    [SerializeField] private Vector3 _fieldPositionHorizontal;
+    [SerializeField] private Vector3 _stockFieldPositionHorizontal;
+    [SerializeField] private Vector3 _blockDeleterPostionHorizontal;
+    [Header("Vertical")]
+    [SerializeField] private Vector3 _cameraPositionVertical;
+    [SerializeField] private Vector3 _fieldPositionVertical;
+    [SerializeField] private Vector3 _stockFieldPositionVertical;
+    [SerializeField] private Vector3 _blockDeleterPostionVertical;
+    [Space]
     [SerializeField] private PlayField _playField;
-    [SerializeField] private List<Vector3> _stockBlocksPosition;
-    [SerializeField] private StockBlocks _stockBlocks;
-    [SerializeField] private List<Vector3> _deleteFieldPosition;
-    [SerializeField] private BlockDeleter _deleateField;
+    [SerializeField] private BlockManager _stockBlocks;
+    [SerializeField] private BlockDeleter _blockDeleter;
+    [SerializeField] private PlayerInfo _playerInfo;
 
-    private ScreenOrientation _deviceOrientation1;
-    private ScreenOrientation _deviceOrientation2;
-    private int _numberPosition;
+    private Camera _camera;
+
     private bool _isGorizontal;
-    private Vector3 _rightAngle = new Vector3(0, 0, 90);
+    private bool _isLockRotation = true;
+
+    private ScreenOrientation _currentScreenOrientation;
 
     public event UnityAction ChangeScreenOrientation;
 
-    public List<Vector3> PlayFieldPosition => _playFieldPosition;
-    public bool IsGorizontal => _isGorizontal;
-    public Camera Camera => _camera;
-
     private void Start()
     {
-        int value = 0;
-        Screen.orientation = ScreenOrientation.AutoRotation;
-
-        if (Screen.orientation == ScreenOrientation.Portrait && Screen.orientation == ScreenOrientation.PortraitUpsideDown)
-        {
-            _deviceOrientation1 = ScreenOrientation.LandscapeLeft;
-            _deviceOrientation2 = ScreenOrientation.LandscapeRight;
-            _stockBlocks.transform.eulerAngles += -_rightAngle;
-            _numberPosition = 0;
-        }
-        else
-        {
-            _deviceOrientation1 = ScreenOrientation.Portrait;
-            _deviceOrientation2 = ScreenOrientation.PortraitUpsideDown;
-            _numberPosition = 1;
-        }
-
-        if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
-        {
-            _isGorizontal = true;
-            value = _playerInfo.Level;
-        }
-
-        _camera.transform.position = _cameraPositions[_numberPosition - 1];
-        _playField.transform.position = _playFieldPosition[_playerInfo.Level - value];
-        _stockBlocks.transform.position = _stockBlocksPosition[_numberPosition - 1];
-        _deleateField.transform.position = _deleteFieldPosition[_numberPosition + 1];
+        _camera = Camera.main;
     }
 
     private void Update()
     {
-        int value = 0;
+        if (!_isLockRotation && Screen.orientation != _currentScreenOrientation)
+            ScreenOrientationChange();
+    }
+
+    public void FixPositionField(int level)
+    {
+        ScreenOrientationChange();
+        _isLockRotation = false;
+    }
+
+    private void ScreenOrientationChange()
+    {
         Screen.orientation = ScreenOrientation.AutoRotation;
 
-        if (Screen.orientation == _deviceOrientation1 || Screen.orientation == _deviceOrientation2)
+        if (Screen.orientation == ScreenOrientation.Portrait && Screen.orientation == ScreenOrientation.PortraitUpsideDown)
         {
-
-            if (Screen.orientation == ScreenOrientation.LandscapeLeft || Screen.orientation == ScreenOrientation.LandscapeRight)
-            {
-                _isGorizontal = true;
-                value = _playerInfo.Level;
-            }
-
-            _camera.transform.position = _cameraPositions[_numberPosition];
-            _playField.transform.position = _playFieldPosition[_playerInfo.Level - value];
-            _stockBlocks.transform.position = _stockBlocksPosition[_numberPosition];
-
-            if (_deleateField.IsUnlock == false)
-            {
-                _numberPosition += 2;
-            }
-
-            _deleateField.transform.position = _deleteFieldPosition[_numberPosition];
-
-            if (_deviceOrientation1 == ScreenOrientation.Portrait || Screen.orientation == ScreenOrientation.PortraitUpsideDown)
-            {
-                _deviceOrientation1 = ScreenOrientation.LandscapeLeft;
-                _deviceOrientation2 = ScreenOrientation.LandscapeRight;
-                _stockBlocks.transform.eulerAngles = -_rightAngle;
-                _isGorizontal = false;
-                _numberPosition = 0;
-            }
-            else
-            {
-                _deviceOrientation1 = ScreenOrientation.Portrait;
-                _deviceOrientation2 = ScreenOrientation.PortraitUpsideDown;
-                _stockBlocks.transform.eulerAngles += _rightAngle;
-                _numberPosition = 1;
-            }
-
-            ChangeScreenOrientation?.Invoke();
+            _camera.transform.position = _cameraPositionVertical;
+            _playField.transform.position = _fieldPositionVertical;
+            _playField.StockFieldObject.position = _stockFieldPositionVertical;
+            _playField.StockFieldObject.rotation = Quaternion.Euler(0, 0, 0);
+            _blockDeleterPostionVertical.z = _blockDeleter.transform.position.z;
+            _blockDeleter.transform.position = _blockDeleterPostionVertical;
         }
+        else
+        {
+            _camera.transform.position = _cameraPositionHorizontal;
+            _playField.transform.position = _fieldPositionHorizontal;
+            _playField.StockFieldObject.position = _stockFieldPositionHorizontal;
+            _playField.StockFieldObject.rotation = Quaternion.Euler(0, 0, 90);
+            _blockDeleterPostionHorizontal.z = _blockDeleter.transform.position.z;
+            _blockDeleter.transform.position = _blockDeleterPostionHorizontal;
+        }
+
+        _currentScreenOrientation = Screen.orientation;
     }
 }

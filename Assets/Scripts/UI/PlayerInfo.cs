@@ -5,11 +5,11 @@ using UnityEngine.Events;
 public class PlayerInfo : MonoBehaviour
 {
     [SerializeField] private LevelLoader _levelLoader;
-    [SerializeField] private ScoreBar _scoreBar;
+    [SerializeField] private ScoreView _scoreBar;
     [SerializeField] private Leaderboard _leaderboard;
     [SerializeField] private PlayerData _playerData;
-    [SerializeField] private Balance _moneyBar;
-    [SerializeField] private Balance _cristallBar;
+    [SerializeField] private BankView _moneyBar;
+    [SerializeField] private BankView _cristallBar;
     [SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private int _completeLevelReward = 20;
 
@@ -49,16 +49,16 @@ public class PlayerInfo : MonoBehaviour
 
     private void OnEnable()
     {
-        _scoreBar.ScoreChange += OnScoreChange;
-        _scoreBar.EndLevel += OnEndLevel;
+        //_scoreBar.ScoreChange += OnScoreChange;
+        //_scoreBar.EndLevel += OnEndLevel;
         _levelLoader.GameStarting += OnStartGame;
         _levelLoader.GenerationStarting += OnGenerationStart;
     }
 
     private void OnDisable()
     {
-        _scoreBar.ScoreChange -= OnScoreChange;
-        _scoreBar.EndLevel -= OnEndLevel;
+        //_scoreBar.ScoreChange -= OnScoreChange;
+        //_scoreBar.EndLevel -= OnEndLevel;
         _levelLoader.GameStarting -= OnStartGame;
         _levelLoader.GenerationStarting -= OnGenerationStart;
     }
@@ -73,7 +73,7 @@ public class PlayerInfo : MonoBehaviour
         if (!_levelLoader.IsFreezChangeMoney)
         {
             _money += value;
-            _moneyBar.ChangeText(_money);
+            //_moneyBar.ChangeValue(_money);
             MoneyChanged?.Invoke(_money);
 
             if (value > 0)
@@ -86,7 +86,7 @@ public class PlayerInfo : MonoBehaviour
     public void ChangeCristall(int value)
     {
         _cristall += value;
-        _cristallBar.ChangeText(_cristall);
+        //_cristallBar.ChangeValue(_cristall);
         CristallChanged?.Invoke(_cristall);
     }
 
@@ -137,7 +137,7 @@ public class PlayerInfo : MonoBehaviour
 
         for (int i = 0; i < _level - 1; i++)
         {
-            _scoreBar.LoadLevelScoreMax();
+            //_scoreBar.LoadLevelScoreMax();
         }
     }
 

@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 999798758178481549}
   - component: {fileID: 999798758178481548}
   - component: {fileID: -5469144429976324357}
+  - component: {fileID: -8781409416787649857}
+  - component: {fileID: 702903659215290870}
   m_Layer: 0
   m_Name: Cube (4)
   m_TagString: Untagged
@@ -114,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectType: 2
   _forceFactor: 2
-  _text: {fileID: 4375424473919498601}
   _textBlock: {fileID: 0}
 --- !u!114 &-5469144429976324357
 MonoBehaviour:
@@ -130,6 +131,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alphaColorValue: 0.495
   _radiusCell: 0.3
+--- !u!114 &-8781409416787649857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999798758178481551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d342e3c38b1854ba9e2d653902e1b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _nameBounceSound: Bounce
+--- !u!114 &702903659215290870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 999798758178481551}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0887d9a1db3f542a3b36c3bcbf3fe3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _text: {fileID: 4375424473919498601}
 --- !u!1 &6662344050564999085
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,15 +17,15 @@ public class ShopCreate : MonoBehaviour
         return newBlock;
     }
 
-    public BallMover CreateBall(BallMover ball, Transform transform, int currentLevel, bool isBuffer, out int profability)
+    public Ball CreateBall(Ball ball, Transform transform, int currentLevel, bool isBuffer, out int profability)
     {
         if(isBuffer == false)
             profability = CreateRandomProfitability(currentLevel);
         else
             profability = currentLevel;
 
-        BallMover newBall = Instantiate(ball, transform);
-        newBall.ChangeStateOn();
+        Ball newBall = Instantiate(ball, transform);
+        //newBall.ChangeStateOn();
 
         return newBall;
     }
