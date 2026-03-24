@@ -6,7 +6,7 @@ public class PlayerData : MonoBehaviour
 {
     [SerializeField] private LevelLoader _levelLoader;
     [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private ShopDistributor _shopDistributor;
+    //[SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private BlockDeleter _deleateField;
 
     private string _nameLeaderboard = "NewLeaders";
@@ -98,7 +98,7 @@ public class PlayerData : MonoBehaviour
                     icon = playerData.icon;
                     isShowGuide = playerData.isShowGuide;
                     money = playerData.money;
-                    _playerInfo.LoadLevelData(this);
+                    //_playerInfo.LoadLevelData(this);
                 }
                 catch
                 {

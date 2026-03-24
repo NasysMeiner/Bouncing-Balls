@@ -22,10 +22,10 @@ public class LevelLoader : MonoBehaviour
     [SerializeField] private Image _startIcon;
     [SerializeField] private TMP_Text _startName;
     [SerializeField] private GameObject _guidePanel;
-    [SerializeField] private Panel _BG;
+    //[SerializeField] private Panel _BG;
     [SerializeField] private Advertisement _advertisement;
     [SerializeField] private ScoreView _scoreBar;
-    [SerializeField] private TextScoreBar _textScoreBar;
+    //[SerializeField] private TextScoreBar _textScoreBar;
     [SerializeField] private PlayerInfo _playerInfo;
 
     private bool _isFreezChangeMoney = false;
@@ -50,12 +50,12 @@ public class LevelLoader : MonoBehaviour
     {
         //_scoreBar.SubLevelUp += OnSubLevelUp;
         //_scoreBar.EndLevel += OnEndLevel;
-        _advertisement.OnCloseAd += OnClearField;
+        //_advertisement.OnCloseAd += OnClearField;
     }
 
     private void OnDisable()
     {
-        _advertisement.OnCloseAd -= OnClearField;
+        //_advertisement.OnCloseAd -= OnClearField;
     }
 
     private void Update()
@@ -64,59 +64,59 @@ public class LevelLoader : MonoBehaviour
             _time += Time.deltaTime;
     }
 
-    public void OnStartGame()
-    {
-        bool isStart = false;
+    //public void OnStartGame()
+    //{
+    //    bool isStart = false;
 
-        if (isStart == false)
-        {
-            Time.timeScale = 1;
-            isStart = true;
-            _isGame = true;
-            GameStarting?.Invoke();
-            _startGamePanel.SetActive(false);
-            _subLevel = 1;
-            _playerInfo.UpdateData();
-            _textScoreBar.ChangeTextLevel(Level, SubLevel);
+    //    if (isStart == false)
+    //    {
+    //        Time.timeScale = 1;
+    //        isStart = true;
+    //        _isGame = true;
+    //        GameStarting?.Invoke();
+    //        _startGamePanel.SetActive(false);
+    //        _subLevel = 1;
+    //        _playerInfo.UpdateData();
+    //        _textScoreBar.ChangeTextLevel(Level, SubLevel);
 
-            if (_playerInfo.IsShowGuide == false)
-            {
-                Time.timeScale = 0;
-                _guidePanel.SetActive(true);
-                _BG.gameObject.SetActive(true);
-                _playerInfo.ShowGuideOn();
-            }
-            else
-            {
-                _BG.gameObject.SetActive(false);
-            }
-        }
-    }
+    //        if (_playerInfo.IsShowGuide == false)
+    //        {
+    //            Time.timeScale = 0;
+    //            _guidePanel.SetActive(true);
+    //            _BG.gameObject.SetActive(true);
+    //            _playerInfo.ShowGuideOn();
+    //        }
+    //        else
+    //        {
+    //            _BG.gameObject.SetActive(false);
+    //        }
+    //    }
+    //}
 
-    private void OnSubLevelUp(int newSubLevel)
-    {
-        _subLevel = newSubLevel;
-        _textScoreBar.ChangeTextLevel(Level, SubLevel);
-        _textScoreBar.SubLevelAnimation(SubLevel);
-        SubLevelUpgraded?.Invoke();
-    }
+    //private void OnSubLevelUp(int newSubLevel)
+    //{
+    //    _subLevel = newSubLevel;
+    //    _textScoreBar.ChangeTextLevel(Level, SubLevel);
+    //    _textScoreBar.SubLevelAnimation(SubLevel);
+    //    SubLevelUpgraded?.Invoke();
+    //}
 
-    private void OnEndLevel()
-    {
-        if (_level + 1 <= _maxLevel)
-        {
-            _level++;
-            _subLevel = 1;
-            _BG.gameObject.SetActive(true);
-            _isFreezChangeMoney = true;
-            AllFieldDeleting?.Invoke();
-            LevelUpgraded?.Invoke(_level);
-        }
-        else
-        {
-            Time.timeScale = 0;
-        }
-    }
+    //private void OnEndLevel()
+    //{
+    //    if (_level + 1 <= _maxLevel)
+    //    {
+    //        _level++;
+    //        _subLevel = 1;
+    //        _BG.gameObject.SetActive(true);
+    //        _isFreezChangeMoney = true;
+    //        AllFieldDeleting?.Invoke();
+    //        LevelUpgraded?.Invoke(_level);
+    //    }
+    //    else
+    //    {
+    //        Time.timeScale = 0;
+    //    }
+    //}
 
     public void EndLevelPanelOn()
     {
@@ -128,20 +128,20 @@ public class LevelLoader : MonoBehaviour
         _endGamePanel.SetActive(true);
     }
 
-    public void ShowAdvertisement()
-    {
-        if (!isUnity)
-            _advertisement.ShowAd();
-        else
-            OnClearField(true);
-    }
+    //public void ShowAdvertisement()
+    //{
+    //    if (!isUnity)
+    //        _advertisement.ShowAd();
+    //    else
+    //        OnClearField(true);
+    //}
 
-    public void LoadLevel(int level, int icon)
-    {
-        _level = level;
-        _subLevel = 1;
-        _textScoreBar.ChangeTextLevel(_level, _subLevel);
-    }
+    //public void LoadLevel(int level, int icon)
+    //{
+    //    _level = level;
+    //    _subLevel = 1;
+    //    _textScoreBar.ChangeTextLevel(_level, _subLevel);
+    //}
 
     public void SetName(string name)
     {
@@ -162,15 +162,15 @@ public class LevelLoader : MonoBehaviour
         _startGamePanel.SetActive(true);
     }
 
-    public void OnClearField(bool value)
-    {
-        _isGame = true;
-        _endLevelPanel.gameObject.SetActive(false);
-        _BG.gameObject.SetActive(false);
-        GenerationStarting?.Invoke();
-        _isFreezChangeMoney = false;
-        _textScoreBar.ChangeTextLevel(_level, _subLevel);
-        _textScoreBar.SubLevelAnimation(_subLevel);
-        Time.timeScale = 1;
-    }
+    //public void OnClearField(bool value)
+    //{
+    //    _isGame = true;
+    //    _endLevelPanel.gameObject.SetActive(false);
+    //    _BG.gameObject.SetActive(false);
+    //    GenerationStarting?.Invoke();
+    //    _isFreezChangeMoney = false;
+    //    _textScoreBar.ChangeTextLevel(_level, _subLevel);
+    //    _textScoreBar.SubLevelAnimation(_subLevel);
+    //    Time.timeScale = 1;
+    //}
 }

@@ -116,8 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _objectType: 5
-  _forceFactor: 2
-  _textBlock: {fileID: 0}
+  _forceBounce: 1
+  _crisstalChance: 1
 --- !u!114 &3390083582456775211
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alphaColorValue: 0.495
-  _radiusCell: 0.3
+  _radiusCell: 0.35
 --- !u!114 &-8960629434862385397
 MonoBehaviour:
   m_ObjectHideFlags: 0

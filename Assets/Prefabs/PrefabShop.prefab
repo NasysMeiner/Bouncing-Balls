@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.2115022}
   m_AnchorMax: {x: 0.7051873, y: 0.82900006}
-  m_AnchoredPosition: {x: -0.14096832, y: 0.6000004}
+  m_AnchoredPosition: {x: -0.14096832, y: 0.5999985}
   m_SizeDelta: {x: 73, y: 74}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9115925883199893641
@@ -116,7 +116,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.33876458, y: 0.15833597}
   m_AnchorMax: {x: 0.9784709, y: 0.84166414}
-  m_AnchoredPosition: {x: -0.9000015, y: 0.00001335144}
+  m_AnchoredPosition: {x: -0.9000015, y: 0.000015258789}
   m_SizeDelta: {x: -19.347, y: -7.459999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6663821383745823283
@@ -201,7 +201,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: -9121138919511727975}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: ProductView, Assembly-CSharp
         m_MethodName: ClickMouse
         m_Mode: 1
@@ -225,10 +225,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 951e78ec7776f7749b9fcaa0974bc377, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isBuff: 0
-  _image: {fileID: 8521121570525484455}
-  _animator: {fileID: 6883493401792631207}
-  _button: {fileID: 5954808127765055980}
 --- !u!95 &3882628433689996625
 Animator:
   serializedVersion: 4
@@ -260,8 +256,8 @@ GameObject:
   - component: {fileID: 1023369958519426969}
   - component: {fileID: 3257824114773852625}
   - component: {fileID: 2197759005745390053}
-  - component: {fileID: -9121138919511727975}
   - component: {fileID: 6883493401792631207}
+  - component: {fileID: 1649502429605232379}
   m_Layer: 5
   m_Name: PrefabShop
   m_TagString: Untagged
@@ -331,25 +327,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-9121138919511727975
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6290161997455936497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93907eeb4cf53b64e880b907e24a6c9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _icon1: {fileID: 6622278312702349587}
-  _icon2: {fileID: 5107153767770909255}
-  _icon3: {fileID: 6927212245615512068}
-  _icon4: {fileID: 8521121570525484455}
-  _text: {fileID: 4372172015807716657}
-  _button: {fileID: 5954808127765055980}
-  _productButton: {fileID: 6833862549203384491}
 --- !u!95 &6883493401792631207
 Animator:
   serializedVersion: 4
@@ -370,6 +347,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1649502429605232379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6290161997455936497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a42635ea13177f478472745a3cba02e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7139710839533729725
 GameObject:
   m_ObjectHideFlags: 0
@@ -557,7 +546,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.046000004, y: 0.117335975}
   m_AnchorMax: {x: 0.2792937, y: 0.8826641}
-  m_AnchoredPosition: {x: 0.19999695, y: 0.0000019073486}
+  m_AnchoredPosition: {x: 0.19999695, y: 0}
   m_SizeDelta: {x: 145, y: 144}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4306614457240421289

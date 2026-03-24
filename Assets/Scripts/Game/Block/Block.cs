@@ -6,25 +6,24 @@ using UnityEngine;
 public class Block : MonoBehaviour, IInitializable
 {
     [SerializeField] private ObjectType _objectType;
-    [SerializeField] private float _forceFactor = 1;
-    [SerializeField] private ScorePopupManager _textBlock;
+    [SerializeField] private float _forceBounce = 1;
+    [SerializeField] private int _crisstalChance = 1;
+
+    private PlayField _playField;
+    private ScreenPosition _screenPosition;
+
+    private float _baseForceBounce;
+    private int _baseCrisstalChance;
+    private int _profitability;
+    private int _multiplayProfitability;
+    private int _profitabilityCristall = 1;
 
     private Collider _collider;
-
     private Cell _currentCell;
-    private PlayField _playField;
-    private float _price;
-    private int _currentFactor = 1;
-    private float _currentForceFactore;
-    private int _factor;
-    private int _crisstalChance = 0;
-    private ScreenPosition _screenPosition;
-    private int _profitabilityCristall = 1;
 
     public Cell CurrentCell => _currentCell;
     public PlayField PlayField => _playField;
     public ObjectType ObjectType => _objectType;
-    public float Price => _price;
 
     public event Action<int> OnInitialize;
     public event Action<BounceScoreData> OnScoreEarned;
@@ -37,6 +36,12 @@ public class Block : MonoBehaviour, IInitializable
         ClicabilityOn();
     }
 
+    private void Awake()
+    {
+        _baseForceBounce = _forceBounce;
+        _baseCrisstalChance = _crisstalChance;
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         int maxChance = 100;
@@ -47,7 +52,7 @@ public class Block : MonoBehaviour, IInitializable
             {
                 BounceScoreData scoreData = new
                 (
-                    _currentFactor * ball.Profitability,
+                    _multiplayProfitability * _profitability * ball.Profitability,
                     UnityEngine.Random.Range(0, maxChance) <= _crisstalChance ? _profitabilityCristall : 0,
                     collision.contacts[0].point
                 );
@@ -58,7 +63,7 @@ public class Block : MonoBehaviour, IInitializable
             Rigidbody rigidbodyBall = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 normalInSurface = -collision.contacts[0].normal;
             Vector3 reflection = Vector3.Reflect(collision.relativeVelocity.normalized, normalInSurface);
-            rigidbodyBall.velocity = reflection.normalized * _forceFactor;
+            rigidbodyBall.velocity = reflection.normalized * _forceBounce;
 
             Bounced?.Invoke();
         }
@@ -71,16 +76,17 @@ public class Block : MonoBehaviour, IInitializable
         else
             _collider = GetComponent<MeshCollider>();
 
-        _factor = factor;
-        _currentFactor = factor;
+        _profitability = factor;
+        _multiplayProfitability = 1;
+        _forceBounce = _baseForceBounce;
+        _crisstalChance = _baseCrisstalChance;
 
-        OnInitialize?.Invoke(_factor);
+        OnInitialize?.Invoke(_profitability);
     }
 
-    public void PostInitialize(PlayField playField, ScorePopupManager textBlock)
+    public void PostInitialize(PlayField playField)
     {
         _playField = playField;
-        _textBlock = textBlock;
 
         OnPostInitialize?.Invoke();
     }
@@ -91,17 +97,16 @@ public class Block : MonoBehaviour, IInitializable
             _currentCell.ReleaseCell();
 
         _currentCell = newCell;
-        _currentCell.TakeCell();
 
+        if (_currentCell == null)
+            return;
+
+        _currentCell.TakeCell();
         ChangePosition(_currentCell.GetPointPosition());
     }
 
     public void DeleteBlock()
     {
-        _currentCell.ReleaseCell();
-        _currentCell = null;
-        _screenPosition.ChangeScreenOrientation -= OnChangeScreenOrientation;
-
         Deleted?.Invoke(this);
     }
 
@@ -117,43 +122,27 @@ public class Block : MonoBehaviour, IInitializable
             _collider.enabled = false;
     }
 
+    public void ChangeMultiplayProfitability(int multiplayProfitability)
+    {
+        _multiplayProfitability = multiplayProfitability;
+    }
+
+    public void ChangeForceBounce(int valueAdd)
+    {
+        _forceBounce += valueAdd;
+    }
+
+    public void ChangeCristallChance(int value)
+    {
+        _crisstalChance = value;
+
+        if (_crisstalChance <= 0)
+            _crisstalChance = _baseCrisstalChance;
+    }
+
     private void ChangePosition(Vector3 newPosition)
     {
         transform.position = newPosition;
-    }
-
-    private void StartBuffsRebound(int id, float value)
-    {
-        const int forceBuffId = 0;
-        const int profitabilityBuffId = 1;
-        const int cristallChanceBuffId = 3;
-
-        switch (id)
-        {
-            case forceBuffId:
-                if (value > 0)
-                    _forceFactor = _forceFactor * value;
-                else
-                    _forceFactor = _currentForceFactore;
-                break;
-
-            case profitabilityBuffId:
-                if (value > 0)
-                    _currentFactor = _currentFactor * (int)value;
-                else
-                    _currentFactor = _factor;
-                break;
-
-            case cristallChanceBuffId:
-                if (value > 0)
-                    _crisstalChance += (int)value;
-                else
-                    _crisstalChance = 0;
-                break;
-        }
-
-        if (_currentFactor <= 0)
-            _currentFactor = _factor;
     }
 
     private void OnChangeScreenOrientation()

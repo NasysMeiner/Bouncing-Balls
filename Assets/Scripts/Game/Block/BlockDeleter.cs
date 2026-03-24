@@ -1,77 +1,56 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class BlockDeleter : MonoBehaviour
 {
-    [SerializeField] private float _coefficientCell = 0.5f;
-    [SerializeField] private BlockManager _stockBlocks;
-    [SerializeField] private ButtonAnimation _buttonAnimation;
-    [SerializeField] private PlayerInfo _playerInfo;
-    [SerializeField] private ShopDistributor _shopDistributor;
+    [SerializeField] private float _zAddPosition = 0.5f;
+    [SerializeField] private float _startCoeffSell = 0.5f;
+    [SerializeField] private List<float> _coeffSellPerLevel = new();
 
+    private Bank _bank;
+    private PurchaseManager _purchaseManager;
+
+    private float _currentCoeffSell;
     private bool _isUnlock = false;
 
     public bool IsUnlock => _isUnlock;
 
-    private void OnEnable()
+    public void Initialize(Bank bank, PurchaseManager purchaseManager)
     {
-        _shopDistributor.ChangeBuffs += UpgrateSell;
-        _playerInfo.CristallChanged += OnChangeCristall;
-        _buttonAnimation.Init(_buttonAnimation.Price);
-    }
+        _bank = bank;
+        _purchaseManager = purchaseManager;
 
-    private void OnDisable()
-    {
-        _shopDistributor.ChangeBuffs -= UpgrateSell;
-        _playerInfo.CristallChanged -= OnChangeCristall;
+        _currentCoeffSell = _startCoeffSell;
     }
 
     public void Unlock()
     {
-        if (_playerInfo.Cristall >= _buttonAnimation.Price && _isUnlock == false)
-        {
-            _playerInfo.ChangeCristall(-(int)_buttonAnimation.Price);
-            _isUnlock = true;
-            _playerInfo.UnlockBascet(); ;
-            _buttonAnimation.PlayAnimation();
-            StartCoroutine(UnlockAnimation());
-        }
-    }
+        if (_isUnlock)
+            return;
 
-    public void UnlockLoad()
-    {
         _isUnlock = true;
-        _buttonAnimation.PlayAnimation();
         StartCoroutine(UnlockAnimation());
     }
 
     public void CellBlock(Block block)
     {
+        block.ChangeCell(null);
+        _bank.AddMoney((int)(_purchaseManager.CurrentPriceBlock * _currentCoeffSell));
         PoolManager.Instance.SetObject(block, block.ObjectType);
     }
 
-    private void OnChangeCristall(int value)
+    public void SetNewCoeffSell(int newLevel)
     {
-        if (value >= _buttonAnimation.Price)
-            _buttonAnimation.ChangeActiveOn();
-        else
-            _buttonAnimation.ChangeActiveOff();
-    }
+        if (newLevel >= _coeffSellPerLevel.Count)
+            return;
 
-    private void UpgrateSell(int id, float value)
-    {
-        if (id == 5)
-        {
-            if (_coefficientCell == 0.7f)
-                _coefficientCell = 1;
-            else
-                _coefficientCell += value;
-        }
+        _currentCoeffSell = _coeffSellPerLevel[newLevel];
     }
 
     private IEnumerator UnlockAnimation()
     {
-        Vector3 target = new(transform.position.x, transform.position.y, transform.position.z - 0.5f);
+        Vector3 target = new(transform.position.x, transform.position.y, transform.position.z - _zAddPosition);
         bool isWork = true;
         int speedAnimation = 10;
 

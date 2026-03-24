@@ -10,7 +10,7 @@ public class PlayerInfo : MonoBehaviour
     [SerializeField] private PlayerData _playerData;
     [SerializeField] private BankView _moneyBar;
     [SerializeField] private BankView _cristallBar;
-    [SerializeField] private ShopDistributor _shopDistributor;
+    //[SerializeField] private ShopDistributor _shopDistributor;
     [SerializeField] private int _completeLevelReward = 20;
 
     private string _name;
@@ -121,25 +121,25 @@ public class PlayerInfo : MonoBehaviour
         _bounces++;
     }
 
-    public void LoadLevelData(PlayerData playerData)
-    {
-        _totalScore = playerData.score;
-        _level = playerData.level;
-        _BlockDeleterLevel = playerData.levelUp;
-        _cristall = playerData.cristall;
-        _isUnlockBlockDeleter = playerData.isUnlockBascet;
-        _isShowGuide = playerData.isShowGuide;
-        SetIcon(playerData.icon);
-        SetName(playerData.name);
-        _money = playerData.money;
-        _shopDistributor.LoadUp(_BlockDeleterLevel, _isUnlockBlockDeleter);
-        _levelLoader.LoadLevel(_level, _icon);
+    //public void LoadLevelData(PlayerData playerData)
+    //{
+    //    _totalScore = playerData.score;
+    //    _level = playerData.level;
+    //    _BlockDeleterLevel = playerData.levelUp;
+    //    _cristall = playerData.cristall;
+    //    _isUnlockBlockDeleter = playerData.isUnlockBascet;
+    //    _isShowGuide = playerData.isShowGuide;
+    //    SetIcon(playerData.icon);
+    //    SetName(playerData.name);
+    //    _money = playerData.money;
+    //    _shopDistributor.LoadUp(_BlockDeleterLevel, _isUnlockBlockDeleter);
+    //    _levelLoader.LoadLevel(_level, _icon);
 
-        for (int i = 0; i < _level - 1; i++)
-        {
-            //_scoreBar.LoadLevelScoreMax();
-        }
-    }
+    //    for (int i = 0; i < _level - 1; i++)
+    //    {
+    //        //_scoreBar.LoadLevelScoreMax();
+    //    }
+    //}
 
     public void UpdateData()
     {

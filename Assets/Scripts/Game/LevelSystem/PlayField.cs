@@ -5,12 +5,10 @@ using UnityEngine;
 
 public class PlayField : MonoBehaviour
 {
-    [SerializeField] private List<Vector2> _fieldXY = new List<Vector2>();
+    [SerializeField] private List<Vector2> _fieldXY = new();
     [SerializeField] private Vector2 _stockFieldXY;
     [SerializeField] private GameObject _stockFieldObject;
     [SerializeField] private float _stepCell;
-    [Space]
-    [SerializeField] private CellsField _totalNumberCells;
 
     private List<Cell> _cellsPlayField;
     private List<Cell> _cellsStockField;
@@ -19,17 +17,16 @@ public class PlayField : MonoBehaviour
     private Vector2 _currentFieldXY;
 
     public Transform StockFieldObject => _stockFieldObject.transform;
-    public CellsField Cells => _totalNumberCells;
     public List<Cell> CellInField
     {
         get
         {
-            if (_cellsPlayField != null)
-                return _cellsPlayField;
+            if (_cellsInField != null && _cellsInField.Count > 0)
+                return _cellsInField;
 
-            _cellsPlayField = new(_cellsPlayField);
-            _cellsPlayField = _cellsPlayField.Concat(_cellsStockField).ToList();
-            return _cellsPlayField;
+            _cellsInField = new(_cellsPlayField);
+            _cellsInField = _cellsInField.Concat(_cellsStockField).ToList();
+            return _cellsInField;
         }
     }
 
@@ -102,6 +99,8 @@ public class PlayField : MonoBehaviour
 
     internal void FullReset()
     {
+        _cellsInField.Clear();
+
         foreach (Cell cell in _cellsPlayField)
         {
             cell.ReleaseCell();
