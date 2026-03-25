@@ -1,15 +1,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CompositionOrder : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] List<CompositeRoot> _compositeRoots;
-
-    private void Awake()
+    public class CompositionOrder : MonoBehaviour
     {
-        foreach (var compositeRoot in _compositeRoots)
+        [SerializeField] List<CompositeRoot> _compositeRoots;
+
+        private void Awake()
         {
-            compositeRoot.Compose();
+            foreach (var compositeRoot in _compositeRoots)
+            {
+                compositeRoot.Compose();
+            }
         }
     }
 }

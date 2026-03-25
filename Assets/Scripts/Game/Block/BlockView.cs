@@ -1,29 +1,32 @@
 using TMPro;
 using UnityEngine;
 
-public class BlockView : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private TMP_Text _text;
-
-    private Block _block;
-
-    private void OnDestroy()
+    public class BlockView : MonoBehaviour
     {
-        if (_block != null)
+        [SerializeField] private TMP_Text _text;
+
+        private Block _block;
+
+        private void OnDestroy()
         {
-            _block.OnInitialize -= OnInitialize;
+            if (_block != null)
+            {
+                _block.OnInitialize -= OnInitialize;
+            }
         }
-    }
 
-    private void Awake()
-    {
-        _block = GetComponent<Block>();
+        private void Awake()
+        {
+            _block = GetComponent<Block>();
 
-        _block.OnInitialize += OnInitialize;
-    }
+            _block.OnInitialize += OnInitialize;
+        }
 
-    private void OnInitialize(int factor)
-    {
-        _text.text = factor.ToString();
+        private void OnInitialize(int factor)
+        {
+            _text.text = factor.ToString();
+        }
     }
 }

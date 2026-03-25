@@ -1,29 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Languages : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private List<Language> _languages;
-
-    private Language _currentLanguage;
-
-    private void Start()
+    public class Languages : MonoBehaviour
     {
-        _currentLanguage = _languages[0];
-        _currentLanguage.ChangeActiveOn();
-    }
+        [SerializeField] private List<Language> _languages;
 
-    public void ChangeLanguage(Language language)
-    {
-        foreach (Language lang in _languages)
+        private Language _currentLanguage;
+
+        private void Start()
         {
-            if(lang == language)
+            _currentLanguage = _languages[0];
+            _currentLanguage.ChangeActiveOn();
+        }
+
+        public void ChangeLanguage(Language language)
+        {
+            foreach (Language lang in _languages)
             {
-                _currentLanguage.ChangeActiveOff();
-                _currentLanguage = lang;
-                Lean.Localization.LeanLocalization.SetCurrentLanguageAll(_currentLanguage.Name);
-                _currentLanguage.ChangeActiveOn();
-                break;
+                if (lang == language)
+                {
+                    _currentLanguage.ChangeActiveOff();
+                    _currentLanguage = lang;
+                    Lean.Localization.LeanLocalization.SetCurrentLanguageAll(_currentLanguage.Name);
+                    _currentLanguage.ChangeActiveOn();
+                    break;
+                }
             }
         }
     }

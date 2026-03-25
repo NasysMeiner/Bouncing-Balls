@@ -1,5 +1,8 @@
-public interface IInitializeButton
+namespace BouncingBalls
 {
-    public void Initialize(int value);
-    public void ResetButton();
+    public interface IInitializeButton
+    {
+        public void Initialize(int value);
+        public void ResetButton();
+    }
 }

@@ -1,9 +1,12 @@
 using System;
 
-[Serializable]
-public class ShopLevelData
+namespace BouncingBalls
 {
-    public int Price;
-    public int PriceUp;
-    public int MinLevel;
+    [Serializable]
+    public class ShopLevelData
+    {
+        public int Price;
+        public int PriceUp;
+        public int MinLevel;
+    }
 }

@@ -1,11 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Icon : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private GameObject _enable;
-    [SerializeField] private Image _image;
+    public class Icon : MonoBehaviour
+    {
+        [SerializeField] private GameObject _selectView;
+        [SerializeField] private Image _imageIcon;
+        [SerializeField] private int _idIcon;
 
-    public GameObject Enable => _enable;
-    public Image Image => _image;
+        public Sprite SpriteImage => _imageIcon.sprite;
+        public int idIcon => _idIcon;
+
+        public void OffSelectView()
+        {
+            _selectView.SetActive(false);
+        }
+
+        public void OnSelectView()
+        {
+            _selectView.SetActive(true);
+        }
+    }
 }

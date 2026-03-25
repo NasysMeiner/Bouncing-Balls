@@ -2,86 +2,135 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private GameObject _startView;
-    [SerializeField] private BankView _bankView;
-    [SerializeField] private LevelStatView _endLevelView;
-    [SerializeField] private LevelStatView _endGameView;
-
-    [SerializeField] private TMP_Text _levelText;
-
-    private GameManager _gameManager;
-    private PurchaseManager _purchaseManager;
-
-    private Image _iconPlayer;
-
-    public void Initialize(GameManager gameManager, PurchaseManager purchaseManager, Bank bank)
+    public class UIManager : MonoBehaviour
     {
-        _gameManager = gameManager;
-        _purchaseManager = purchaseManager;
+        [Header("StartView")]
+        [SerializeField] private GameObject _startView;
+        [SerializeField] private GameObject _startViewPlayerExist;
+        [SerializeField] private GameObject _baseStartView;
+        [SerializeField] private TMP_Text _playerNameText;
+        [SerializeField] private Image _playerIcon;
+        [SerializeField] private Button _startButton;
+        [Space]
+        [SerializeField] private BankView _bankView;
+        [SerializeField] private LevelStatView _endLevelView;
+        [SerializeField] private LevelStatView _endGameView;
+        [SerializeField] private GameObject _guideView;
 
-        _bankView.Initialize(bank, purchaseManager);
-    }
+        [SerializeField] private TMP_Text _levelText;
 
-    public void StartGame()
-    {
-        _startView.SetActive(false);
-        _gameManager.StartGame();
-        UpdateLevelView();
-    }
+        private GameManager _gameManager;
+        private PurchaseManager _purchaseManager;
+        private IconManager _iconManager;
 
-    public void StartNextLevel()
-    {
-        _gameManager.StartNextLevel();
-        UpdateLevelView();
-    }
+        private bool _isLoadPlayer = false;
+        private string _playerName = "Anonymos";
+        private int _iconIdPlayer = 0;
+        private bool _isShowGuide = false;
 
-    public void RestartGame()
-    {
-        _gameManager.RestartGame();
-    }
+        public bool IsShowGuide => _isShowGuide;
+        public string PlayerName => _playerName;
 
-    public void ChangeIconPlayer(Image image)
-    {
-        _iconPlayer = image;
-    }
+        public void Initialize(GameManager gameManager, PurchaseManager purchaseManager, Bank bank, IconManager iconManager)
+        {
+            _gameManager = gameManager;
+            _purchaseManager = purchaseManager;
+            _iconManager = iconManager;
+            _iconManager.SetIconFromId(_iconIdPlayer);
 
-    public void ViewEndLevelPanel(LevelData levelData)
-    {
-        LevelStatView currentView;
+            _bankView.Initialize(bank, purchaseManager);
 
-        if (_gameManager.CurrentLevel == _gameManager.MaxLevel - 1)
-            currentView = _endGameView;
-        else
-            currentView = _endLevelView;
+            if (!_isShowGuide)
+            {
+                _guideView.SetActive(true);
+                _isShowGuide = true;
+            }
 
-        currentView.gameObject.SetActive(true);
-        currentView.SetLevelData(levelData);
-    }
+            if (_isLoadPlayer)
+            {
+                _startViewPlayerExist.SetActive(true);
+                _baseStartView.SetActive(false);
+                _playerNameText.text = _playerName;
+                _playerIcon.sprite = _iconManager.CurrentIcon.SpriteImage;
+            }
 
-    public void BuyBlock()
-    {
-        _purchaseManager.BuyBlock(_gameManager.CurrentLevel);
-    }
+            _startButton.interactable = true;
+        }
 
-    public void BuyBall()
-    {
-        _purchaseManager.BuyBall(_gameManager.CurrentLevel);
-    }
+        public void SetPlayerData(string namePlayer, int iconIdPlayer, bool isShowGuide)
+        {
+            _isLoadPlayer = true;
+            _playerName = namePlayer;
+            _iconIdPlayer = iconIdPlayer;
+            _isShowGuide = isShowGuide;
+        }
 
-    public void PauseOn()
-    {
-        _gameManager.PauseOn();
-    }
+        public void StartGame()
+        {
+            _startView.SetActive(false);
+            _gameManager.StartGame();
+            UpdateLevelView();
+        }
 
-    public void PauseOff()
-    {
-        _gameManager.PauseOff();
-    }
+        public void StartNextLevel()
+        {
+            _gameManager.StartNextLevel();
+            UpdateLevelView();
+        }
 
-    private void UpdateLevelView()
-    {
-        _levelText.text = "Lv. " + (_gameManager.CurrentLevel + 1).ToString();
+        public void RestartGame()
+        {
+            _gameManager.RestartGame();
+        }
+
+        public void ChangeIconPlayer(int iconId)
+        {
+            _iconIdPlayer = iconId;
+        }
+
+        public void ViewEndLevelPanel(LevelData levelData)
+        {
+            LevelStatView currentView;
+
+            if (_gameManager.CurrentLevel == _gameManager.MaxLevel - 1)
+                currentView = _endGameView;
+            else
+                currentView = _endLevelView;
+
+            currentView.gameObject.SetActive(true);
+            currentView.SetLevelData(levelData);
+        }
+
+        public void BuyBlock()
+        {
+            _purchaseManager.BuyBlock(_gameManager.CurrentLevel);
+        }
+
+        public void BuyBall()
+        {
+            _purchaseManager.BuyBall(_gameManager.CurrentLevel);
+        }
+
+        public void PauseOn()
+        {
+            _gameManager.PauseOn();
+        }
+
+        public void PauseOff()
+        {
+            _gameManager.PauseOff();
+        }
+
+        public void SetName(string name)
+        {
+            _playerName = name;
+        }
+
+        private void UpdateLevelView()
+        {
+            _levelText.text = "Lv. " + (_gameManager.CurrentLevel + 1).ToString();
+        }
     }
 }

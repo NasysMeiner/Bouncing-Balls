@@ -2,78 +2,81 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioManager : MonoBehaviour
+namespace BouncingBalls
 {
-    public static AudioManager Instance { get; private set; }
-
-    [SerializeField] private AudioSource _audioSource;
-    [Space]
-    [SerializeField] private AudioClip _music;
-    [SerializeField] private bool _isAwakePlay;
-    [Range(0f, 1f)]
-    [SerializeField] private float _musicVolume;
-    [Range(0f, 1f)]
-    [SerializeField] private float _effectVolume;
-    [SerializeField] private float _cooldownTime = 0.1f;
-    [Space]
-    [SerializeField] private List<AudioProfile> _audioProfiles = new();
-
-    private Dictionary<string, AudioClip> _soundDictionary;
-
-    private float _lastPlayTime = 0;
-
-    public float MusicVolume => _musicVolume;
-    public float EffectVolume => _effectVolume;
-
-    private void Awake()
+    public class AudioManager : MonoBehaviour
     {
-        if(Instance != null)
+        public static AudioManager Instance { get; private set; }
+
+        [SerializeField] private AudioSource _audioSource;
+        [Space]
+        [SerializeField] private AudioClip _music;
+        [SerializeField] private bool _isAwakePlay;
+        [Range(0f, 1f)]
+        [SerializeField] private float _musicVolume;
+        [Range(0f, 1f)]
+        [SerializeField] private float _effectVolume;
+        [SerializeField] private float _cooldownTime = 0.1f;
+        [Space]
+        [SerializeField] private List<AudioProfile> _audioProfiles = new();
+
+        private Dictionary<string, AudioClip> _soundDictionary;
+
+        private float _lastPlayTime = 0;
+
+        public float MusicVolume => _musicVolume;
+        public float EffectVolume => _effectVolume;
+
+        private void Awake()
         {
-            Destroy(gameObject);
-            return;
-        }
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+                return;
+            }
 
-        Instance = this;
+            Instance = this;
 
-        _soundDictionary = new();
+            _soundDictionary = new();
 
-        foreach(var profile in _audioProfiles)
-            _soundDictionary.Add(profile.Name, profile.AudioClip);
+            foreach (var profile in _audioProfiles)
+                _soundDictionary.Add(profile.Name, profile.AudioClip);
 
-        _audioSource.clip = _music;
-        _audioSource.volume = _musicVolume;
-
-        if (_isAwakePlay)
-            _audioSource.Play();
-
-    }
-
-    public void PlaySound(string nameAudio)
-    {
-        if(_soundDictionary.TryGetValue(nameAudio, out AudioClip audioClip))
-        {
-            _audioSource.clip = audioClip;
+            _audioSource.clip = _music;
             _audioSource.volume = _musicVolume;
-            _audioSource.Play(); 
-        }
-    }
 
-    public void PlayEffectAudio(string nameAudio)
-    {
-        if ((Time.time - _lastPlayTime) > _cooldownTime && _soundDictionary.TryGetValue(nameAudio, out AudioClip audioClip))
+            if (_isAwakePlay)
+                _audioSource.Play();
+
+        }
+
+        public void PlaySound(string nameAudio)
         {
-            _audioSource.PlayOneShot(audioClip, _effectVolume);
-            _lastPlayTime = Time.time;
+            if (_soundDictionary.TryGetValue(nameAudio, out AudioClip audioClip))
+            {
+                _audioSource.clip = audioClip;
+                _audioSource.volume = _musicVolume;
+                _audioSource.Play();
+            }
         }
-    }
 
-    internal void SetMusicVolume(float value)
-    {
-        _audioSource.volume = value;
-    }
+        public void PlayEffectAudio(string nameAudio)
+        {
+            if ((Time.time - _lastPlayTime) > _cooldownTime && _soundDictionary.TryGetValue(nameAudio, out AudioClip audioClip))
+            {
+                _audioSource.PlayOneShot(audioClip, _effectVolume);
+                _lastPlayTime = Time.time;
+            }
+        }
 
-    internal void SetEffectsVolume(float value)
-    {
-        _effectVolume = value;
+        internal void SetMusicVolume(float value)
+        {
+            _audioSource.volume = value;
+        }
+
+        internal void SetEffectsVolume(float value)
+        {
+            _effectVolume = value;
+        }
     }
 }

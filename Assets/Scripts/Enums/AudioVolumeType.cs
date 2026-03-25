@@ -1,5 +1,8 @@
-public enum AudioVolumeType
+namespace BouncingBalls
 {
-    Music,
-    Effects,
+    public enum AudioVolumeType
+    {
+        Music,
+        Effects,
+    }
 }

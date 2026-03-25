@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class BlockAudioController : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private string _nameBounceSound = "Bounce";
-
-    private Block _block;
-
-    private void OnDestroy()
+    public class BlockAudioController : MonoBehaviour
     {
-        if (_block != null )
+        [SerializeField] private string _nameBounceSound = "Bounce";
+
+        private Block _block;
+
+        private void OnDestroy()
         {
-            _block.Bounced -= PlayBounceSound;
+            if (_block != null)
+            {
+                _block.Bounced -= PlayBounceSound;
+            }
         }
-    }
 
-    private void Awake()
-    {
-        _block = GetComponent<Block>();
+        private void Awake()
+        {
+            _block = GetComponent<Block>();
 
-        _block.Bounced += PlayBounceSound;
-    }
+            _block.Bounced += PlayBounceSound;
+        }
 
-    private void PlayBounceSound()
-    {
-        AudioManager.Instance.PlayEffectAudio(_nameBounceSound);
+        private void PlayBounceSound()
+        {
+            AudioManager.Instance.PlayEffectAudio(_nameBounceSound);
+        }
     }
 }

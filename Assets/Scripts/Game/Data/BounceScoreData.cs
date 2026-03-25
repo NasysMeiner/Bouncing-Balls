@@ -1,15 +1,18 @@
 using UnityEngine;
 
-public class BounceScoreData
+namespace BouncingBalls
 {
-    public int Score;
-    public int Cristall;
-    public Vector3 BouncePosition;
-
-    public BounceScoreData(int score, int cristall, Vector3 bouncePosition)
+    public class BounceScoreData
     {
-        Score = score;
-        Cristall = cristall;
-        BouncePosition = bouncePosition;
+        public int Score;
+        public int Cristall;
+        public Vector3 BouncePosition;
+
+        public BounceScoreData(int score, int cristall, Vector3 bouncePosition)
+        {
+            Score = score;
+            Cristall = cristall;
+            BouncePosition = bouncePosition;
+        }
     }
 }

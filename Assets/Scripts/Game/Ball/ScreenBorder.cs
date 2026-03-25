@@ -1,11 +1,14 @@
 using UnityEngine;
 
-[RequireComponent(typeof(BoxCollider))]
-public class ScreenBorder : MonoBehaviour
+namespace BouncingBalls
 {
-    private void OnCollisionEnter(Collision collision)
+    [RequireComponent(typeof(BoxCollider))]
+    public class ScreenBorder : MonoBehaviour
     {
-        if (collision.gameObject.TryGetComponent(out Ball ball))
-            ball.ReturnBall();
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.TryGetComponent(out Ball ball))
+                ball.ReturnBall();
+        }
     }
 }

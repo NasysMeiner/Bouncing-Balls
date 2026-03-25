@@ -2,117 +2,126 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private bool _isUnity = true;
-    [Space]
-    [SerializeField] private int _startLevel = 0;
-    [SerializeField] private int _maxLevel = 5;
-    [SerializeField] private List<int> _scoreLevels = new();
-
-    private LevelManager _levelManager;
-    private ScoreController _scoreController;
-
-    private UIManager _uiManager;
-
-    private int _currentLevel;
-    private float _timeInLevel = 0;
-
-    private bool _isGameStarted = false;
-    private bool _isPause = false;
-
-    public int CurrentLevel => _currentLevel;
-    public int MaxLevel => _maxLevel;
-    public int MaxLevelInBorder => _scoreLevels.Count;
-    public float TimeInLevel => _timeInLevel;
-
-    public event Action<int> OnSetLevel;
-    public event Action OnStartLevel;
-    public event Action OnEndLevel;
-
-    private void OnDestroy()
+    public class GameManager : MonoBehaviour
     {
-        if(_scoreController != null)
+        [SerializeField] private bool _isUnity = true;
+        [Space]
+        [SerializeField] private int _startLevel = 0;
+        [SerializeField] private int _maxLevel = 5;
+        [SerializeField] private List<int> _scoreLevels = new();
+
+        private LevelManager _levelManager;
+        private ScoreController _scoreController;
+
+        private UIManager _uiManager;
+
+        private int _currentLevel;
+        private float _timeInLevel = 0;
+
+        private bool _isGameStarted = false;
+        private bool _isPause = false;
+
+        public bool IsUnity => _isUnity;
+        public int CurrentLevel => _currentLevel;
+        public int MaxLevel => _maxLevel;
+        public int MaxLevelInBorder => _scoreLevels.Count;
+        public float TimeInLevel => _timeInLevel;
+
+        public event Action<int> OnSetLevel;
+        public event Action OnStartLevel;
+        public event Action OnEndLevel;
+
+        private void OnDestroy()
         {
-            _scoreController.OnFullScore -= OnFullScore;
+            if (_scoreController != null)
+            {
+                _scoreController.OnFullScore -= OnFullScore;
+            }
         }
-    }
 
-    public void Update()
-    {
-        if(_isGameStarted && !_isPause)
-            _timeInLevel += Time.deltaTime;
-    }
+        public void Update()
+        {
+            if (_isGameStarted && !_isPause)
+                _timeInLevel += Time.deltaTime;
+        }
 
-    public void Initialize(LevelManager levelManager, UIManager uIManager, ScoreController scoreController)
-    {
-        _levelManager = levelManager;
-        _uiManager = uIManager;
-        _scoreController = scoreController;
+        public void Initialize(LevelManager levelManager, UIManager uIManager, ScoreController scoreController)
+        {
+            _levelManager = levelManager;
+            _uiManager = uIManager;
+            _scoreController = scoreController;
 
-        _currentLevel = _startLevel;
+            _currentLevel = _startLevel;
 
-        _scoreController.OnFullScore += OnFullScore;
-    }
+            _scoreController.OnFullScore += OnFullScore;
+        }
 
-    public void WebInitialize()
-    {
+        public void WebInitialize()
+        {
 
-    }
+        }
 
-    public void StartGame()
-    {
-        CreateLevel();
-    }
+        public void SetLevel(int level)
+        {
+            _currentLevel = level;
+        }
 
-    public void CreateLevel()
-    {
-        _levelManager.GenerateLevel(_currentLevel);
-        _scoreController.PostInitialize(_scoreLevels[_currentLevel]);
+        public void StartGame()
+        {
+            CreateLevel();
+        }
 
-        _isGameStarted = true;
+        public void CreateLevel()
+        {
+            _levelManager.GenerateLevel(_currentLevel);
+            _scoreController.PostInitialize(_scoreLevels[_currentLevel]);
 
-        OnSetLevel?.Invoke(_currentLevel);
-        OnStartLevel?.Invoke();
-    }
+            _isGameStarted = true;
 
-    public void OnFullScore(LevelData levelData)
-    {
-        _levelManager.StopGame();
-        _isGameStarted = false;
-        _uiManager.ViewEndLevelPanel(levelData);
+            OnSetLevel?.Invoke(_currentLevel);
+            OnStartLevel?.Invoke();
+        }
 
-        OnEndLevel?.Invoke();
-    }
+        public void OnFullScore(LevelData levelData)
+        {
+            _levelManager.StopGame();
+            _isGameStarted = false;
+            _uiManager.ViewEndLevelPanel(levelData);
 
-    public void RestartGame()
-    {
-        _currentLevel = 0;
-        FullReset();
-        CreateLevel();
-    }
+            OnEndLevel?.Invoke();
+        }
 
-    public void StartNextLevel()
-    {
-        _currentLevel++;
-        FullReset();
-        CreateLevel();
-    }
+        public void RestartGame()
+        {
+            _currentLevel = 0;
+            FullReset();
+            CreateLevel();
+        }
 
-    public void PauseOn()
-    {
-        _isPause = true;
-        Time.timeScale = 0;
-    }
+        public void StartNextLevel()
+        {
+            _currentLevel++;
+            FullReset();
+            CreateLevel();
+        }
 
-    public void PauseOff()
-    {
-        _isPause = false;
-        Time.timeScale = 1;
-    }
+        public void PauseOn()
+        {
+            _isPause = true;
+            Time.timeScale = 0;
+        }
 
-    private void FullReset()
-    {
-        _levelManager.FullReset();
+        public void PauseOff()
+        {
+            _isPause = false;
+            Time.timeScale = 1;
+        }
+
+        private void FullReset()
+        {
+            _levelManager.FullReset();
+        }
     }
 }

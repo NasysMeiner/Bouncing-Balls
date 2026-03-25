@@ -1,4 +1,7 @@
-public interface IInitializable
+namespace BouncingBalls
 {
-    void Initialize(int factor);
+    public interface IInitializable
+    {
+        void Initialize(int factor);
+    }
 }

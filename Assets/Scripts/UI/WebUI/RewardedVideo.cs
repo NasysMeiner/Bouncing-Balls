@@ -2,40 +2,43 @@ using Agava.YandexGames;
 using System;
 using UnityEngine;
 
-public class RewardedVideo : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private int _crystallCount;
-
-    private Bank _bank;
-
-    private event Action _onVideoOpened;
-
-    public void Initialize(Bank bank)
+    public class RewardedVideo : MonoBehaviour
     {
-        _bank = bank;
-    }
+        [SerializeField] private int _crystallCount;
 
-    private void SetRevardForVideo()
-    {
-        _bank.AddCristall(_crystallCount);
-    }
+        private Bank _bank;
 
-    private void SetActiveAudioListener()
-    {
-        AudioListener.volume = 1;
-        Time.timeScale = 1;
-    }
+        private event Action _onVideoOpened;
 
-    private void OnErrorVideo(string value)
-    {
-        AudioListener.volume = 1;
-        Time.timeScale = 1;
-    }
+        public void Initialize(Bank bank)
+        {
+            _bank = bank;
+        }
 
-    public void OnShowVideo()
-    {
-        AudioListener.volume = 0;
-        Time.timeScale = 0;
-        VideoAd.Show(_onVideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
+        private void SetRevardForVideo()
+        {
+            _bank.AddCristall(_crystallCount);
+        }
+
+        private void SetActiveAudioListener()
+        {
+            AudioListener.volume = 1;
+            Time.timeScale = 1;
+        }
+
+        private void OnErrorVideo(string value)
+        {
+            AudioListener.volume = 1;
+            Time.timeScale = 1;
+        }
+
+        public void OnShowVideo()
+        {
+            AudioListener.volume = 0;
+            Time.timeScale = 0;
+            VideoAd.Show(_onVideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
+        }
     }
 }

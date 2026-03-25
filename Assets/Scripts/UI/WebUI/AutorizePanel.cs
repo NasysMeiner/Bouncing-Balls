@@ -1,43 +1,47 @@
 using Agava.YandexGames;
 using UnityEngine;
 
-public class AutorizePanel : MonoBehaviour
+namespace BouncingBalls
 {
-    [SerializeField] private GameObject _isAutorizePanel;
-    [SerializeField] private LeaderboardView _leaderboardView;
-    [SerializeField] private Leaderboard _liderboard;
-    //[SerializeField] private Panel _panel;
-    //[SerializeField] private Panel _BG;
-
-    private const string _textOpenLeaderbord = "Open";
-
-    public void Authorized()
+    public class AutorizePanel : MonoBehaviour
     {
-        PlayerAccount.Authorize();
+        [SerializeField] private GameObject _isAutorizePanel;
+        [SerializeField] private LeaderboardView _leaderboardView;
+        [SerializeField] private Leaderboard _liderboard;
+        [SerializeField] private GameManager _gameManager;
 
-        if (PlayerAccount.IsAuthorized)
+        public void Authorized()
         {
-            _isAutorizePanel.SetActive(false);
-            //_BG.gameObject.SetActive(false);
+            if (!_gameManager.IsUnity)
+            {
+                PlayerAccount.Authorize();
+
+                if (PlayerAccount.IsAuthorized)
+                {
+                    PlayerAccount.RequestPersonalProfileDataPermission();
+                    _liderboard.CheckRating();
+                }
+            }
+
             Time.timeScale = 1;
-            PlayerAccount.RequestPersonalProfileDataPermission();
-            _liderboard.CheckReating();
+            _isAutorizePanel.SetActive(false);
         }
-    }
 
-    public void Unauthorized()
-    {
-        if (PlayerAccount.IsAuthorized == false)
+        public void Unauthorized()
         {
-            Time.timeScale = 0;
-            _isAutorizePanel.gameObject.SetActive(true);
-            //_BG.gameObject.SetActive(true);
-        }
-        else
-        {
-            PlayerAccount.RequestPersonalProfileDataPermission();
-            //_panel.PlayAnimationLeaderboard(_textOpenLeaderbord);
-            _liderboard.CheckReating();
+            if (!_gameManager.IsUnity)
+            {
+                if (PlayerAccount.IsAuthorized == false)
+                {
+                    Time.timeScale = 0;
+                    _isAutorizePanel.gameObject.SetActive(true);
+                }
+                else
+                {
+                    PlayerAccount.RequestPersonalProfileDataPermission();
+                    _liderboard.CheckRating();
+                }
+            }
         }
     }
 }
