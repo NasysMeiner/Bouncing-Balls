@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Audio
 {
     public class AudioManager : MonoBehaviour
     {
@@ -25,7 +25,6 @@ namespace BouncingBalls
         private float _lastPlayTime = 0;
 
         public float MusicVolume => _musicVolume;
-        public float EffectVolume => _effectVolume;
 
         private void Awake()
         {
@@ -48,16 +47,6 @@ namespace BouncingBalls
             if (_isAwakePlay)
                 _audioSource.Play();
 
-        }
-
-        public void PlaySound(string nameAudio)
-        {
-            if (_soundDictionary.TryGetValue(nameAudio, out AudioClip audioClip))
-            {
-                _audioSource.clip = audioClip;
-                _audioSource.volume = _musicVolume;
-                _audioSource.Play();
-            }
         }
 
         public void PlayEffectAudio(string nameAudio)

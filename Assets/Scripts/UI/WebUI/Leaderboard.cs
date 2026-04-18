@@ -1,9 +1,11 @@
 using Agava.YandexGames;
+using BouncingBalls.LevelSystem;
+using BouncingBalls.View;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class Leaderboard : MonoBehaviour
     {

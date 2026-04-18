@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
+using BouncingBalls.LevelSystem;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class Gun : MonoBehaviour
     {
@@ -14,11 +14,7 @@ namespace BouncingBalls
 
         private float _time = 0;
         private bool _isStop = true;
-        private Cell _currentCell;
-
-        private Queue<Ball> _queueBall = new();
-
-        public event UnityAction StartGame;
+        private Queue<Ball.Ball> _queueBall = new();
 
         private void Update()
         {
@@ -33,7 +29,7 @@ namespace BouncingBalls
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent(out Ball ball))
+            if (collision.gameObject.TryGetComponent(out Ball.Ball ball))
             {
                 Rigidbody rbBall = collision.gameObject.GetComponent<Rigidbody>();
                 Vector3 normal = -collision.contacts[0].normal;
@@ -42,7 +38,7 @@ namespace BouncingBalls
             }
         }
 
-        public void AddBall(Ball ball)
+        public void AddBall(Ball.Ball ball)
         {
             if (ball == null)
                 return;
@@ -54,7 +50,6 @@ namespace BouncingBalls
         public void ChangePosition(Cell cell, int leftOrRight)
         {
             int halfCircle = 180;
-            _currentCell = cell;
             transform.position = cell.GetPointPosition();
             float finalRotation = Random.Range(-_rotationRange, _rotationRange);
 
@@ -81,7 +76,7 @@ namespace BouncingBalls
 
         private void Shoot()
         {
-            Ball ball = _queueBall.Dequeue();
+            Ball.Ball ball = _queueBall.Dequeue();
 
             if (ball != null)
             {

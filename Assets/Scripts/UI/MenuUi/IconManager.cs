@@ -1,21 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class IconManager : MonoBehaviour
     {
         [SerializeField] private List<Icon> _allIcon = new();
 
-        private UIManager _uiManager;
-
         public Icon CurrentIcon { get; private set; }
         public int CurrentIdIcon => CurrentIcon.idIcon;
 
-        public void Initialize(UIManager uIManager)
+        public void Initialize()
         {
-            _uiManager = uIManager;
-
             if (CurrentIcon == null)
             {
                 CurrentIcon = _allIcon[0];

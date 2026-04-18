@@ -1,6 +1,10 @@
+using BouncingBalls.Block;
+using BouncingBalls.Data;
+using BouncingBalls.Enums;
+using BouncingBalls.Pool;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class ScorePopupManager : MonoBehaviour
     {
@@ -12,8 +16,8 @@ namespace BouncingBalls
         {
             if (_blockManager != null)
             {
-                _blockManager.OnBlockAdded -= OnBlockAdded;
-                _blockManager.OnBlockRemoved -= OnBlockRemoved;
+                _blockManager.BlockAdded -= OnBlockAdded;
+                _blockManager.BlockRemoved -= OnBlockRemoved;
             }
         }
 
@@ -21,8 +25,8 @@ namespace BouncingBalls
         {
             _blockManager = blockManager;
 
-            _blockManager.OnBlockAdded += OnBlockAdded;
-            _blockManager.OnBlockRemoved += OnBlockRemoved;
+            _blockManager.BlockAdded += OnBlockAdded;
+            _blockManager.BlockRemoved += OnBlockRemoved;
         }
 
         public void OnScoreEarned(BounceScoreData bounceScoreData)
@@ -38,14 +42,14 @@ namespace BouncingBalls
             scorePopup.Initialize(scoreText, bounceScoreData.BouncePosition + errorPosition, bounceScoreData.Cristall > 0);
         }
 
-        private void OnBlockAdded(Block block)
+        private void OnBlockAdded(Block.Block block)
         {
-            block.OnScoreEarned += OnScoreEarned;
+            block.ScoreEarned += OnScoreEarned;
         }
 
-        private void OnBlockRemoved(Block block)
+        private void OnBlockRemoved(Block.Block block)
         {
-            block.OnScoreEarned -= OnScoreEarned;
+            block.ScoreEarned -= OnScoreEarned;
         }
     }
 }

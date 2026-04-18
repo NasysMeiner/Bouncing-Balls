@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     [RequireComponent(typeof(Rating))]
     public class PrefabPlayers : MonoBehaviour

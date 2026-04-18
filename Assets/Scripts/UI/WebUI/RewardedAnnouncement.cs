@@ -1,7 +1,8 @@
+using BouncingBalls.LevelSystem;
 using System.Collections;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class RewardedAnnouncement : MonoBehaviour
     {
@@ -16,14 +17,14 @@ namespace BouncingBalls
 
         private void OnEnable()
         {
-            _gameManager.OnEndLevel += ResetRepeats;
-            _gameManager.OnStartLevel += ResetRepeats;
+            _gameManager.EndLevel += ResetRepeats;
+            _gameManager.StartLevel += ResetRepeats;
         }
 
         private void OnDisable()
         {
-            _gameManager.OnEndLevel -= ResetRepeats;
-            _gameManager.OnStartLevel -= ResetRepeats;
+            _gameManager.EndLevel -= ResetRepeats;
+            _gameManager.StartLevel -= ResetRepeats;
         }
 
         public void Initialize(GameManager gameManager)

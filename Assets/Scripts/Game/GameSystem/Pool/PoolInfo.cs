@@ -1,7 +1,8 @@
+using BouncingBalls.Enums;
 using System;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Pool
 {
     [Serializable]
     public class PoolInfo

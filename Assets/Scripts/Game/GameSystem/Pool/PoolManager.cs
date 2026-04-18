@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using BouncingBalls.Enums;
 
-namespace BouncingBalls
+namespace BouncingBalls.Pool
 {
     public class PoolManager : MonoBehaviour
     {

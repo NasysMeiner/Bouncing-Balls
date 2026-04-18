@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BouncingBalls.Pool;
+using BouncingBalls.GameSystem;
 
-namespace BouncingBalls
+namespace BouncingBalls.Block
 {
     public class BlockDeleter : MonoBehaviour
     {
@@ -12,6 +14,7 @@ namespace BouncingBalls
 
         private Bank _bank;
         private PurchaseManager _purchaseManager;
+        private BlockManager _blockManager;
 
         private float _currentCoeffSell;
         private bool _isUnlock = false;
@@ -19,10 +22,18 @@ namespace BouncingBalls
         public bool IsUnlock => _isUnlock;
         public int CurrentLevelBlockDeleter { get; private set; }
 
-        public void Initialize(Bank bank, PurchaseManager purchaseManager)
+        private void OnDestroy()
+        {
+            _blockManager.BlockRemoved -= OnBlockRemoved;
+        }
+
+        public void Initialize(Bank bank, PurchaseManager purchaseManager, BlockManager blockManager)
         {
             _bank = bank;
             _purchaseManager = purchaseManager;
+            _blockManager = blockManager;
+
+            _blockManager.BlockRemoved += OnBlockRemoved;
 
             SetNewCoeffSell(_startLevelBlockDeleter);
         }
@@ -51,6 +62,11 @@ namespace BouncingBalls
             CurrentLevelBlockDeleter = newLevel;
 
             _currentCoeffSell = _coeffSellPerLevel[newLevel];
+        }
+
+        private void OnBlockRemoved(Block block)
+        {
+            CellBlock(block);
         }
 
         private IEnumerator UnlockAnimation()

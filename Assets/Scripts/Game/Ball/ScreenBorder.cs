@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Ball
 {
     [RequireComponent(typeof(BoxCollider))]
     public class ScreenBorder : MonoBehaviour

@@ -1,14 +1,15 @@
+using BouncingBalls.GameSystem;
+using BouncingBalls.LevelSystem;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Block
 {
     public class BlockManager : MonoBehaviour
     {
         [SerializeField] private Factory _factory;
-        [SerializeField] private BlockDeleter _blockDeleter;
         [SerializeField] private PlayField _playField;
         [Space]
         [SerializeField] private int _startBlock = 1;
@@ -37,13 +38,13 @@ namespace BouncingBalls
         private List<Block> _activeBlocks = new List<Block>();
         private Block _timeBlock;
 
+        public event Action<Block> BlockAdded;
+        public event Action<Block> BlockRemoved;
+
         public bool ProfitabilityBuffIsActive { get; private set; }
         public bool ForceBounceBuffIsActive { get; private set; }
         public bool CristallChanceBuffIsActive { get; private set; }
         public bool TimeBlockIsActive { get; private set; }
-
-        public event Action<Block> OnBlockAdded;
-        public event Action<Block> OnBlockRemoved;
 
         public void Initialize(Factory factory, PlayField playField)
         {
@@ -90,7 +91,8 @@ namespace BouncingBalls
         {
             ResetAllBuff();
 
-            UnregisterBlock(_timeBlock);
+            if(_timeBlock != null)
+                UnregisterBlock(_timeBlock);
 
             List<Block> deleteBlockList = new(_activeBlocks);
 
@@ -205,21 +207,14 @@ namespace BouncingBalls
         {
             block.Deleted += UnregisterBlock;
             _activeBlocks.Add(block);
-            OnBlockAdded?.Invoke(block);
+            BlockAdded?.Invoke(block);
         }
 
         private void UnregisterBlock(Block block)
         {
-            if (_activeBlocks.Count <= _minBlockCount)
-            {
-                block.ChangeCell(block.CurrentCell);
-                return;
-            }
-
             _activeBlocks.Remove(block);
             block.Deleted -= UnregisterBlock;
-            _blockDeleter.CellBlock(block);
-            OnBlockRemoved?.Invoke(block);
+            BlockRemoved?.Invoke(block);
         }
     }
 }

@@ -1,4 +1,4 @@
-namespace BouncingBalls
+namespace BouncingBalls.Data
 {
     public class PlayerProgressData
     {

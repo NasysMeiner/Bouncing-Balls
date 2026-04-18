@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Data
 {
     public class BounceScoreData
     {

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Audio
 {
     [Serializable]
     public class AudioProfile

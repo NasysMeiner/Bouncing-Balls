@@ -1,7 +1,11 @@
+using BouncingBalls.Data;
+using BouncingBalls.Enums;
+using BouncingBalls.LevelSystem;
+using BouncingBalls.View;
 using System;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Block
 {
     [RequireComponent(typeof(Draggable))]
     public class Block : MonoBehaviour, IInitializable
@@ -22,15 +26,15 @@ namespace BouncingBalls
         private Collider _collider;
         private Cell _currentCell;
 
+        public event Action<int> Initialized;
+        public event Action<BounceScoreData> ScoreEarned;
+        public event Action<Block> Deleted;
+        public event Action Bounced;
+        public event Action PostInitialized;
+
         public Cell CurrentCell => _currentCell;
         public PlayField PlayField => _playField;
         public ObjectType ObjectType => _objectType;
-
-        public event Action<int> OnInitialize;
-        public event Action<BounceScoreData> OnScoreEarned;
-        public event Action<Block> Deleted;
-        public event Action Bounced;
-        public event Action OnPostInitialize;
 
         private void OnDisable()
         {
@@ -47,7 +51,7 @@ namespace BouncingBalls
         {
             int maxChance = 100;
 
-            if (collision.gameObject.TryGetComponent(out Ball ball))
+            if (collision.gameObject.TryGetComponent(out Ball.Ball ball))
             {
                 if (!CurrentCell.IsStock)
                 {
@@ -58,7 +62,7 @@ namespace BouncingBalls
                         collision.contacts[0].point
                     );
 
-                    OnScoreEarned?.Invoke(scoreData);
+                    ScoreEarned?.Invoke(scoreData);
                 }
 
                 Rigidbody rigidbodyBall = collision.gameObject.GetComponent<Rigidbody>();
@@ -82,14 +86,14 @@ namespace BouncingBalls
             _forceBounce = _baseForceBounce;
             _crisstalChance = _baseCrisstalChance;
 
-            OnInitialize?.Invoke(_profitability);
+            Initialized?.Invoke(_profitability);
         }
 
         public void PostInitialize(PlayField playField)
         {
             _playField = playField;
 
-            OnPostInitialize?.Invoke();
+            PostInitialized?.Invoke();
         }
 
         public void ChangeCell(Cell newCell)

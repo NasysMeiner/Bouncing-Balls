@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class CooldownButton : MonoBehaviour, IInitializeButton
     {

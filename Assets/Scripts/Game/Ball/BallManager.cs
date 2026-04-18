@@ -1,7 +1,10 @@
+using BouncingBalls.Enums;
+using BouncingBalls.GameSystem;
+using BouncingBalls.Pool;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Ball
 {
     public class BallManager : MonoBehaviour
     {

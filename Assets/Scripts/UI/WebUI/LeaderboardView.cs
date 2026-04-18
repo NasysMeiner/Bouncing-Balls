@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class LeaderboardView : MonoBehaviour
     {

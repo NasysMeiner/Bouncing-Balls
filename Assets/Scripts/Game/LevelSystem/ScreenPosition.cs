@@ -1,7 +1,7 @@
+using BouncingBalls.Block;
 using UnityEngine;
-using UnityEngine.Events;
 
-namespace BouncingBalls
+namespace BouncingBalls.LevelSystem
 {
     public class ScreenPosition : MonoBehaviour
     {
@@ -25,8 +25,6 @@ namespace BouncingBalls
         private bool _isLockRotation = true;
 
         private ScreenOrientation _currentScreenOrientation;
-
-        public event UnityAction ChangeScreenOrientation;
 
         private void Start()
         {

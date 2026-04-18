@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class Advertisement : MonoBehaviour
     {
@@ -12,27 +12,17 @@ namespace BouncingBalls
         private const string _languageEnglish = "English";
         private const string _languageTurkish = "Turkish";
 
-        private event Action OnOpenAd;
-        public event Action<bool> OnCloseAd;
+        private event Action OpenAd;
+        public event Action<bool> CloseAd;
 
         private void OnEnable()
         {
-            //WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
-
-            OnCloseAd += isClosed =>
-            {
-                SetActiveAudioListener();
-            };
+            CloseAd += OnCloseAd;
         }
 
         private void OnDisable()
         {
-            //WebApplication.InBackgroundChangeEvent -= OnInBackgroundChange;
-
-            OnCloseAd -= isClosed =>
-            {
-                SetActiveAudioListener();
-            };
+            CloseAd -= OnCloseAd;
         }
 
         private IEnumerator Start()
@@ -59,7 +49,7 @@ namespace BouncingBalls
         {
             AudioListener.volume = 0;
             Time.timeScale = 0;
-            InterstitialAd.Show(OnOpenAd, OnCloseAd);
+            InterstitialAd.Show(OpenAd, CloseAd);
         }
 
         private void OnInBackgroundChange(bool inBackground)
@@ -68,7 +58,7 @@ namespace BouncingBalls
             AudioListener.volume = inBackground ? 0f : 1f;
         }
 
-        private void SetActiveAudioListener()
+        private void OnCloseAd(bool isClosed)
         {
             Time.timeScale = 1;
             AudioListener.volume = 1;

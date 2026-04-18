@@ -1,6 +1,6 @@
 using System;
 
-namespace BouncingBalls 
+namespace BouncingBalls.Enums
 {
     [Serializable]
     public enum ObjectType

@@ -1,9 +1,15 @@
 using Agava.YandexGames;
+using BouncingBalls.Block;
+using BouncingBalls.Data;
+using BouncingBalls.Enums;
+using BouncingBalls.GameSystem;
+using BouncingBalls.LevelSystem;
+using BouncingBalls.View;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class SaveManager : MonoBehaviour
     {
@@ -17,12 +23,12 @@ namespace BouncingBalls
         private string _loadString = "None";
         private string _loadingString = "None";
 
-        public event Action<LoadType, PlayerProgressData> OnLoadData;
+        public event Action<LoadType, PlayerProgressData> LoadData;
 
         private void OnDestroy()
         {
             if (_gameManager != null)
-                _gameManager.OnEndLevel -= SavePlayerData;
+                _gameManager.EndLevel -= SavePlayerData;
         }
 
         public void Initialize(GameManager gameManager, BlockDeleter blockDeleter, UIManager uIManager, Bank bank, IconManager iconManager)
@@ -33,7 +39,7 @@ namespace BouncingBalls
             _bank = bank;
             _iconManager = iconManager;
 
-            _gameManager.OnEndLevel += SavePlayerData;
+            _gameManager.EndLevel += SavePlayerData;
         }
 
         public void SavePlayerData()
@@ -63,7 +69,7 @@ namespace BouncingBalls
         {
             if (_gameManager.IsUnity)
             {
-                OnLoadData?.Invoke(LoadType.Failed, null);
+                LoadData?.Invoke(LoadType.Failed, null);
                 yield break;
             }
 
@@ -76,13 +82,13 @@ namespace BouncingBalls
 
             if (_loadingString == _dataIsEmpty)
             {
-                OnLoadData?.Invoke(LoadType.Failed, null);
+                LoadData?.Invoke(LoadType.Failed, null);
                 yield break;
             }
 
             PlayerProgressData playerData = JsonUtility.FromJson<PlayerProgressData>(_loadingString);
 
-            OnLoadData?.Invoke(LoadType.Success, playerData);
+            LoadData?.Invoke(LoadType.Success, playerData);
         }
     }
 }

@@ -1,11 +1,15 @@
+using BouncingBalls.Block;
+using BouncingBalls.LevelSystem;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class BuffController : MonoBehaviour
     {
         [SerializeField] private bool _useCrystalCurrency = true;
+
         [Header("BuffPrices")]
         [SerializeField] private int _profitabilityBuffCrystalPrice = 10;
         [Space]
@@ -43,78 +47,54 @@ namespace BouncingBalls
             _blockDeleter = blockDeleter;
         }
 
-        public bool TryProfitabilityBuff(out float timeCoolDown)
-        {
-            timeCoolDown = 0;
+        public bool TryProfitabilityBuff(out float timeCoolDown) =>
+            TryActivateBuff(!_blockManager.ProfitabilityBuffIsActive, _profitabilityBuffCrystalPrice, _blockManager.StartBuffProfitability, out timeCoolDown);
 
-            if (!_blockManager.ProfitabilityBuffIsActive && _bank.TryPay(_profitabilityBuffCrystalPrice, _useCrystalCurrency))
-            {
-                timeCoolDown = _blockManager.StartBuffProfitability();
-                return true;
-            }
+        public bool TryForceBounceBuff(out float timeCoolDown) =>
+            TryActivateBuff(!_blockManager.ForceBounceBuffIsActive, _forceBounceBuffCrystalPrice, _blockManager.StartBuffForceBounce, out timeCoolDown);
 
-            return false;
-        }
+        public bool TryCristallChanceBuff(out float timeCoolDown) =>
+            TryActivateBuff(!_blockManager.CristallChanceBuffIsActive, _cristallChanceBuffCrystalPrice, _blockManager.StartBuffCristallChance, out timeCoolDown);
 
-        public bool TryForceBounceBuff(out float timeCoolDown)
-        {
-            timeCoolDown = 0;
-
-            if (!_blockManager.ForceBounceBuffIsActive && _bank.TryPay(_forceBounceBuffCrystalPrice, _useCrystalCurrency))
-            {
-                timeCoolDown = _blockManager.StartBuffForceBounce();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryCristallChanceBuff(out float timeCoolDown)
-        {
-            timeCoolDown = 0;
-
-            if (!_blockManager.CristallChanceBuffIsActive && _bank.TryPay(_cristallChanceBuffCrystalPrice, _useCrystalCurrency))
-            {
-                timeCoolDown = _blockManager.StartBuffCristallChance();
-                return true;
-            }
-
-            return false;
-        }
-
-        public bool TryTimeBlockCreate(out float timeCoolDown)
-        {
-            timeCoolDown = 0;
-
-            if (!_blockManager.TimeBlockIsActive && _bank.TryPay(_timeBlockCrystalPrice, _useCrystalCurrency))
-            {
-                timeCoolDown = _blockManager.CreateTimeMaxLevelBlock(_gameManager.MaxLevelInBorder);
-                return true;
-            }
-
-            return false;
-        }
+        public bool TryTimeBlockCreate(out float timeCoolDown) =>
+            TryActivateBuff(!_blockManager.TimeBlockIsActive, _timeBlockCrystalPrice, () => _blockManager.CreateTimeMaxLevelBlock(_gameManager.MaxLevelInBorder), out timeCoolDown);
 
         public bool TryBlockDeleterUnlock()
         {
-            if (!_blockDeleter.IsUnlock && _bank.TryPay(_blockDeleterPrice, _useCrystalCurrency))
+            if (!_blockDeleter.IsUnlock && TryPay(_blockDeleterPrice))
             {
                 _blockDeleter.Unlock();
                 return true;
             }
-
             return false;
         }
 
         public bool TryBlockDeleterUp()
         {
-            if (_blockDeleter.IsUnlock && _bank.TryPay(_pricesUpBlockDeleter[_currentLevelBlockDeleter], _useCrystalCurrency))
+            if (_blockDeleter.IsUnlock && TryPay(_pricesUpBlockDeleter[_currentLevelBlockDeleter]))
             {
                 _blockDeleter.SetNewCoeffSell(++_currentLevelBlockDeleter);
                 return true;
             }
+            return false;
+        }
+
+        private bool TryActivateBuff(bool condition, int price, Func<float> action, out float timeCoolDown)
+        {
+            timeCoolDown = 0;
+
+            if (condition && TryPay(price))
+            {
+                timeCoolDown = action();
+                return true;
+            }
 
             return false;
+        }
+
+        private bool TryPay(int price)
+        {
+            return _bank != null && _bank.TryPay(price, _useCrystalCurrency);
         }
     }
 }

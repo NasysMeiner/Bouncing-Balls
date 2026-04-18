@@ -7161,11 +7161,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75107f1154c36ae4bb8c731b79a121af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _totalScore: {fileID: 1784726318}
-  _score: {fileID: 2071821718}
-  _bounceCount: {fileID: 724069186}
-  _totalMoney: {fileID: 2013609875}
-  _timeInGame: {fileID: 856993175}
+  _statList:
+  - Text: {fileID: 1784726318}
+    StatType: 0
+  - Text: {fileID: 2071821718}
+    StatType: 1
+  - Text: {fileID: 724069186}
+    StatType: 2
+  - Text: {fileID: 2013609875}
+    StatType: 3
+  - Text: {fileID: 856993175}
+    StatType: 4
 --- !u!114 &621930164
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8469,11 +8475,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75107f1154c36ae4bb8c731b79a121af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _totalScore: {fileID: 88638570}
-  _score: {fileID: 661973768}
-  _bounceCount: {fileID: 1787815982}
-  _totalMoney: {fileID: 835280156}
-  _timeInGame: {fileID: 1260500488}
+  _statList:
+  - Text: {fileID: 88638570}
+    StatType: 0
+  - Text: {fileID: 661973768}
+    StatType: 1
+  - Text: {fileID: 1787815982}
+    StatType: 2
+  - Text: {fileID: 835280156}
+    StatType: 3
+  - Text: {fileID: 1260500488}
+    StatType: 4
 --- !u!1 &706777107
 GameObject:
   m_ObjectHideFlags: 0
@@ -9523,12 +9535,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2013250355}
-        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_TargetAssemblyTypeName: BouncingBalls.View.ShopUI, Assembly-CSharp
         m_MethodName: UnlockBlockDeleter
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1828134045}
-          m_ObjectArgumentAssemblyTypeName: CooldownButton, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: BouncingBalls.View.CooldownButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -12154,7 +12166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _isUnity: 1
-  _startLevel: 0
+  _startLevel: 1
   _maxLevel: 5
   _scoreLevels: e8030000c8000000b80b000088130000581b0000581b0000581b0000581b0000581b0000581b0000
 --- !u!1 &1030469556
@@ -15199,7 +15211,7 @@ MonoBehaviour:
   _saveManager: {fileID: 339457358}
   _rewardedVideo: {fileID: 787013277}
   _announcement: {fileID: 6606992631016711737}
-  _leaderboard: {fileID: 0}
+  _leaderboard: {fileID: 787013275}
 --- !u!114 &1210409248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16858,7 +16870,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ShopUI, Assembly-CSharp
+      value: BouncingBalls.View.ShopUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -16866,7 +16878,7 @@ PrefabInstance:
       objectReference: {fileID: 1309364934}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: CooldownButton, Assembly-CSharp
+      value: BouncingBalls.View.CooldownButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6290161997455936497, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_Name
@@ -21970,7 +21982,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ShopUI, Assembly-CSharp
+      value: BouncingBalls.View.ShopUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -21978,7 +21990,7 @@ PrefabInstance:
       objectReference: {fileID: 1679981545}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: CooldownButton, Assembly-CSharp
+      value: BouncingBalls.View.CooldownButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6290161997455936497, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_Name
@@ -29526,7 +29538,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ShopUI, Assembly-CSharp
+      value: BouncingBalls.View.ShopUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -29534,7 +29546,7 @@ PrefabInstance:
       objectReference: {fileID: 1919447234}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: CooldownButton, Assembly-CSharp
+      value: BouncingBalls.View.CooldownButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6290161997455936497, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_Name
@@ -30611,7 +30623,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4790d9e9614706c4abc522dee0dc08c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _rating: {fileID: 0}
 --- !u!1 &3274609654086066545
 GameObject:
   m_ObjectHideFlags: 0
@@ -44897,7 +44908,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ShopUI, Assembly-CSharp
+      value: BouncingBalls.View.ShopUI, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -44905,7 +44916,7 @@ PrefabInstance:
       objectReference: {fileID: 6952252433498286327}
     - target: {fileID: 5954808127765055980, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: CooldownButton, Assembly-CSharp
+      value: BouncingBalls.View.CooldownButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 6290161997455936497, guid: 4b1562bd2b09f0d40ab254f7c7d89045, type: 3}
       propertyPath: m_Name
@@ -45034,12 +45045,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2013250355}
-        m_TargetAssemblyTypeName: ShopUI, Assembly-CSharp
+        m_TargetAssemblyTypeName: BouncingBalls.View.ShopUI, Assembly-CSharp
         m_MethodName: BlockDeleterLevelUp
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 2450909161497226118}
-          m_ObjectArgumentAssemblyTypeName: CooldownButton, Assembly-CSharp
+          m_ObjectArgumentAssemblyTypeName: BouncingBalls.View.CooldownButton, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

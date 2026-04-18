@@ -1,6 +1,7 @@
+using BouncingBalls.LevelSystem;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Block
 {
     [RequireComponent(typeof(Renderer))]
     [RequireComponent(typeof(Block))]
@@ -24,7 +25,7 @@ namespace BouncingBalls
         {
             if (_block != null)
             {
-                _block.OnPostInitialize -= OnPostInitialize;
+                _block.PostInitialized -= OnPostInitialize;
             }
         }
 
@@ -45,7 +46,7 @@ namespace BouncingBalls
             _renderer = GetComponent<Renderer>();
             _block = GetComponent<Block>();
 
-            _block.OnPostInitialize += OnPostInitialize;
+            _block.PostInitialized += OnPostInitialize;
 
             _mainCamera = Camera.main;
         }

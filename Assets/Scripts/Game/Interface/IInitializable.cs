@@ -1,4 +1,4 @@
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public interface IInitializable
     {

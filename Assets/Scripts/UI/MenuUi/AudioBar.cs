@@ -1,7 +1,9 @@
+using BouncingBalls.Audio;
+using BouncingBalls.Enums;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class AudioBar : MonoBehaviour
     {
@@ -65,19 +67,6 @@ namespace BouncingBalls
             if (value > 0)
             {
                 _previousVolume = value;
-            }
-        }
-
-        public void ToggleMute()
-        {
-            if (_slider.value > 0)
-            {
-                _previousVolume = _slider.value;
-                _slider.value = 0;
-            }
-            else
-            {
-                _slider.value = _previousVolume;
             }
         }
 

@@ -1,7 +1,8 @@
 using Agava.YandexGames;
+using BouncingBalls.LevelSystem;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class AutorizePanel : MonoBehaviour
     {

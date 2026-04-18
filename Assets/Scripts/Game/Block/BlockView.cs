@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Block
 {
     public class BlockView : MonoBehaviour
     {
@@ -13,7 +13,7 @@ namespace BouncingBalls
         {
             if (_block != null)
             {
-                _block.OnInitialize -= OnInitialize;
+                _block.Initialized -= OnInitialize;
             }
         }
 
@@ -21,7 +21,7 @@ namespace BouncingBalls
         {
             _block = GetComponent<Block>();
 
-            _block.OnInitialize += OnInitialize;
+            _block.Initialized += OnInitialize;
         }
 
         private void OnInitialize(int factor)

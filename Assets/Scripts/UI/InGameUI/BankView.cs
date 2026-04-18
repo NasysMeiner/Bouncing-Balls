@@ -1,7 +1,8 @@
+using BouncingBalls.GameSystem;
 using TMPro;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class BankView : MonoBehaviour
     {
@@ -17,8 +18,8 @@ namespace BouncingBalls
         {
             if (_bank != null)
             {
-                _bank.OnChangedMoney -= ChangeMoney;
-                _bank.OnChangedCristall -= ChangeCristall;
+                _bank.ChangedMoney -= ChangeMoney;
+                _bank.ChangedCristall -= ChangeCristall;
             }
 
             if (_purchaseManager != null)
@@ -33,8 +34,8 @@ namespace BouncingBalls
             _bank = bank;
             _purchaseManager = purchaseManager;
 
-            _bank.OnChangedMoney += ChangeMoney;
-            _bank.OnChangedCristall += ChangeCristall;
+            _bank.ChangedMoney += ChangeMoney;
+            _bank.ChangedCristall += ChangeCristall;
             _purchaseManager.OnBlockPriceIncreased += ChangePriceBlock;
             _purchaseManager.OnBallPriceIncreased += ChangePriceBall;
         }

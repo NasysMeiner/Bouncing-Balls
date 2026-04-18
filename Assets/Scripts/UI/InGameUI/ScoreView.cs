@@ -1,8 +1,9 @@
+using BouncingBalls.GameSystem;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class ScoreView : MonoBehaviour
     {

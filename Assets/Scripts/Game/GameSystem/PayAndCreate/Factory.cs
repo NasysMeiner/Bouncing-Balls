@@ -1,7 +1,10 @@
+using BouncingBalls.Enums;
+using BouncingBalls.Pool;
+using BouncingBalls.View;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class Factory : MonoBehaviour
     {
@@ -21,14 +24,14 @@ namespace BouncingBalls
             _maxLevel = maxLevel;
         }
 
-        public Block GetRandomBlock(int level)
+        public Block.Block GetRandomBlock(int level)
         {
-            return GetRandomObject<Block>(level, _blockVariants[Random.Range(0, _blockVariants.Count)]);
+            return GetRandomObject<Block.Block>(level, _blockVariants[Random.Range(0, _blockVariants.Count)]);
         }
 
-        public Ball GetRandomBall(int level)
+        public Ball.Ball GetRandomBall(int level)
         {
-            return GetRandomObject<Ball>(level, ObjectType.Ball);
+            return GetRandomObject<Ball.Ball>(level, ObjectType.Ball);
         }
 
         private T GetRandomObject<T>(int level, ObjectType objectType) where T : MonoBehaviour, IInitializable

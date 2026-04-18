@@ -1,4 +1,4 @@
-namespace BouncingBalls
+namespace BouncingBalls.Enums
 {
     public enum AudioVolumeType
     {

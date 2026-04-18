@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class Language : MonoBehaviour
     {

@@ -1,8 +1,10 @@
-using System;
+using BouncingBalls.Ball;
+using BouncingBalls.Block;
+using BouncingBalls.GameSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.LevelSystem
 {
     public class LevelManager : MonoBehaviour
     {
@@ -15,9 +17,6 @@ namespace BouncingBalls
         private BallManager _ballManager;
         private ScreenPosition _screenPosition;
         private Gun _gun;
-
-        public event Action StartedGame;
-        public event Action EndedGame;
 
         public void InitLevelManager(PlayField playField, Gun gun, ScreenPosition screenPosition,
             BlockManager blockManager, BallManager ballManager, PurchaseManager purchaseManager)
@@ -36,8 +35,6 @@ namespace BouncingBalls
             _screenPosition.FixPositionField(level);
             _purchaseManager.CreateStartPullObjects(level, _startCountBlocks[level], _startCountBalls[level]);
             _purchaseManager.UpdatePrice(level);
-
-            StartedGame?.Invoke();
 
             _gun.StartShoot();
         }

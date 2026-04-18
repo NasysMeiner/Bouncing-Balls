@@ -1,9 +1,11 @@
+using BouncingBalls.Enums;
+using BouncingBalls.Pool;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class ScorePopup : MonoBehaviour
     {
@@ -45,12 +47,14 @@ namespace BouncingBalls
             {
                 alpha = _startValue - (_minValue / _maxValue * _changeValue * i);
                 _canvasGroup.alpha = alpha;
-                transform.position = new Vector3(transform.position.x, transform.position.y + _positionChange * i, transform.position.z);
+                Vector3 pos = transform.position;
+                pos.y += _positionChange * i;
+                transform.position = pos;
 
                 yield return null;
             }
 
-            PoolManager.Instance.SetObject(this, BouncingBalls.ObjectType.ScorePopup);
+            PoolManager.Instance.SetObject(this, ObjectType.ScorePopup);
         }
     }
 }

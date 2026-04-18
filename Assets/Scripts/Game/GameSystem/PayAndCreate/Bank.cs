@@ -1,7 +1,9 @@
+using BouncingBalls.Block;
+using BouncingBalls.Data;
 using System;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class Bank : MonoBehaviour
     {
@@ -15,18 +17,18 @@ namespace BouncingBalls
 
         private BlockManager _stockBlocks;
 
+        public event Action<int> ChangedMoney;
+        public event Action<int> ChangedCristall;
+
         public int TotalMoney => _totalMoneyLevel;
         public int Cristall => _cristall;
-
-        public event Action<int> OnChangedMoney;
-        public event Action<int> OnChangedCristall;
 
         private void OnDestroy()
         {
             if (_stockBlocks != null)
             {
-                _stockBlocks.OnBlockAdded -= OnBlockAdded;
-                _stockBlocks.OnBlockRemoved -= OnBlockDeleted;
+                _stockBlocks.BlockAdded -= OnBlockAdded;
+                _stockBlocks.BlockRemoved -= OnBlockDeleted;
             }
         }
 
@@ -37,8 +39,8 @@ namespace BouncingBalls
 
             _stockBlocks = stockBlocks;
 
-            _stockBlocks.OnBlockAdded += OnBlockAdded;
-            _stockBlocks.OnBlockRemoved += OnBlockDeleted;
+            _stockBlocks.BlockAdded += OnBlockAdded;
+            _stockBlocks.BlockRemoved += OnBlockDeleted;
         }
 
         public void SetCristall(int cristall)
@@ -66,24 +68,24 @@ namespace BouncingBalls
             _money += money;
             _totalMoneyLevel += money;
 
-            OnChangedMoney?.Invoke(_money);
+            ChangedMoney?.Invoke(_money);
         }
 
         public void AddCristall(int cristall)
         {
             _cristall += cristall;
 
-            OnChangedCristall?.Invoke(_cristall);
+            ChangedCristall?.Invoke(_cristall);
         }
 
-        private void OnBlockAdded(Block block)
+        private void OnBlockAdded(Block.Block block)
         {
-            block.OnScoreEarned += OnScoreEarned;
+            block.ScoreEarned += OnScoreEarned;
         }
 
-        private void OnBlockDeleted(Block block)
+        private void OnBlockDeleted(Block.Block block)
         {
-            block.OnScoreEarned -= OnScoreEarned;
+            block.ScoreEarned -= OnScoreEarned;
         }
 
         private void OnScoreEarned(BounceScoreData bounceScoreData)

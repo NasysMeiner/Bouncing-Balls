@@ -1,8 +1,11 @@
+using BouncingBalls.Data;
+using BouncingBalls.GameSystem;
+using BouncingBalls.LevelSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class UIManager : MonoBehaviour
     {
@@ -83,11 +86,6 @@ namespace BouncingBalls
         public void RestartGame()
         {
             _gameManager.RestartGame();
-        }
-
-        public void ChangeIconPlayer(int iconId)
-        {
-            _iconIdPlayer = iconId;
         }
 
         public void ViewEndLevelPanel(LevelData levelData)

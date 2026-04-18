@@ -1,6 +1,6 @@
 using System;
 
-namespace BouncingBalls
+namespace BouncingBalls.Data
 {
     [Serializable]
     public class ShopLevelData

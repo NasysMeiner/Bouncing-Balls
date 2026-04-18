@@ -1,16 +1,14 @@
+using BouncingBalls.Data;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class LevelStatView : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _totalScore;
-        [SerializeField] private TMP_Text _score;
-        [SerializeField] private TMP_Text _bounceCount;
-        [SerializeField] private TMP_Text _totalMoney;
-        [SerializeField] private TMP_Text _timeInGame;
+        [SerializeField] private List<StatProfile> _statList = new();
 
         private int _highDifference = 1000;
         private int _lowDifference = 300;
@@ -20,11 +18,8 @@ namespace BouncingBalls
 
         public void SetLevelData(LevelData levelData)
         {
-            StartCoroutine(ShowStatsTime(0, levelData.TotalScore, _totalScore));
-            StartCoroutine(ShowStatsTime(0, levelData.Score, _score));
-            StartCoroutine(ShowStatsTime(0, levelData.BounceCount, _bounceCount));
-            StartCoroutine(ShowStatsTime(0, levelData.TotalMoney, _totalMoney));
-            StartCoroutine(ShowStatsTime(0, levelData.TimeInLevel, _timeInGame));
+            foreach(StatProfile profile in _statList)
+                StartCoroutine(ShowStatsTime(0, levelData.GetStat(profile.StatType), profile.Text));
         }
 
         private IEnumerator ShowStatsTime(int startValue, int endValue, TMP_Text text)

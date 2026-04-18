@@ -1,8 +1,9 @@
 using Agava.YandexGames;
+using BouncingBalls.GameSystem;
 using System;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class RewardedVideo : MonoBehaviour
     {
@@ -10,7 +11,7 @@ namespace BouncingBalls
 
         private Bank _bank;
 
-        private event Action _onVideoOpened;
+        private event Action VideoOpened;
 
         public void Initialize(Bank bank)
         {
@@ -38,7 +39,7 @@ namespace BouncingBalls
         {
             AudioListener.volume = 0;
             Time.timeScale = 0;
-            VideoAd.Show(_onVideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
+            VideoAd.Show(VideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
         }
     }
 }

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.LevelSystem
 {
     public class Cell : MonoBehaviour
     {

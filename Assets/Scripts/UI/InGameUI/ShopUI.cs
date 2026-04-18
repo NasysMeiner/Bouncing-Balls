@@ -1,7 +1,9 @@
+using BouncingBalls.GameSystem;
+using BouncingBalls.LevelSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.View
 {
     public class ShopUI : MonoBehaviour
     {
@@ -27,7 +29,7 @@ namespace BouncingBalls
         {
             if (_gameManager != null)
             {
-                _gameManager.OnEndLevel -= OnEndLevel;
+                _gameManager.EndLevel -= OnEndLevel;
             }
         }
 
@@ -53,7 +55,7 @@ namespace BouncingBalls
             _buttons.Add(_cristallChanceButton);
             _buttons.Add(_timeBlockButton);
 
-            _gameManager.OnEndLevel += OnEndLevel;
+            _gameManager.EndLevel += OnEndLevel;
         }
 
         public void TimeUpdateProfability(CooldownButton uIButton)

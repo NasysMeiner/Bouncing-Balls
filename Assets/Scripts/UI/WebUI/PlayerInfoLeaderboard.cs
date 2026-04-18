@@ -1,4 +1,4 @@
-namespace BouncingBalls
+namespace BouncingBalls.WebSystem
 {
     public class PlayerInfoLeaderboard
     {

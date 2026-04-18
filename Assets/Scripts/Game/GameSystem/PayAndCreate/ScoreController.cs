@@ -1,8 +1,11 @@
+using BouncingBalls.Block;
+using BouncingBalls.Data;
+using BouncingBalls.LevelSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class ScoreController : MonoBehaviour
     {
@@ -22,9 +25,7 @@ namespace BouncingBalls
         private float _currentBorder;
         private bool _inGame = false;
 
-        public int MaxScore => _maxScore;
-
-        public event Action<LevelData> OnFullScore;
+        public event Action<LevelData> FullScore;
         public event Action<int> OnPostInitialize;
         public event Action<int> OnSubLevelUp;
         public event Action<int> OnChangeScore;
@@ -33,8 +34,8 @@ namespace BouncingBalls
         {
             if (_blockManager != null)
             {
-                _blockManager.OnBlockAdded -= OnBlockAdded;
-                _blockManager.OnBlockRemoved -= OnBlockRemoved;
+                _blockManager.BlockAdded -= OnBlockAdded;
+                _blockManager.BlockRemoved -= OnBlockRemoved;
             }
         }
 
@@ -44,8 +45,8 @@ namespace BouncingBalls
             _blockManager = blockManager;
             _bank = bank;
 
-            _blockManager.OnBlockAdded += OnBlockAdded;
-            _blockManager.OnBlockRemoved += OnBlockRemoved;
+            _blockManager.BlockAdded += OnBlockAdded;
+            _blockManager.BlockRemoved += OnBlockRemoved;
         }
 
         public void PostInitialize(int maxScore)
@@ -105,7 +106,7 @@ namespace BouncingBalls
             levelData.TotalMoney = totalMoney;
             levelData.TimeInLevel = (int)timeInLevel;
 
-            OnFullScore?.Invoke(levelData);
+            FullScore?.Invoke(levelData);
         }
 
         private void SetNewBorderScore()
@@ -122,14 +123,14 @@ namespace BouncingBalls
             _currentBorder = 1;
         }
 
-        private void OnBlockAdded(Block block)
+        private void OnBlockAdded(Block.Block block)
         {
-            block.OnScoreEarned += OnScoreEarned;
+            block.ScoreEarned += OnScoreEarned;
         }
 
-        private void OnBlockRemoved(Block block)
+        private void OnBlockRemoved(Block.Block block)
         {
-            block.OnScoreEarned -= OnScoreEarned;
+            block.ScoreEarned -= OnScoreEarned;
         }
 
         private void OnScoreEarned(BounceScoreData bounceScoreData)

@@ -1,7 +1,9 @@
+using BouncingBalls.GameSystem;
+using BouncingBalls.View;
 using System.Collections;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Ball
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Ball : MonoBehaviour, IInitializable

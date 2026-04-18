@@ -1,8 +1,12 @@
+using BouncingBalls.Ball;
+using BouncingBalls.Block;
+using BouncingBalls.Data;
+using BouncingBalls.LevelSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.GameSystem
 {
     public class PurchaseManager : MonoBehaviour
     {
@@ -15,10 +19,10 @@ namespace BouncingBalls
         private BallManager _ballManager;
         private BlockManager _blockManager;
 
-        public int CurrentPriceBlock => _blocksLevelData[_gameManager.CurrentLevel].Price;
-
         public event Action<int> OnBlockPriceIncreased;
         public event Action<int> OnBallPriceIncreased;
+
+        public int CurrentPriceBlock => _blocksLevelData[_gameManager.CurrentLevel].Price;
 
         private void Awake()
         {

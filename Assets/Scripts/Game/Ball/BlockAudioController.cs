@@ -1,12 +1,13 @@
+using BouncingBalls.Audio;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.Ball
 {
     public class BlockAudioController : MonoBehaviour
     {
         [SerializeField] private string _nameBounceSound = "Bounce";
 
-        private Block _block;
+        private Block.Block _block;
 
         private void OnDestroy()
         {
@@ -18,7 +19,7 @@ namespace BouncingBalls
 
         private void Awake()
         {
-            _block = GetComponent<Block>();
+            _block = GetComponent<Block.Block>();
 
             _block.Bounced += PlayBounceSound;
         }

@@ -1,8 +1,11 @@
+using BouncingBalls.Enums;
+using BouncingBalls.GameSystem;
+using BouncingBalls.Pool;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.LevelSystem
 {
     public class PlayField : MonoBehaviour
     {
@@ -73,7 +76,10 @@ namespace BouncingBalls
                     cell.SpawnCell(isStock);
                     cell.transform.parent = parent;
                     cell.gameObject.SetActive(true);
-                    cell.transform.position = new Vector3(parent.position.x + x * _stepCell, parent.position.y + y * _stepCell, parent.position.z);
+                    Vector3 newPosition = parent.position;
+                    newPosition.x += x * _stepCell;
+                    newPosition.y += y * _stepCell;
+                    cell.transform.position = newPosition;
                     newCells.Add(cell);
                 }
             }

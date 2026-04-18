@@ -1,8 +1,11 @@
+using BouncingBalls.Data;
+using BouncingBalls.GameSystem;
+using BouncingBalls.View;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BouncingBalls
+namespace BouncingBalls.LevelSystem
 {
     public class GameManager : MonoBehaviour
     {
@@ -23,21 +26,20 @@ namespace BouncingBalls
         private bool _isGameStarted = false;
         private bool _isPause = false;
 
+        public event Action StartLevel;
+        public event Action EndLevel;
+
         public bool IsUnity => _isUnity;
         public int CurrentLevel => _currentLevel;
         public int MaxLevel => _maxLevel;
         public int MaxLevelInBorder => _scoreLevels.Count;
         public float TimeInLevel => _timeInLevel;
 
-        public event Action<int> OnSetLevel;
-        public event Action OnStartLevel;
-        public event Action OnEndLevel;
-
         private void OnDestroy()
         {
             if (_scoreController != null)
             {
-                _scoreController.OnFullScore -= OnFullScore;
+                _scoreController.FullScore -= OnFullScore;
             }
         }
 
@@ -55,12 +57,7 @@ namespace BouncingBalls
 
             _currentLevel = _startLevel;
 
-            _scoreController.OnFullScore += OnFullScore;
-        }
-
-        public void WebInitialize()
-        {
-
+            _scoreController.FullScore += OnFullScore;
         }
 
         public void SetLevel(int level)
@@ -80,8 +77,7 @@ namespace BouncingBalls
 
             _isGameStarted = true;
 
-            OnSetLevel?.Invoke(_currentLevel);
-            OnStartLevel?.Invoke();
+            StartLevel?.Invoke();
         }
 
         public void OnFullScore(LevelData levelData)
@@ -90,7 +86,7 @@ namespace BouncingBalls
             _isGameStarted = false;
             _uiManager.ViewEndLevelPanel(levelData);
 
-            OnEndLevel?.Invoke();
+            EndLevel?.Invoke();
         }
 
         public void RestartGame()
