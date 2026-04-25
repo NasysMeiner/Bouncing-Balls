@@ -47,9 +47,8 @@ namespace BouncingBalls.View
             {
                 alpha = _startValue - (_minValue / _maxValue * _changeValue * i);
                 _canvasGroup.alpha = alpha;
-                Vector3 pos = transform.position;
-                pos.y += _positionChange * i;
-                transform.position = pos;
+                Vector3 newPosition = new(transform.position.x, transform.position.y + _positionChange * i, transform.position.z);
+                transform.position = newPosition;
 
                 yield return null;
             }

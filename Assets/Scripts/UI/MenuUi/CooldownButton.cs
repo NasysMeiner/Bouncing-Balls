@@ -34,9 +34,11 @@ namespace BouncingBalls.View
 
             StopAllCoroutines();
 
+            if (!_button.interactable)
+                _animator.SetTrigger(_textExitAnimation);
+
             _button.interactable = true;
             _imageCoolDown.fillAmount = 1;
-            _animator.SetTrigger(_textExitAnimation);
         }
 
         public void SetTimeInactive(float timeInactive = 0)

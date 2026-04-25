@@ -6,7 +6,7 @@ namespace BouncingBalls.WebSystem
 {
     public class AutorizePanel : MonoBehaviour
     {
-        [SerializeField] private GameObject _isAutorizePanel;
+        [SerializeField] private GameObject _autorizePanel;
         [SerializeField] private LeaderboardView _leaderboardView;
         [SerializeField] private Leaderboard _liderboard;
         [SerializeField] private GameManager _gameManager;
@@ -25,7 +25,7 @@ namespace BouncingBalls.WebSystem
             }
 
             Time.timeScale = 1;
-            _isAutorizePanel.SetActive(false);
+            _autorizePanel.SetActive(false);
         }
 
         public void Unauthorized()
@@ -35,7 +35,7 @@ namespace BouncingBalls.WebSystem
                 if (PlayerAccount.IsAuthorized == false)
                 {
                     Time.timeScale = 0;
-                    _isAutorizePanel.gameObject.SetActive(true);
+                    _autorizePanel.SetActive(true);
                 }
                 else
                 {

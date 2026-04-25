@@ -10,7 +10,7 @@ namespace BouncingBalls.View
         [SerializeField] private int _idIcon;
 
         public Sprite SpriteImage => _imageIcon.sprite;
-        public int idIcon => _idIcon;
+        public int IdIcon => _idIcon;
 
         public void OffSelectView()
         {

@@ -15,7 +15,6 @@ namespace BouncingBalls.Block
         [SerializeField] private int _crisstalChance = 1;
 
         private PlayField _playField;
-        private ScreenPosition _screenPosition;
 
         private float _baseForceBounce;
         private int _baseCrisstalChance;
@@ -148,11 +147,6 @@ namespace BouncingBalls.Block
         private void ChangePosition(Vector3 newPosition)
         {
             transform.position = newPosition;
-        }
-
-        private void OnChangeScreenOrientation()
-        {
-            transform.position = new Vector3(_currentCell.transform.position.x, _currentCell.transform.position.y, transform.position.z);
         }
     }
 }

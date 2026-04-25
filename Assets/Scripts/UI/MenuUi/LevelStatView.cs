@@ -18,7 +18,7 @@ namespace BouncingBalls.View
 
         public void SetLevelData(LevelData levelData)
         {
-            foreach(StatProfile profile in _statList)
+            foreach (StatProfile profile in _statList)
                 StartCoroutine(ShowStatsTime(0, levelData.GetStat(profile.StatType), profile.Text));
         }
 

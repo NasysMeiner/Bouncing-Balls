@@ -1,6 +1,6 @@
+using BouncingBalls.LevelSystem;
 using System.Collections.Generic;
 using UnityEngine;
-using BouncingBalls.LevelSystem;
 
 namespace BouncingBalls.GameSystem
 {

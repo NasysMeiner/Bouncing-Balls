@@ -27,7 +27,7 @@ namespace BouncingBalls.GameSystem
 
         private GameManager _gameManager;
         private Bank _bank;
-        private BlockManager _blockManager;
+        private BlockBuffManager _blockBuffManager;
         private BlockDeleter _blockDeleter;
 
         public int ProfitabilityBuffCrystalPrice => _profitabilityBuffCrystalPrice;
@@ -39,25 +39,31 @@ namespace BouncingBalls.GameSystem
         public int CurrentPriceLevelUpBlockDeleter => _pricesUpBlockDeleter[_blockDeleter.CurrentLevelBlockDeleter];
         public bool IsUnlockBlockDeleter => _blockDeleter.IsUnlock;
 
-        public void Initialize(Bank bank, BlockManager blockManager, GameManager gameManager, BlockDeleter blockDeleter)
+        public void Initialize(Bank bank,
+            GameManager gameManager, BlockDeleter blockDeleter,
+            BlockBuffManager blockBuffManager)
         {
             _bank = bank;
-            _blockManager = blockManager;
             _gameManager = gameManager;
             _blockDeleter = blockDeleter;
+            _blockBuffManager = blockBuffManager;
         }
 
         public bool TryProfitabilityBuff(out float timeCoolDown) =>
-            TryActivateBuff(!_blockManager.ProfitabilityBuffIsActive, _profitabilityBuffCrystalPrice, _blockManager.StartBuffProfitability, out timeCoolDown);
+            TryActivateBuff(!_blockBuffManager.ProfitabilityBuffIsActive, _profitabilityBuffCrystalPrice,
+                _blockBuffManager.StartBuffProfitability, out timeCoolDown);
 
         public bool TryForceBounceBuff(out float timeCoolDown) =>
-            TryActivateBuff(!_blockManager.ForceBounceBuffIsActive, _forceBounceBuffCrystalPrice, _blockManager.StartBuffForceBounce, out timeCoolDown);
+            TryActivateBuff(!_blockBuffManager.ForceBounceBuffIsActive, _forceBounceBuffCrystalPrice,
+                _blockBuffManager.StartBuffForceBounce, out timeCoolDown);
 
         public bool TryCristallChanceBuff(out float timeCoolDown) =>
-            TryActivateBuff(!_blockManager.CristallChanceBuffIsActive, _cristallChanceBuffCrystalPrice, _blockManager.StartBuffCristallChance, out timeCoolDown);
+            TryActivateBuff(!_blockBuffManager.CristallChanceBuffIsActive, _cristallChanceBuffCrystalPrice,
+                _blockBuffManager.StartBuffCristallChance, out timeCoolDown);
 
         public bool TryTimeBlockCreate(out float timeCoolDown) =>
-            TryActivateBuff(!_blockManager.TimeBlockIsActive, _timeBlockCrystalPrice, () => _blockManager.CreateTimeMaxLevelBlock(_gameManager.MaxLevelInBorder), out timeCoolDown);
+            TryActivateBuff(!_blockBuffManager.TimeBlockIsActive, _timeBlockCrystalPrice,
+                () => _blockBuffManager.CreateTimeMaxLevelBlock(_gameManager.MaxLevelInBorder), out timeCoolDown);
 
         public bool TryBlockDeleterUnlock()
         {

@@ -25,6 +25,7 @@ namespace BouncingBalls.Composite
         [SerializeField] private ScoreController _scoreController;
         [SerializeField] private PurchaseManager _purchaseManager;
         [SerializeField] private BlockManager _blockManager;
+        [SerializeField] private BlockBuffManager _blockBuffManager;
         [SerializeField] private BallManager _ballManager;
         [SerializeField] private BlockDeleter _blockDeleter;
         [SerializeField] private ScreenPosition _screenPosition;
@@ -49,14 +50,16 @@ namespace BouncingBalls.Composite
         {
             _gameManager.Initialize(_levelManager, _uiManager, _scoreController);
             _purchaseManager.Initialize(_bank, _playField, _gameManager);
-            _levelManager.InitLevelManager(_playField, _gun, _screenPosition, _blockManager, _ballManager, _purchaseManager);
+            _levelManager.InitLevelManager(_playField, _gun, _screenPosition, _blockManager,
+                _ballManager, _purchaseManager, _blockBuffManager);
             _bank.InitEvent(_blockManager);
-            _buffController.Initialize(_bank, _blockManager, _gameManager, _blockDeleter);
+            _buffController.Initialize(_bank, _gameManager, _blockDeleter, _blockBuffManager);
             _scoreController.Initialize(_blockManager, _bank, _gameManager);
             _factory.InitFactory(_maxLevel);
             _blockManager.Initialize(_factory, _playField);
+            _blockBuffManager.Initialize(_blockManager);
             _ballManager.Initialize(_factory, _gun);
-            _blockDeleter.Initialize(_bank, _purchaseManager);
+            _blockDeleter.Initialize(_bank, _purchaseManager, _blockManager);
 
             _saveManager.Initialize(_gameManager, _blockDeleter, _uiManager, _bank, _iconManager);
             _rewardedVideo.Initialize(_bank);

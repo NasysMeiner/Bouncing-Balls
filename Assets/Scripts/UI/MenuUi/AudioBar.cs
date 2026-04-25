@@ -16,7 +16,6 @@ namespace BouncingBalls.View
         [SerializeField] private float _minValue = 0f;
         [SerializeField] private float _maxValue = 1f;
 
-        private float _previousVolume = 0.5f;
         private bool _isInitialized;
 
         private void OnEnable()
@@ -53,7 +52,6 @@ namespace BouncingBalls.View
             {
                 float currentVolume = GetVolumeFromManager();
                 _slider.value = currentVolume;
-                _previousVolume = currentVolume > 0 ? currentVolume : 0.5f;
                 UpdateIcons(currentVolume);
                 _isInitialized = true;
             }
@@ -63,11 +61,6 @@ namespace BouncingBalls.View
         {
             SetVolumeToManager(value);
             UpdateIcons(value);
-
-            if (value > 0)
-            {
-                _previousVolume = value;
-            }
         }
 
         private float GetVolumeFromManager()

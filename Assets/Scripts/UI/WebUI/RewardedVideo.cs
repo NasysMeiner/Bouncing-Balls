@@ -18,6 +18,13 @@ namespace BouncingBalls.WebSystem
             _bank = bank;
         }
 
+        public void OnShowVideo()
+        {
+            AudioListener.volume = 0;
+            Time.timeScale = 0;
+            VideoAd.Show(VideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
+        }
+
         private void SetRevardForVideo()
         {
             _bank.AddCristall(_crystallCount);
@@ -33,13 +40,6 @@ namespace BouncingBalls.WebSystem
         {
             AudioListener.volume = 1;
             Time.timeScale = 1;
-        }
-
-        public void OnShowVideo()
-        {
-            AudioListener.volume = 0;
-            Time.timeScale = 0;
-            VideoAd.Show(VideoOpened, SetRevardForVideo, SetActiveAudioListener, OnErrorVideo);
         }
     }
 }

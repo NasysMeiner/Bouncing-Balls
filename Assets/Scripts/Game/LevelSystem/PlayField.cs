@@ -64,6 +64,25 @@ namespace BouncingBalls.LevelSystem
             return cell != null;
         }
 
+        public void FullReset()
+        {
+            _cellsInField.Clear();
+
+            foreach (Cell cell in _cellsPlayField)
+            {
+                cell.ReleaseCell();
+                PoolManager.Instance.SetObject(cell, ObjectType.Cell);
+            }
+
+            foreach (Cell cell in _cellsStockField)
+            {
+                cell.ReleaseCell();
+                PoolManager.Instance.SetObject(cell, ObjectType.Cell);
+            }
+
+            _stockFieldObject.transform.rotation = Quaternion.identity;
+        }
+
         private List<Cell> SpawnFieldFromParent(Vector2 fieldXY, Transform parent, bool isStock = false)
         {
             List<Cell> newCells = new List<Cell>();
@@ -102,25 +121,6 @@ namespace BouncingBalls.LevelSystem
             Cell currentCell = GetCellFromPosition(gunPosition);
             currentCell.TakeCell();
             gun.ChangePosition(currentCell, lefrOrRight);
-        }
-
-        internal void FullReset()
-        {
-            _cellsInField.Clear();
-
-            foreach (Cell cell in _cellsPlayField)
-            {
-                cell.ReleaseCell();
-                PoolManager.Instance.SetObject(cell, ObjectType.Cell);
-            }
-
-            foreach (Cell cell in _cellsStockField)
-            {
-                cell.ReleaseCell();
-                PoolManager.Instance.SetObject(cell, ObjectType.Cell);
-            }
-
-            _stockFieldObject.transform.rotation = Quaternion.identity;
         }
     }
 }

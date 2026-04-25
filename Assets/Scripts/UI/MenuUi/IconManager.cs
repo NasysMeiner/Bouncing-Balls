@@ -8,7 +8,7 @@ namespace BouncingBalls.View
         [SerializeField] private List<Icon> _allIcon = new();
 
         public Icon CurrentIcon { get; private set; }
-        public int CurrentIdIcon => CurrentIcon.idIcon;
+        public int CurrentIdIcon => CurrentIcon.IdIcon;
 
         public void Initialize()
         {

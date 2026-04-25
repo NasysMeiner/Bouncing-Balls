@@ -52,12 +52,6 @@ namespace BouncingBalls.WebSystem
             InterstitialAd.Show(OpenAd, CloseAd);
         }
 
-        private void OnInBackgroundChange(bool inBackground)
-        {
-            AudioListener.pause = inBackground;
-            AudioListener.volume = inBackground ? 0f : 1f;
-        }
-
         private void OnCloseAd(bool isClosed)
         {
             Time.timeScale = 1;

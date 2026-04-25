@@ -1,8 +1,8 @@
+using BouncingBalls.GameSystem;
+using BouncingBalls.Pool;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using BouncingBalls.Pool;
-using BouncingBalls.GameSystem;
 
 namespace BouncingBalls.Block
 {
